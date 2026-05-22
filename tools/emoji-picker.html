@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji 选择器 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="Emoji 表情符号搜索复制，按分类浏览，支持关键词搜索 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="emoji, 表情, 符号, 搜索, 复制,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/emoji-picker.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/emoji-picker.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Emoji 选择器 - 在线工具">
+    <meta property="og:description" content="Emoji 表情符号搜索复制，按分类浏览，支持关键词搜索 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/emoji-picker.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Emoji 选择器 - 在线工具">
+    <meta name="twitter:description" content="Emoji 表情符号搜索复制，按分类浏览，支持关键词搜索 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "Emoji 选择器",
+                "description": "Emoji 表情符号搜索复制，按分类浏览，支持关键词搜索",
+                "url": "/tools/emoji-picker.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "文本工具",
+                        "item": "/#category-文本工具"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Emoji 选择器",
+                        "item": "/tools/emoji-picker.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "支持中文处理吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "完全支持中文文本的处理、统计和转换。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "可以处理多大的文本？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "建议单次处理不超过 5MB 的文本，以保证浏览器响应速度。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "统计结果准确吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "统计基于标准算法，中文字数和字符数分别计算，结果准确可靠。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .emoji-search { margin-bottom: 1rem; }
+        .emoji-search input {
+            width: 100%; padding: 0.65rem 1rem; border: 2px solid var(--border);
+            border-radius: var(--radius-sm); font-size: 0.9rem; outline: none;
+            transition: var(--transition); background: var(--bg); color: var(--text);
+        }
+        .emoji-search input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+        .emoji-search input::placeholder { color: var(--text-muted); }
+        .emoji-categories {
+            display: flex; gap: 0.4rem; overflow-x: auto; padding-bottom: 0.5rem;
+            margin-bottom: 1rem; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        }
+        .emoji-categories::-webkit-scrollbar { display: none; }
+        .emoji-cat-tab {
+            flex-shrink: 0; padding: 0.4rem 0.85rem; border: 1px solid var(--border);
+            border-radius: var(--radius-full); background: var(--bg); color: var(--text-secondary);
+            font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: var(--transition); white-space: nowrap;
+        }
+        .emoji-cat-tab:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+        .emoji-cat-tab.active { background: var(--primary); color: var(--primary-contrast); border-color: var(--primary); }
+        .emoji-section-title {
+            font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);
+            margin-bottom: 0.5rem; padding-bottom: 0.35rem; border-bottom: 1px solid var(--border);
+        }
+        .emoji-recent { margin-bottom: 1rem; }
+        .emoji-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 2px; }
+        .emoji-item {
+            display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
+            width: 44px; height: 44px; border-radius: var(--radius-sm); cursor: pointer;
+            transition: var(--transition-fast); user-select: none; -webkit-user-select: none; position: relative;
+        }
+        .emoji-item:hover { background: var(--primary-light); transform: scale(1.25); z-index: 2; border-radius: var(--radius); }
+        .emoji-item:active { transform: scale(1.1); }
+        .emoji-preview {
+            display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem;
+            margin-top: 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm);
+        }
+        .preview-emoji { font-size: 2rem; line-height: 1; }
+        .preview-name { flex: 1; font-size: 0.9rem; color: var(--text); font-weight: 500; }
+        .emoji-toast {
+            position: fixed; top: 5rem; left: 50%; transform: translateX(-50%) translateY(-10px);
+            background: var(--text); color: var(--bg); padding: 0.5rem 1.25rem;
+            border-radius: var(--radius-full); font-size: 0.85rem; font-weight: 500;
+            z-index: 9999; opacity: 0; transition: all 0.25s ease; pointer-events: none;
+        }
+        .emoji-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .emoji-empty { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem; }
+        @media (max-width: 600px) {
+            .emoji-grid { grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); }
+            .emoji-item { width: 40px; height: 40px; font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-文本工具">文本工具</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>Emoji 选择器</span>
+            </nav>
+            <div class="tool-header">
+                <h1>Emoji 选择器</h1>
+                <p>Emoji 表情符号搜索复制，按分类浏览，支持关键词搜索</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">文本工具</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="emoji-search">
+                    <input type="text" id="emojiSearchInput" placeholder="搜索 Emoji...">
+                </div>
+                <div class="emoji-categories" id="categoryTabs"></div>
+                <div class="emoji-recent" id="recentSection" style="display:none">
+                    <div class="emoji-section-title">最近使用</div>
+                    <div class="emoji-grid" id="recentGrid"></div>
+                </div>
+                <div class="emoji-grid" id="emojiGrid"></div>
+                <div class="emoji-preview" id="preview" style="display:none">
+                    <span class="preview-emoji" id="previewEmoji"></span>
+                    <span class="preview-name" id="previewName"></span>
+                    <button class="btn btn-primary btn-sm" id="copyPreviewBtn">📋 复制</button>
+                </div>
+            </div>
+            <section class="features">
+                <h2>Emoji 选择器功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3>关键词搜索</h3>
+                        <p>支持中文名称搜索，快速找到所需Emoji。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📂</div>
+                        <h3>分类浏览</h3>
+                        <p>9大分类标签，轻松浏览各类表情符号。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>一键复制</h3>
+                        <p>点击即可复制到剪贴板，使用便捷。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⏱</div>
+                        <h3>最近使用</h3>
+                        <p>自动记录最近使用的Emoji，方便再次使用。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>Emoji 选择器常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>点击Emoji后如何复制？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>点击任意Emoji即可自动复制到剪贴板，并显示已复制提示。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>最近使用的Emoji保存在哪里？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>保存在浏览器本地localStorage中，不会上传服务器，最多保存20个。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持搜索中文名称吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>支持，可以输入Emoji的中文名称或关键词进行搜索筛选。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "Emoji 选择器", path: "tools/emoji-picker.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script>
+document.getElementById('year').textContent = new Date().getFullYear();
+var CATEGORIES = [
+    { id: '表情与人物', icon: '😀' },
+    { id: '动物与自然', icon: '🐱' },
+    { id: '食物饮品', icon: '🍕' },
+    { id: '交通旅行', icon: '🚗' },
+    { id: '活动', icon: '🎯' },
+    { id: '地点', icon: '📍' },
+    { id: '物品', icon: '💡' },
+    { id: '符号', icon: '🔣' },
+    { id: '旗帜', icon: '🏴' }
+];
+var EMOJI_DATA = [
+        {e:'😀',n:'笑脸',c:'表情与人物'},
+        {e:'😃',n:'开心',c:'表情与人物'},
+        {e:'😄',n:'大笑',c:'表情与人物'},
+        {e:'😁',n:'露齿笑',c:'表情与人物'},
+        {e:'😆',n:'斜眼笑',c:'表情与人物'},
+        {e:'😅',n:'苦笑',c:'表情与人物'},
+        {e:'🤣',n:'笑哭',c:'表情与人物'},
+        {e:'😂',n:'喜极而泣',c:'表情与人物'},
+        {e:'🙂',n:'微笑',c:'表情与人物'},
+        {e:'😉',n:'眨眼',c:'表情与人物'},
+        {e:'😊',n:'害羞笑',c:'表情与人物'},
+        {e:'😇',n:'天使',c:'表情与人物'},
+        {e:'🥰',n:'恋爱',c:'表情与人物'},
+        {e:'😍',n:'花痴',c:'表情与人物'},
+        {e:'🤩',n:'好崇拜',c:'表情与人物'},
+        {e:'😘',n:'飞吻',c:'表情与人物'},
+        {e:'😗',n:'亲亲',c:'表情与人物'},
+        {e:'😚',n:'羞涩亲亲',c:'表情与人物'},
+        {e:'😙',n:'微笑亲亲',c:'表情与人物'},
+        {e:'🥲',n:'含泪笑',c:'表情与人物'},
+        {e:'😋',n:'馋嘴',c:'表情与人物'},
+        {e:'😛',n:'吐舌',c:'表情与人物'},
+        {e:'😜',n:'眨眼吐舌',c:'表情与人物'},
+        {e:'🤪',n:'滑稽',c:'表情与人物'},
+        {e:'😝',n:'眯眼吐舌',c:'表情与人物'},
+        {e:'🤑',n:'发财',c:'表情与人物'},
+        {e:'🤗',n:'拥抱',c:'表情与人物'},
+        {e:'🤭',n:'捂嘴笑',c:'表情与人物'},
+        {e:'🤫',n:'嘘',c:'表情与人物'},
+        {e:'🤔',n:'思考',c:'表情与人物'},
+        {e:'🫡',n:'敬礼',c:'表情与人物'},
+        {e:'🤐',n:'闭嘴',c:'表情与人物'},
+        {e:'🤨',n:'挑眉',c:'表情与人物'},
+        {e:'😐',n:'无表情',c:'表情与人物'},
+        {e:'😑',n:'面无表情',c:'表情与人物'},
+        {e:'😶',n:'沉默',c:'表情与人物'},
+        {e:'🫥',n:'虚线脸',c:'表情与人物'},
+        {e:'😏',n:'得意',c:'表情与人物'},
+        {e:'😒',n:'不高兴',c:'表情与人物'},
+        {e:'🙄',n:'翻白眼',c:'表情与人物'},
+        {e:'😬',n:'尴尬',c:'表情与人物'},
+        {e:'🤥',n:'说谎',c:'表情与人物'},
+        {e:'😌',n:'释然',c:'表情与人物'},
+        {e:'😔',n:'沉思',c:'表情与人物'},
+        {e:'😴',n:'困',c:'表情与人物'},
+        {e:'🤤',n:'流口水',c:'表情与人物'},
+        {e:'😴',n:'睡觉',c:'表情与人物'},
+        {e:'😷',n:'口罩',c:'表情与人物'},
+        {e:'🤒',n:'发烧',c:'表情与人物'},
+        {e:'🤕',n:'受伤',c:'表情与人物'},
+        {e:'🤢',n:'恶心',c:'表情与人物'},
+        {e:'🤮',n:'呕吐',c:'表情与人物'},
+        {e:'🥵',n:'热',c:'表情与人物'},
+        {e:'🥶',n:'冷',c:'表情与人物'},
+        {e:'🥴',n:'醉',c:'表情与人物'},
+        {e:'😵',n:'晕',c:'表情与人物'},
+        {e:'🤯',n:'爆炸头',c:'表情与人物'},
+        {e:'🤠',n:'牛仔',c:'表情与人物'},
+        {e:'🥳',n:'庆祝',c:'表情与人物'},
+        {e:'🥸',n:'伪装',c:'表情与人物'},
+        {e:'😎',n:'墨镜',c:'表情与人物'},
+        {e:'🤓',n:'书呆子',c:'表情与人物'},
+        {e:'🧐',n:'单片眼镜',c:'表情与人物'},
+        {e:'😕',n:'困惑',c:'表情与人物'},
+        {e:'🫤',n:'歪嘴',c:'表情与人物'},
+        {e:'😟',n:'担忧',c:'表情与人物'},
+        {e:'🙁',n:'不开心',c:'表情与人物'},
+        {e:'😮',n:'惊讶',c:'表情与人物'},
+        {e:'😯',n:'沉默惊讶',c:'表情与人物'},
+        {e:'😲',n:'震惊',c:'表情与人物'},
+        {e:'😳',n:'脸红',c:'表情与人物'},
+        {e:'🥺',n:'恳求',c:'表情与人物'},
+        {e:'🥹',n:'感动',c:'表情与人物'},
+        {e:'😦',n:'皱眉张嘴',c:'表情与人物'},
+        {e:'😧',n:'痛苦',c:'表情与人物'},
+        {e:'😨',n:'害怕',c:'表情与人物'},
+        {e:'😰',n:'焦虑',c:'表情与人物'},
+        {e:'😥',n:'失望释然',c:'表情与人物'},
+        {e:'😢',n:'哭',c:'表情与人物'},
+        {e:'😭',n:'大哭',c:'表情与人物'},
+        {e:'😱',n:'恐惧尖叫',c:'表情与人物'},
+        {e:'😖',n:'困扰',c:'表情与人物'},
+        {e:'😣',n:'忍耐',c:'表情与人物'},
+        {e:'😞',n:'失望',c:'表情与人物'},
+        {e:'😓',n:'汗',c:'表情与人物'},
+        {e:'😩',n:'疲惫',c:'表情与人物'},
+        {e:'😫',n:'厌倦',c:'表情与人物'},
+        {e:'🥱',n:'打哈欠',c:'表情与人物'},
+        {e:'😤',n:'生气',c:'表情与人物'},
+        {e:'😡',n:'愤怒',c:'表情与人物'},
+        {e:'😠',n:'不满',c:'表情与人物'},
+        {e:'🤬',n:'骂人',c:'表情与人物'},
+        {e:'😈',n:'小恶魔',c:'表情与人物'},
+        {e:'👿',n:'恶魔',c:'表情与人物'},
+        {e:'💀',n:'骷髅',c:'表情与人物'},
+        {e:'💩',n:'便便',c:'表情与人物'},
+        {e:'🤡',n:'小丑',c:'表情与人物'},
+        {e:'👹',n:'鬼怪',c:'表情与人物'},
+        {e:'👻',n:'幽灵',c:'表情与人物'},
+        {e:'👽',n:'外星人',c:'表情与人物'},
+        {e:'🤖',n:'机器人',c:'表情与人物'},
+        {e:'😺',n:'猫笑',c:'表情与人物'},
+        {e:'😸',n:'猫开心',c:'表情与人物'},
+        {e:'😹',n:'猫笑哭',c:'表情与人物'},
+        {e:'🐱',n:'猫',c:'动物与自然'},
+        {e:'🐶',n:'狗',c:'动物与自然'},
+        {e:'🐭',n:'老鼠',c:'动物与自然'},
+        {e:'🐹',n:'仓鼠',c:'动物与自然'},
+        {e:'🐰',n:'兔子',c:'动物与自然'},
+        {e:'🦊',n:'狐狸',c:'动物与自然'},
+        {e:'🐻',n:'熊',c:'动物与自然'},
+        {e:'🐼',n:'熊猫',c:'动物与自然'},
+        {e:'🐨',n:'考拉',c:'动物与自然'},
+        {e:'🐯',n:'老虎',c:'动物与自然'},
+        {e:'🦁',n:'狮子',c:'动物与自然'},
+        {e:'🐮',n:'牛',c:'动物与自然'},
+        {e:'🐷',n:'猪',c:'动物与自然'},
+        {e:'🐸',n:'青蛙',c:'动物与自然'},
+        {e:'🐵',n:'猴子',c:'动物与自然'},
+        {e:'🐔',n:'鸡',c:'动物与自然'},
+        {e:'🐧',n:'企鹅',c:'动物与自然'},
+        {e:'🐦',n:'鸟',c:'动物与自然'},
+        {e:'🐤',n:'小鸡',c:'动物与自然'},
+        {e:'🦆',n:'鸭子',c:'动物与自然'},
+        {e:'🦅',n:'老鹰',c:'动物与自然'},
+        {e:'🦉',n:'猫头鹰',c:'动物与自然'},
+        {e:'🦇',n:'蝙蝠',c:'动物与自然'},
+        {e:'🐺',n:'狼',c:'动物与自然'},
+        {e:'🐗',n:'野猪',c:'动物与自然'},
+        {e:'🐴',n:'马',c:'动物与自然'},
+        {e:'🦄',n:'独角兽',c:'动物与自然'},
+        {e:'🐝',n:'蜜蜂',c:'动物与自然'},
+        {e:'🐛',n:'毛毛虫',c:'动物与自然'},
+        {e:'🦋',n:'蝴蝶',c:'动物与自然'},
+        {e:'🐌',n:'蜗牛',c:'动物与自然'},
+        {e:'🐞',n:'瓢虫',c:'动物与自然'},
+        {e:'🐜',n:'蚂蚁',c:'动物与自然'},
+        {e:'🦟',n:'蚊子',c:'动物与自然'},
+        {e:'🦗',n:'蟋蟀',c:'动物与自然'},
+        {e:'🐢',n:'乌龟',c:'动物与自然'},
+        {e:'🐍',n:'蛇',c:'动物与自然'},
+        {e:'🦎',n:'蜥蜴',c:'动物与自然'},
+        {e:'🦖',n:'恐龙',c:'动物与自然'},
+        {e:'🐙',n:'章鱼',c:'动物与自然'},
+        {e:'🦑',n:'鱿鱼',c:'动物与自然'},
+        {e:'🦐',n:'虾',c:'动物与自然'},
+        {e:'🦞',n:'龙虾',c:'动物与自然'},
+        {e:'🦀',n:'螃蟹',c:'动物与自然'},
+        {e:'🐡',n:'河豚',c:'动物与自然'},
+        {e:'🐠',n:'热带鱼',c:'动物与自然'},
+        {e:'🐟',n:'鱼',c:'动物与自然'},
+        {e:'🐬',n:'海豚',c:'动物与自然'},
+        {e:'🐋',n:'鲸鱼',c:'动物与自然'},
+        {e:'🦈',n:'鲨鱼',c:'动物与自然'},
+        {e:'🐊',n:'鳄鱼',c:'动物与自然'},
+        {e:'🐅',n:'大虎',c:'动物与自然'},
+        {e:'🐆',n:'豹',c:'动物与自然'},
+        {e:'🦓',n:'斑马',c:'动物与自然'},
+        {e:'🦍',n:'大猩猩',c:'动物与自然'},
+        {e:'🦧',n:'猩猩',c:'动物与自然'},
+        {e:'🐘',n:'大象',c:'动物与自然'},
+        {e:'🦛',n:'河马',c:'动物与自然'},
+        {e:'🦏',n:'犀牛',c:'动物与自然'},
+        {e:'🐫',n:'双峰骆驼',c:'动物与自然'},
+        {e:'🦒',n:'长颈鹿',c:'动物与自然'},
+        {e:'🦘',n:'袋鼠',c:'动物与自然'},
+        {e:'🌸',n:'樱花',c:'动物与自然'},
+        {e:'🌹',n:'玫瑰',c:'动物与自然'},
+        {e:'🌺',n:'木槿',c:'动物与自然'},
+        {e:'🌻',n:'向日葵',c:'动物与自然'},
+        {e:'🌼',n:'花',c:'动物与自然'},
+        {e:'🌷',n:'郁金香',c:'动物与自然'},
+        {e:'🌱',n:'嫩芽',c:'动物与自然'},
+        {e:'🪴',n:'盆栽',c:'动物与自然'},
+        {e:'🌲',n:'松树',c:'动物与自然'},
+        {e:'🌳',n:'落叶树',c:'动物与自然'},
+        {e:'🌴',n:'棕榈树',c:'动物与自然'},
+        {e:'🌵',n:'仙人掌',c:'动物与自然'},
+        {e:'🍀',n:'四叶草',c:'动物与自然'},
+        {e:'🍁',n:'枫叶',c:'动物与自然'},
+        {e:'🍂',n:'落叶',c:'动物与自然'},
+        {e:'🍃',n:'飘叶',c:'动物与自然'},
+        {e:'🍕',n:'披萨',c:'食物饮品'},
+        {e:'🍔',n:'汉堡',c:'食物饮品'},
+        {e:'🍟',n:'薯条',c:'食物饮品'},
+        {e:'🌭',n:'热狗',c:'食物饮品'},
+        {e:'🥪',n:'三明治',c:'食物饮品'},
+        {e:'🌮',n:'墨西哥卷',c:'食物饮品'},
+        {e:'🌯',n:'卷饼',c:'食物饮品'},
+        {e:'🥙',n:'口袋饼',c:'食物饮品'},
+        {e:'🧆',n:'炸丸子',c:'食物饮品'},
+        {e:'🥗',n:'沙拉',c:'食物饮品'},
+        {e:'🥘',n:'炖菜',c:'食物饮品'},
+        {e:'🍜',n:'拉面',c:'食物饮品'},
+        {e:'🍝',n:'意面',c:'食物饮品'},
+        {e:'🍲',n:'火锅',c:'食物饮品'},
+        {e:'🍛',n:'咖喱',c:'食物饮品'},
+        {e:'🍣',n:'寿司',c:'食物饮品'},
+        {e:'🍱',n:'便当',c:'食物饮品'},
+        {e:'🥟',n:'饺子',c:'食物饮品'},
+        {e:'🍤',n:'炸虾',c:'食物饮品'},
+        {e:'🍙',n:'饭团',c:'食物饮品'},
+        {e:'🍚',n:'米饭',c:'食物饮品'},
+        {e:'🍩',n:'甜甜圈',c:'食物饮品'},
+        {e:'🍪',n:'饼干',c:'食物饮品'},
+        {e:'🎂',n:'生日蛋糕',c:'食物饮品'},
+        {e:'🍰',n:'蛋糕',c:'食物饮品'},
+        {e:'🧁',n:'纸杯蛋糕',c:'食物饮品'},
+        {e:'🍫',n:'巧克力',c:'食物饮品'},
+        {e:'🍬',n:'糖果',c:'食物饮品'},
+        {e:'🍭',n:'棒棒糖',c:'食物饮品'},
+        {e:'☕',n:'咖啡',c:'食物饮品'},
+        {e:'🍵',n:'茶',c:'食物饮品'},
+        {e:'🥤',n:'奶茶',c:'食物饮品'},
+        {e:'🍺',n:'啤酒',c:'食物饮品'},
+        {e:'🍻',n:'干杯',c:'食物饮品'},
+        {e:'🥂',n:'碰杯',c:'食物饮品'},
+        {e:'🍷',n:'红酒',c:'食物饮品'},
+        {e:'🍸',n:'鸡尾酒',c:'食物饮品'},
+        {e:'🍎',n:'苹果',c:'食物饮品'},
+        {e:'🍊',n:'橘子',c:'食物饮品'},
+        {e:'🍋',n:'柠檬',c:'食物饮品'},
+        {e:'🍌',n:'香蕉',c:'食物饮品'},
+        {e:'🍍',n:'菠萝',c:'食物饮品'},
+        {e:'🥝',n:'芒果',c:'食物饮品'},
+        {e:'🥑',n:'牛油果',c:'食物饮品'},
+        {e:'🍇',n:'葡萄',c:'食物饮品'},
+        {e:'🍓',n:'草莓',c:'食物饮品'},
+        {e:'🍅',n:'番茄',c:'食物饮品'},
+        {e:'🥩',n:'牛排',c:'食物饮品'},
+        {e:'🧀',n:'奶酪',c:'食物饮品'},
+        {e:'🥚',n:'鸡蛋',c:'食物饮品'},
+        {e:'🥦',n:'西兰花',c:'食物饮品'},
+        {e:'🚗',n:'汽车',c:'交通旅行'},
+        {e:'🚙',n:'越野车',c:'交通旅行'},
+        {e:'🚕',n:'出租车',c:'交通旅行'},
+        {e:'🚓',n:'警车',c:'交通旅行'},
+        {e:'🚑',n:'救护车',c:'交通旅行'},
+        {e:'🚒',n:'消防车',c:'交通旅行'},
+        {e:'🚲',n:'自行车',c:'交通旅行'},
+        {e:'🚴',n:'骑车人',c:'交通旅行'},
+        {e:'🏎',n:'赛车',c:'交通旅行'},
+        {e:'🚂',n:'火车',c:'交通旅行'},
+        {e:'🚄',n:'高速列车',c:'交通旅行'},
+        {e:'🚅',n:'子弹头列车',c:'交通旅行'},
+        {e:'🚇',n:'地铁',c:'交通旅行'},
+        {e:'🚃',n:'车厢',c:'交通旅行'},
+        {e:'🚈',n:'轻轨',c:'交通旅行'},
+        {e:'🚌',n:'公交车',c:'交通旅行'},
+        {e:'🚀',n:'火箭',c:'交通旅行'},
+        {e:'🛩',n:'小飞机',c:'交通旅行'},
+        {e:'🛫',n:'飞机',c:'交通旅行'},
+        {e:'🛶',n:'独木舟',c:'交通旅行'},
+        {e:'🛵',n:'小型摩托',c:'交通旅行'},
+        {e:'🎯',n:'飞镖',c:'活动'},
+        {e:'🎱',n:'台球',c:'活动'},
+        {e:'🎮',n:'游戏手柄',c:'活动'},
+        {e:'🎰',n:'老虎机',c:'活动'},
+        {e:'🎲',n:'骰子',c:'活动'},
+        {e:'🃏',n:'小丑牌',c:'活动'},
+        {e:'🀄',n:'麻将',c:'活动'},
+        {e:'🎨',n:'调色板',c:'活动'},
+        {e:'🎬',n:'电影',c:'活动'},
+        {e:'🎥',n:'摄影机',c:'活动'},
+        {e:'🎦',n:'电影院',c:'活动'},
+        {e:'🎭',n:'表演艺术',c:'活动'},
+        {e:'🎤',n:'麦克风',c:'活动'},
+        {e:'🎧',n:'耳机',c:'活动'},
+        {e:'🎼',n:'乐谱',c:'活动'},
+        {e:'🎵',n:'音符',c:'活动'},
+        {e:'🎶',n:'音乐',c:'活动'},
+        {e:'🎷',n:'萨克斯管',c:'活动'},
+        {e:'🎸',n:'吉他',c:'活动'},
+        {e:'🎹',n:'键盘',c:'活动'},
+        {e:'🎻',n:'小提琴',c:'活动'},
+        {e:'🥁',n:'架子鼓',c:'活动'},
+        {e:'🎿',n:'滑雪',c:'活动'},
+        {e:'🏀',n:'篮球',c:'活动'},
+        {e:'🏁',n:'方格旗',c:'活动'},
+        {e:'🏃',n:'跑步',c:'活动'},
+        {e:'🏄',n:'冲浪',c:'活动'},
+        {e:'🏆',n:'奖杯',c:'活动'},
+        {e:'🏈',n:'橄榄球',c:'活动'},
+        {e:'🏊',n:'游泳',c:'活动'},
+        {e:'🏋',n:'举重',c:'活动'},
+        {e:'🏐',n:'排球',c:'活动'},
+        {e:'🏒',n:'冰球',c:'活动'},
+        {e:'🏓',n:'乒乓球',c:'活动'},
+        {e:'🏸',n:'羽毛球',c:'活动'},
+        {e:'⚽',n:'足球',c:'活动'},
+        {e:'⚾',n:'棒球',c:'活动'},
+        {e:'🥊',n:'拳击手套',c:'活动'},
+        {e:'🥏',n:'飞盘',c:'活动'},
+        {e:'🏠',n:'房子',c:'地点'},
+        {e:'🏡',n:'花园',c:'地点'},
+        {e:'🏢',n:'办公楼',c:'地点'},
+        {e:'🏣',n:'邮局',c:'地点'},
+        {e:'🏥',n:'医院',c:'地点'},
+        {e:'🏦',n:'银行',c:'地点'},
+        {e:'🏨',n:'酒店',c:'地点'},
+        {e:'🏪',n:'便利店',c:'地点'},
+        {e:'🏫',n:'学校',c:'地点'},
+        {e:'🏬',n:'百货商店',c:'地点'},
+        {e:'🏭',n:'工厂',c:'地点'},
+        {e:'🏯',n:'日本城堡',c:'地点'},
+        {e:'🏰',n:'欧洲城堡',c:'地点'},
+        {e:'🗼',n:'东京塔',c:'地点'},
+        {e:'🗽',n:'自由女神',c:'地点'},
+        {e:'🗻',n:'富士山',c:'地点'},
+        {e:'🏔',n:'雪山',c:'地点'},
+        {e:'🏕',n:'露营',c:'地点'},
+        {e:'🏖',n:'海滩',c:'地点'},
+        {e:'🏜',n:'沙漠',c:'地点'},
+        {e:'🏞',n:'公园',c:'地点'},
+        {e:'🏟',n:'体育场',c:'地点'},
+        {e:'🌍',n:'地球',c:'地点'},
+        {e:'🌎',n:'美洲',c:'地点'},
+        {e:'🌐',n:'全球',c:'地点'},
+        {e:'🗺',n:'世界地图',c:'地点'},
+        {e:'💡',n:'灯泡',c:'物品'},
+        {e:'🔦',n:'手电筒',c:'物品'},
+        {e:'🔧',n:'扳手',c:'物品'},
+        {e:'🔨',n:'锤子',c:'物品'},
+        {e:'🛠',n:'锤扳手',c:'物品'},
+        {e:'💻',n:'电脑',c:'物品'},
+        {e:'🖥',n:'台式电脑',c:'物品'},
+        {e:'📱',n:'手机',c:'物品'},
+        {e:'📲',n:'来电',c:'物品'},
+        {e:'💽',n:'光盘',c:'物品'},
+        {e:'💿',n:'DVD',c:'物品'},
+        {e:'📷',n:'相机',c:'物品'},
+        {e:'📹',n:'摄像机',c:'物品'},
+        {e:'📺',n:'电视',c:'物品'},
+        {e:'📻',n:'收音机',c:'物品'},
+        {e:'🔊',n:'扬声器',c:'物品'},
+        {e:'🔋',n:'电池',c:'物品'},
+        {e:'🔌',n:'插头',c:'物品'},
+        {e:'🔍',n:'放大镜',c:'物品'},
+        {e:'📚',n:'书本',c:'物品'},
+        {e:'📖',n:'打开的书',c:'物品'},
+        {e:'📓',n:'笔记本',c:'物品'},
+        {e:'📑',n:'书签',c:'物品'},
+        {e:'📋',n:'剪贴板',c:'物品'},
+        {e:'📊',n:'柱状图',c:'物品'},
+        {e:'📈',n:'上升趋势',c:'物品'},
+        {e:'📄',n:'文件',c:'物品'},
+        {e:'📅',n:'日历',c:'物品'},
+        {e:'📁',n:'文件夹',c:'物品'},
+        {e:'📰',n:'报纸',c:'物品'},
+        {e:'📧',n:'电子邮件',c:'物品'},
+        {e:'✉',n:'信封',c:'物品'},
+        {e:'📦',n:'包裹',c:'物品'},
+        {e:'💰',n:'钱袋',c:'物品'},
+        {e:'💵',n:'美元',c:'物品'},
+        {e:'💴',n:'日元',c:'物品'},
+        {e:'💳',n:'信用卡',c:'物品'},
+        {e:'💼',n:'公文包',c:'物品'},
+        {e:'📝',n:'备忘录',c:'物品'},
+        {e:'📢',n:'喇叭',c:'物品'},
+        {e:'🔣',n:'符号集',c:'符号'},
+        {e:'🔤',n:'ABC',c:'符号'},
+        {e:'🔡',n:'字母',c:'符号'},
+        {e:'🔠',n:'大写字母',c:'符号'},
+        {e:'🆗',n:'OK',c:'符号'},
+        {e:'🆙',n:'UP',c:'符号'},
+        {e:'🆕',n:'NEW',c:'符号'},
+        {e:'🆘',n:'SOS',c:'符号'},
+        {e:'🆚',n:'VS',c:'符号'},
+        {e:'⚠',n:'警告',c:'符号'},
+        {e:'🛑',n:'停止',c:'符号'},
+        {e:'⛔',n:'禁止',c:'符号'},
+        {e:'❌',n:'叉号',c:'符号'},
+        {e:'✅',n:'对号',c:'符号'},
+        {e:'✔',n:'勾选',c:'符号'},
+        {e:'➕',n:'加号',c:'符号'},
+        {e:'➖',n:'减号',c:'符号'},
+        {e:'➗',n:'除号',c:'符号'},
+        {e:'⭐',n:'星号',c:'符号'},
+        {e:'🌟',n:'闪亮星',c:'符号'},
+        {e:'💫',n:'晕',c:'符号'},
+        {e:'✨',n:'闪光',c:'符号'},
+        {e:'🔗',n:'链接',c:'符号'},
+        {e:'🔱',n:'三叉戟',c:'符号'},
+        {e:'🔴',n:'红圈',c:'符号'},
+        {e:'🔵',n:'蓝圈',c:'符号'},
+        {e:'🔶',n:'橙菱',c:'符号'},
+        {e:'🔷',n:'蓝菱',c:'符号'},
+        {e:'♈',n:'白羊座',c:'符号'},
+        {e:'♉',n:'金牛座',c:'符号'},
+        {e:'♊',n:'双子座',c:'符号'},
+        {e:'♋',n:'巨蟹座',c:'符号'},
+        {e:'♌',n:'狮子座',c:'符号'},
+        {e:'♍',n:'处女座',c:'符号'},
+        {e:'♎',n:'天秤座',c:'符号'},
+        {e:'♏',n:'天蝎座',c:'符号'},
+        {e:'♐',n:'射手座',c:'符号'},
+        {e:'♑',n:'摩羯座',c:'符号'},
+        {e:'♒',n:'水瓶座',c:'符号'},
+        {e:'♓',n:'双鱼座',c:'符号'},
+        {e:'⛎',n:'蛇夫座',c:'符号'},
+        {e:'🔀',n:'随机',c:'符号'},
+        {e:'🔁',n:'循环',c:'符号'},
+        {e:'🔂',n:'重复',c:'符号'},
+        {e:'🔃',n:'顺时针',c:'符号'},
+        {e:'🏴',n:'黑旗',c:'旗帜'},
+        {e:'🚩',n:'三角旗',c:'旗帜'},
+        {e:'🇨🇳',n:'中国',c:'旗帜'},
+        {e:'🇺🇸',n:'美国',c:'旗帜'},
+        {e:'🇯🇵',n:'日本',c:'旗帜'},
+        {e:'🇬🇧',n:'英国',c:'旗帜'},
+        {e:'🇧🇷',n:'巴西',c:'旗帜'},
+        {e:'🇷🇺',n:'俄罗斯',c:'旗帜'},
+        {e:'🇩🇪',n:'德国',c:'旗帜'},
+        {e:'🇫🇷',n:'法国',c:'旗帜'},
+        {e:'🇪🇸',n:'西班牙',c:'旗帜'},
+        {e:'🇮🇹',n:'意大利',c:'旗帜'},
+        {e:'🇰🇷',n:'韩国',c:'旗帜'},
+        {e:'🇺🇦',n:'乌克兰',c:'旗帜'},
+        {e:'🇦🇺',n:'澳大利亚',c:'旗帜'},
+        {e:'🇨🇦',n:'加拿大',c:'旗帜'},
+        {e:'🇮🇳',n:'印度',c:'旗帜'},
+        {e:'🇹🇼',n:'台湾',c:'旗帜'},
+        {e:'🇭🇰',n:'香港',c:'旗帜'},
+        {e:'🇵🇹',n:'葡萄牙',c:'旗帜'},
+        {e:'🇸🇬',n:'新加坡',c:'旗帜'},
+        {e:'🇹🇭',n:'泰国',c:'旗帜'},
+        {e:'🇻🇳',n:'越南',c:'旗帜'},
+        {e:'🇲🇽',n:'墨西哥',c:'旗帜'},
+        {e:'🇦🇷',n:'阿根廷',c:'旗帜'},
+        {e:'🇸🇦',n:'沙特',c:'旗帜'},
+        {e:'🇦🇪',n:'阿联酋',c:'旗帜'},
+        {e:'🇳🇱',n:'荷兰',c:'旗帜'},
+        {e:'🇨🇱',n:'智利',c:'旗帜'}
+    ];
+var activeCategory = '表情与人物';
+var recentEmojis; try { recentEmojis = JSON.parse(localStorage.getItem('emoji_recent') || '[]'); } catch(e) { recentEmojis = []; }
+var toastTimer = null;
+
+function showToast(msg) {
+    var t = document.getElementById('emojiToast');
+    if (!t) {
+        t = document.createElement('div');
+        t.id = 'emojiToast';
+        t.className = 'emoji-toast';
+        document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    clearTimeout(toastTimer);
+    t.classList.remove('show');
+    requestAnimationFrame(function() {
+        t.classList.add('show');
+        toastTimer = setTimeout(function() { t.classList.remove('show'); }, 1200);
+    });
+}
+
+function addToRecent(emoji) {
+    recentEmojis = recentEmojis.filter(function(r) { return r.e !== emoji.e; });
+    recentEmojis.unshift(emoji);
+    if (recentEmojis.length > 20) recentEmojis = recentEmojis.slice(0, 20);
+    localStorage.setItem('emoji_recent', JSON.stringify(recentEmojis));
+    renderRecent();
+}
+
+function copyEmoji(emoji, name) {
+    copyText(emoji);
+    showToast('已复制!');
+    addToRecent({e: emoji, n: name});
+}
+
+function renderCategories() {
+    var html = '';
+    for (var i = 0; i < CATEGORIES.length; i++) {
+        var cls = i === 0 ? ' emoji-cat-tab active' : ' emoji-cat-tab';
+        html += '<button class="' + cls + '" data-cat="' + CATEGORIES[i].id + '">' + CATEGORIES[i].icon + ' ' + CATEGORIES[i].id + '</button>';
+    }
+    document.getElementById('categoryTabs').innerHTML = html;
+}
+
+function renderRecent() {
+    var section = document.getElementById('recentSection');
+    var grid = document.getElementById('recentGrid');
+    if (recentEmojis.length === 0) { section.style.display = 'none'; return; }
+    section.style.display = 'block';
+    grid.innerHTML = recentEmojis.map(function(r) {
+        return '<div class="emoji-item" data-emoji="' + r.e + '" data-name="' + r.n + '">' + r.e + '</div>';
+    }).join('');
+}
+
+function renderGrid() {
+    var q = document.getElementById('emojiSearchInput').value.trim().toLowerCase();
+    var grid = document.getElementById('emojiGrid');
+    var filtered;
+    if (q) {
+        filtered = EMOJI_DATA.filter(function(item) {
+            return item.n.toLowerCase().indexOf(q) !== -1 || item.e.indexOf(q) !== -1;
+        });
+        if (filtered.length === 0) { grid.innerHTML = '<div class="emoji-empty">未找到匹配的 Emoji</div>'; return; }
+    } else {
+        filtered = EMOJI_DATA.filter(function(item) { return item.c === activeCategory; });
+        if (filtered.length === 0) { grid.innerHTML = '<div class="emoji-empty">该分类暂无 Emoji</div>'; return; }
+    }
+    grid.innerHTML = filtered.map(function(item) {
+        return '<div class="emoji-item" data-emoji="' + item.e + '" data-name="' + item.n + '">' + item.e + '</div>';
+    }).join('');
+}
+
+renderCategories();
+renderRecent();
+renderGrid();
+
+document.getElementById('categoryTabs').addEventListener('click', function(ev) {
+    var tab = ev.target.closest('.emoji-cat-tab');
+    if (!tab) return;
+    activeCategory = tab.getAttribute('data-cat');
+    document.querySelectorAll('.emoji-cat-tab').forEach(function(t) { t.classList.remove('active'); });
+    tab.classList.add('active');
+    document.getElementById('emojiSearchInput').value = '';
+    renderGrid();
+});
+
+document.getElementById('emojiSearchInput').addEventListener('input', function() { renderGrid(); });
+
+function handleEmojiClick(ev) {
+    var item = ev.target.closest('.emoji-item');
+    if (!item) return;
+    copyEmoji(item.getAttribute('data-emoji'), item.getAttribute('data-name'));
+}
+document.getElementById('emojiGrid').addEventListener('click', handleEmojiClick);
+document.getElementById('recentGrid').addEventListener('click', handleEmojiClick);
+
+var previewEl = document.getElementById('preview');
+var previewEmoji = document.getElementById('previewEmoji');
+var previewName = document.getElementById('previewName');
+
+function showPreview(emoji, name) {
+    previewEmoji.textContent = emoji;
+    previewName.textContent = name;
+    previewEl.style.display = 'flex';
+}
+function hidePreview() { previewEl.style.display = 'none'; }
+
+function handleEmojiHover(ev) {
+    var item = ev.target.closest('.emoji-item');
+    if (!item) return;
+    showPreview(item.getAttribute('data-emoji'), item.getAttribute('data-name'));
+}
+document.getElementById('emojiGrid').addEventListener('mouseover', handleEmojiHover);
+document.getElementById('emojiGrid').addEventListener('mouseleave', hidePreview);
+document.getElementById('recentGrid').addEventListener('mouseover', handleEmojiHover);
+document.getElementById('recentGrid').addEventListener('mouseleave', hidePreview);
+
+document.getElementById('copyPreviewBtn').addEventListener('click', function() {
+    var emoji = previewEmoji.textContent;
+    var name = previewName.textContent;
+    if (emoji) copyEmoji(emoji, name);
+});
+
+window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+    var current = "tools/emoji-picker.html";
+    var currentCat = "文本工具";
+    var related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+    if (related.length < 4) {
+        var others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+        related.push(...others);
+    }
+    document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+        <a href="${t.path.split('/').pop()}" class="tool-card">
+            <div class="tool-name">${t.name}</div>
+            <div class="tool-desc">${t.description}</div>
+        </a>
+    `).join('');
+}).catch(() => {});
+
+var searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        var q = this.value.trim();
+        if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+    }
+});
+
+document.querySelectorAll('.faq-question').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        var item = this.closest('.faq-item');
+        var answer = item.querySelector('.faq-answer');
+        var arrow = this.querySelector('.faq-arrow');
+        var isOpen = answer.classList.contains('open');
+        document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+            openItem.classList.remove('open');
+            openItem.querySelector('.faq-answer').classList.remove('open');
+            openItem.querySelector('.faq-arrow').classList.remove('open');
+        });
+        if (!isOpen) {
+            item.classList.add('open');
+            answer.classList.add('open');
+            arrow.classList.add('open');
+        }
+    });
+});
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

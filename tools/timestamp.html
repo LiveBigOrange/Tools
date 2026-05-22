@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时间戳转换 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="Unix 时间戳与日期时间互转，支持秒级和毫秒级 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="时间戳, timestamp, unix, 日期, 转换,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/timestamp.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/timestamp.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="时间戳转换 - 在线工具">
+    <meta property="og:description" content="Unix 时间戳与日期时间互转，支持秒级和毫秒级 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/timestamp.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="时间戳转换 - 在线工具">
+    <meta name="twitter:description" content="Unix 时间戳与日期时间互转，支持秒级和毫秒级 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "时间戳转换",
+                "description": "Unix 时间戳与日期时间互转，支持秒级和毫秒级",
+                "url": "/tools/timestamp.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "时间/日期",
+                        "item": "/#category-时间-日期"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "时间戳转换",
+                        "item": "/tools/timestamp.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "时间戳的精度是多少？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持秒级和毫秒级时间戳，可以精确到毫秒。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "支持哪些时区？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持全球所有标准时区，包括 UTC、GMT 以及各主要城市时区。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "如何获取当前时间戳？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "页面打开时会自动显示当前时间的时间戳，您也可以点击按钮一键复制。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .current-ts-display {
+            text-align: center;
+            padding: 1.25rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 1.5rem;
+        }
+        .current-ts-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+        .current-ts-values {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .current-ts-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .current-ts-item .ts-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: var(--primary-light);
+            padding: 0.15rem 0.5rem;
+            border-radius: var(--radius-sm);
+        }
+        .current-ts-item .ts-value {
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
+        .ts-section {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+        .ts-section:last-child { margin-bottom: 0; }
+        .ts-section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin: 0 0 0.75rem;
+        }
+        .ts-row {
+            margin-bottom: 0.75rem;
+        }
+        .ts-input {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            background: var(--card-bg);
+            color: var(--text);
+            transition: var(--transition);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            box-sizing: border-box;
+        }
+        .ts-input:focus { outline: none; border-color: var(--primary); }
+        .quick-btn-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+        .quick-btn {
+            padding: 0.35rem 0.85rem;
+            font-size: 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--card-bg);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .quick-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+        .result-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .result-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem;
+            position: relative;
+        }
+        .result-card-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.35rem;
+        }
+        .result-card-value {
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.85rem;
+            color: var(--text);
+            word-break: break-all;
+            line-height: 1.5;
+            padding-right: 3.5rem;
+        }
+        .copy-btn-small {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.7rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .copy-btn-small:hover { border-color: var(--primary); color: var(--primary); }
+        .copy-btn-small.copied { border-color: var(--primary); color: var(--primary); }
+        .current-ts-item .copy-btn-small {
+            position: static;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.7rem;
+        }
+        @media (max-width: 600px) {
+            .current-ts-values { gap: 1rem; }
+            .current-ts-item .ts-value { font-size: 1.1rem; }
+            .result-cards { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-时间-日期">时间/日期</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>时间戳转换</span>
+            </nav>
+            <div class="tool-header">
+                <h1>时间戳转换</h1>
+                <p>Unix 时间戳与日期时间互转，支持秒级和毫秒级</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">时间/日期</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="current-ts-display">
+                    <div class="current-ts-label">当前 Unix 时间戳</div>
+                    <div class="current-ts-values">
+                        <div class="current-ts-item">
+                            <span class="ts-label">秒</span>
+                            <span class="ts-value" id="currentTsSec">—</span>
+                            <button class="copy-btn-small" data-copy="currentTsSec" title="复制">复制</button>
+                        </div>
+                        <div class="current-ts-item">
+                            <span class="ts-label">毫秒</span>
+                            <span class="ts-value" id="currentTsMs">—</span>
+                            <button class="copy-btn-small" data-copy="currentTsMs" title="复制">复制</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ts-section">
+                    <h3 class="ts-section-title">时间戳 → 日期</h3>
+                    <div class="ts-row">
+                        <input type="text" id="tsInput" class="ts-input" placeholder="输入时间戳（秒或毫秒）" autocomplete="off">
+                    </div>
+                    <div class="quick-btn-row">
+                        <button class="quick-btn" id="btnCurrentTs">当前时间戳</button>
+                        <button class="quick-btn" id="btnTodayStart">今天0点</button>
+                        <button class="quick-btn" id="btnTodayEnd">今天23:59:59</button>
+                    </div>
+                    <div class="result-cards" id="tsToDateResults" style="display:none">
+                        <div class="result-card">
+                            <div class="result-card-label">ISO 8601</div>
+                            <div class="result-card-value" id="resIso">—</div>
+                            <button class="copy-btn-small" data-copy="resIso">复制</button>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-card-label">本地时间</div>
+                            <div class="result-card-value" id="resLocale">—</div>
+                            <button class="copy-btn-small" data-copy="resLocale">复制</button>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-card-label">YYYY-MM-DD HH:mm:ss</div>
+                            <div class="result-card-value" id="resCustom">—</div>
+                            <button class="copy-btn-small" data-copy="resCustom">复制</button>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-card-label">UTC 时间</div>
+                            <div class="result-card-value" id="resUtc">—</div>
+                            <button class="copy-btn-small" data-copy="resUtc">复制</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ts-section">
+                    <h3 class="ts-section-title">日期 → 时间戳</h3>
+                    <div class="ts-row">
+                        <input type="datetime-local" id="dateInput" class="ts-input" step="1">
+                    </div>
+                    <div class="result-cards" id="dateToTsResults" style="display:none">
+                        <div class="result-card">
+                            <div class="result-card-label">秒级时间戳</div>
+                            <div class="result-card-value" id="resTsSec">—</div>
+                            <button class="copy-btn-small" data-copy="resTsSec">复制</button>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-card-label">毫秒级时间戳</div>
+                            <div class="result-card-value" id="resTsMs">—</div>
+                            <button class="copy-btn-small" data-copy="resTsMs">复制</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section class="features">
+                <h2>时间戳转换功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">✨</div>
+                        <h3>多时区支持</h3>
+                        <p>支持全球所有标准时区，包括 UTC、GMT 以及各主要城市时区。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>实时显示</h3>
+                        <p>自动显示当前时间，支持自定义日期格式。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>所有操作在浏览器中完成，数据不上传服务器，保障隐私安全。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>时间戳转换常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>时间戳的精度是多少？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>支持秒级和毫秒级时间戳，可以精确到毫秒。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持哪些时区？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>支持全球所有标准时区，包括 UTC、GMT 以及各主要城市时区。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>如何获取当前时间戳？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>页面打开时会自动显示当前时间的时间戳，您也可以点击按钮一键复制。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "时间戳转换", path: "tools/timestamp.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var tsInput = document.getElementById('tsInput');
+        var dateInput = document.getElementById('dateInput');
+        var currentTsSecEl = document.getElementById('currentTsSec');
+        var currentTsMsEl = document.getElementById('currentTsMs');
+        var tsToDateResults = document.getElementById('tsToDateResults');
+        var dateToTsResults = document.getElementById('dateToTsResults');
+
+        function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+        function formatCustom(d) {
+            return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) +
+                ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+        }
+
+        function formatLocal(d) {
+            return d.toLocaleString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+        }
+
+        function updateCurrentTs() {
+            var now = Date.now();
+            currentTsSecEl.textContent = Math.floor(now / 1000);
+            currentTsMsEl.textContent = now;
+        }
+
+        updateCurrentTs();
+        setInterval(updateCurrentTs, 1000);
+
+        function tsToDate(ts) {
+            var num = Number(ts);
+            if (isNaN(num)) return null;
+            var ms;
+            if (Math.abs(num) > 9999999999) {
+                ms = num;
+            } else {
+                ms = num * 1000;
+            }
+            return new Date(ms);
+        }
+
+        function convertTsToDate() {
+            var val = tsInput.value.trim();
+            if (!val) {
+                tsToDateResults.style.display = 'none';
+                return;
+            }
+            var d = tsToDate(val);
+            if (!d || isNaN(d.getTime())) {
+                tsToDateResults.style.display = 'none';
+                return;
+            }
+            document.getElementById('resIso').textContent = d.toISOString();
+            document.getElementById('resLocale').textContent = formatLocal(d);
+            document.getElementById('resCustom').textContent = formatCustom(d);
+            document.getElementById('resUtc').textContent = d.toUTCString();
+            tsToDateResults.style.display = '';
+        }
+
+        function convertDateToTs() {
+            var val = dateInput.value;
+            if (!val) {
+                dateToTsResults.style.display = 'none';
+                return;
+            }
+            var d = new Date(val);
+            if (isNaN(d.getTime())) {
+                dateToTsResults.style.display = 'none';
+                return;
+            }
+            var sec = Math.floor(d.getTime() / 1000);
+            document.getElementById('resTsSec').textContent = sec;
+            document.getElementById('resTsMs').textContent = d.getTime();
+            dateToTsResults.style.display = '';
+        }
+
+        tsInput.addEventListener('input', convertTsToDate);
+        dateInput.addEventListener('input', convertDateToTs);
+        dateInput.addEventListener('change', convertDateToTs);
+
+        document.getElementById('btnCurrentTs').addEventListener('click', function() {
+            tsInput.value = Math.floor(Date.now() / 1000);
+            convertTsToDate();
+        });
+
+        document.getElementById('btnTodayStart').addEventListener('click', function() {
+            var now = new Date();
+            var start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+            tsInput.value = Math.floor(start.getTime() / 1000);
+            convertTsToDate();
+        });
+
+        document.getElementById('btnTodayEnd').addEventListener('click', function() {
+            var now = new Date();
+            var end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+            tsInput.value = Math.floor(end.getTime() / 1000);
+            convertTsToDate();
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('copy-btn-small')) return;
+            var targetId = e.target.getAttribute('data-copy');
+            if (!targetId) return;
+            var el = document.getElementById(targetId);
+            if (!el) return;
+            var text = el.textContent;
+            if (!text || text === '—') return;
+            copyText(text).then(function() {
+                e.target.classList.add('copied');
+                var orig = e.target.textContent;
+                e.target.textContent = '已复制';
+                setTimeout(function() {
+                    e.target.classList.remove('copied');
+                    e.target.textContent = orig;
+                }, 1200);
+            });
+        });
+
+        (function() {
+            var now = new Date();
+            var local = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + 'T' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+            dateInput.value = local;
+            convertDateToTs();
+        })();
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            var current = "tools/timestamp.html";
+            var currentCat = "时间/日期";
+            var related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+                related.push(...others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+                <a href="${t.path.split('/').pop()}" class="tool-card">
+                    <div class="tool-name">${t.name}</div>
+                    <div class="tool-desc">${t.description}</div>
+                </a>
+            `).join('');
+        }).catch(() => {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

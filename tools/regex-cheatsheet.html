@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正则备忘录 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="正则表达式语法速查表 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="正则, regex, 速查, 语法, 参考,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/regex-cheatsheet.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/regex-cheatsheet.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="正则备忘录 - 在线工具">
+    <meta property="og:description" content="正则表达式语法速查表 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/regex-cheatsheet.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="正则备忘录 - 在线工具">
+    <meta name="twitter:description" content="正则表达式语法速查表 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "正则备忘录",
+                "description": "正则表达式语法速查表",
+                "url": "/tools/regex-cheatsheet.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "开发者工具",
+                        "item": "/#category-开发者工具"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "正则备忘录",
+                        "item": "/tools/regex-cheatsheet.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "这些工具需要联网使用吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "大部分工具可以在离线状态下使用，因为所有处理都在浏览器本地完成。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "支持哪些编程语言？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "工具支持多种常见编程语言格式，包括 JavaScript、CSS、HTML、JSON 等。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "数据安全如何保障？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "所有数据处理均在您的设备本地完成，不会上传到任何服务器。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .regex-search { margin-bottom: 1rem; }
+        .regex-categories { display: flex; gap: 0.25rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .regex-cat-btn { padding: 0.35rem 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.8rem; cursor: pointer; transition: var(--transition); color: var(--text-secondary); }
+        .regex-cat-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+        .regex-tester { margin-bottom: 1.5rem; padding: 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+        .regex-tester h3 { font-size: 1rem; margin-bottom: 0.75rem; }
+        .test-row { display: flex; gap: 0.5rem; }
+        .test-result { margin-top: 0.75rem; padding: 0.75rem; background: var(--card-bg); border-radius: 4px; font-family: monospace; font-size: 0.85rem; min-height: 40px; }
+        .regex-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; }
+        .regex-item { padding: 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+        .regex-item:hover { border-color: var(--primary); }
+        .regex-pattern { font-family: monospace; font-size: 1rem; font-weight: 600; color: var(--primary); margin-bottom: 0.25rem; }
+        .regex-desc { font-size: 0.8rem; color: var(--text-secondary); }
+        .regex-example { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; font-family: monospace; }
+        .copy-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--primary); color: #fff; padding: 0.5rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; z-index: 9999; animation: toastIn 0.3s ease; }
+        @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        .match-highlight { background: rgba(99, 102, 241, 0.3); border-radius: 2px; padding: 0 2px; }
+        .test-error { color: #ef4444; }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-开发者工具">开发者工具</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>正则备忘录</span>
+            </nav>
+            <div class="tool-header">
+                <h1>正则备忘录</h1>
+                <p>正则表达式语法速查表，点击复制，在线测试</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">开发者工具</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="regex-search"><input type="text" id="regexSearchInput" placeholder="搜索正则表达式..." style="width:100%;padding:0.5rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text)"></div>
+                <div class="regex-categories" id="regexCats"></div>
+                <div class="regex-tester">
+                    <h3>在线测试</h3>
+                    <div class="test-row">
+                        <input type="text" id="testPattern" placeholder="输入正则表达式..." style="flex:1;padding:0.5rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);font-family:monospace">
+                        <input type="text" id="testFlags" value="gi" placeholder="flags" style="width:60px;padding:0.5rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text)">
+                    </div>
+                    <input type="text" id="testText" placeholder="输入测试文本..." style="width:100%;padding:0.5rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg);color:var(--text);margin-top:0.5rem">
+                    <div class="test-result" id="testResult"></div>
+                </div>
+                <div class="regex-grid" id="regexGrid"></div>
+            </div>
+            <section class="features">
+                <h2>正则备忘录功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>点击复制</h3>
+                        <p>点击任意正则表达式即可复制到剪贴板。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>实时测试</h3>
+                        <p>输入正则和文本后即时显示匹配结果。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3>快速搜索</h3>
+                        <p>支持按名称或描述搜索正则表达式。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>所有操作在浏览器中完成，数据不上传服务器，保障隐私安全。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>正则备忘录常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>这些工具需要联网使用吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>大部分工具可以在离线状态下使用，因为所有处理都在浏览器本地完成。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持哪些编程语言？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>工具支持多种常见编程语言格式，包括 JavaScript、CSS、HTML、JSON 等。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>数据安全如何保障？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>所有数据处理均在您的设备本地完成，不会上传到任何服务器。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "正则备忘录", path: "tools/regex-cheatsheet.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        const regexData = [
+            { pattern: '.', description: '匹配任意单个字符（换行符除外）', example: 'a.c 匹配 abc, a1c', category: '字符类' },
+            { pattern: '\\d', description: '匹配任意数字字符', example: '\\d 匹配 0-9', category: '字符类' },
+            { pattern: '\\D', description: '匹配任意非数字字符', example: '\\D 匹配 a, $', category: '字符类' },
+            { pattern: '\\w', description: '匹配任意单词字符（字母、数字、下划线）', example: '\\w 匹配 a-z, A-Z, 0-9, _', category: '字符类' },
+            { pattern: '\\W', description: '匹配任意非单词字符', example: '\\W 匹配 @, #, 空格', category: '字符类' },
+            { pattern: '\\s', description: '匹配任意空白字符', example: '\\s 匹配 空格, 制表符, 换行', category: '字符类' },
+            { pattern: '\\S', description: '匹配任意非空白字符', example: '\\S 匹配 a, 1', category: '字符类' },
+            { pattern: '[abc]', description: '匹配方括号中的任意字符', example: '[abc] 匹配 a, b, c', category: '字符类' },
+            { pattern: '[^abc]', description: '匹配不在方括号中的任意字符', example: '[^abc] 匹配 d, e', category: '字符类' },
+            { pattern: '[a-z]', description: '匹配指定范围内的任意字符', example: '[a-z] 匹配 a 到 z', category: '字符类' },
+            { pattern: '[0-9]', description: '匹配任意数字', example: '[0-9] 匹配 0 到 9', category: '字符类' },
+            { pattern: '\\t', description: '匹配制表符', example: '\\t', category: '字符类' },
+            { pattern: '\\n', description: '匹配换行符', example: '\\n', category: '字符类' },
+            { pattern: '\\r', description: '匹配回车符', example: '\\r', category: '字符类' },
+            { pattern: '\\0', description: '匹配空字符', example: '\\0', category: '字符类' },
+            { pattern: '\\f', description: '匹配换页符', example: '\\f', category: '字符类' },
+            { pattern: '\\xhh', description: '匹配两位十六进制编码字符', example: '\\x41 匹配 A', category: '字符类' },
+            { pattern: '\\uhhhh', description: '匹配四位十六进制 Unicode 字符', example: '\\u0041 匹配 A', category: '字符类' },
+            { pattern: '\\p{L}', description: '匹配任意 Unicode 字母', example: '\\p{L} 匹配 a, 中, é', category: '字符类' },
+            { pattern: '\\p{N}', description: '匹配任意 Unicode 数字', example: '\\p{N} 匹配 0-9, ٠-٩', category: '字符类' },
+
+            { pattern: '*', description: '匹配前一个元素 0 次或多次', example: 'ab*c 匹配 ac, abc, abbc', category: '量词' },
+            { pattern: '+', description: '匹配前一个元素 1 次或多次', example: 'ab+c 匹配 abc, abbc（不匹配 ac）', category: '量词' },
+            { pattern: '?', description: '匹配前一个元素 0 次或 1 次', example: 'ab?c 匹配 ac, abc', category: '量词' },
+            { pattern: '{n}', description: '匹配前一个元素恰好 n 次', example: 'a{3} 匹配 aaa', category: '量词' },
+            { pattern: '{n,}', description: '匹配前一个元素至少 n 次', example: 'a{2,} 匹配 aa, aaa', category: '量词' },
+            { pattern: '{n,m}', description: '匹配前一个元素 n 到 m 次', example: 'a{2,4} 匹配 aa, aaa, aaaa', category: '量词' },
+            { pattern: '*?', description: '非贪婪匹配 0 次或多次', example: '<.*?> 匹配 <div>', category: '量词' },
+            { pattern: '+?', description: '非贪婪匹配 1 次或多次', example: '<.+?> 匹配 <div>', category: '量词' },
+            { pattern: '??', description: '非贪婪匹配 0 次或 1 次', example: 'ab??c 匹配 ac', category: '量词' },
+            { pattern: '{n,m}?', description: '非贪婪匹配 n 到 m 次', example: 'a{2,4}? 匹配 aa', category: '量词' },
+
+            { pattern: '^', description: '匹配字符串开头', example: '^Hello 匹配以 Hello 开头的字符串', category: '锚点' },
+            { pattern: '$', description: '匹配字符串结尾', example: 'World$ 匹配以 World 结尾的字符串', category: '锚点' },
+            { pattern: '\\b', description: '匹配单词边界', example: '\\bword\\b 匹配独立的 word', category: '锚点' },
+            { pattern: '\\B', description: '匹配非单词边界', example: '\\Bword\\B 匹配 password 中的 word', category: '锚点' },
+            { pattern: '\\A', description: '匹配字符串开头（忽略多行模式）', example: '\\AHello', category: '锚点' },
+            { pattern: '\\Z', description: '匹配字符串结尾（忽略多行模式）', example: 'World\\Z', category: '锚点' },
+            { pattern: '\\z', description: '匹配字符串绝对结尾', example: 'World\\z', category: '锚点' },
+            { pattern: '\\G', description: '匹配上次匹配结束的位置', example: '\\G\\d', category: '锚点' },
+
+            { pattern: '(abc)', description: '捕获分组', example: '(abc)+ 匹配 abc, abcabc', category: '分组' },
+            { pattern: '(?:abc)', description: '非捕获分组', example: '(?:ab)+ 匹配 ab, abab', category: '分组' },
+            { pattern: '(?<name>abc)', description: '命名捕获分组', example: '(?<year>\\d{4}) 匹配年份', category: '分组' },
+            { pattern: '\\1', description: '反向引用第一个捕获组', example: '(\\w+) \\1 匹配 hello hello', category: '分组' },
+            { pattern: '\\k<name>', description: '反向引用命名捕获组', example: '(?<w>\\w+) \\k<w>', category: '分组' },
+            { pattern: '|', description: '或操作符', example: 'cat|dog 匹配 cat 或 dog', category: '分组' },
+            { pattern: '(?>abc)', description: '原子分组（不回溯）', example: '(?>a+)b', category: '分组' },
+            { pattern: '(?|a(b)c|(d)e(f))', description: '分支重置分组', example: '', category: '分组' },
+
+            { pattern: '(?=abc)', description: '正向前瞻断言', example: 'win(?=dows) 匹配 windows 中的 win', category: '断言' },
+            { pattern: '(?!abc)', description: '负向前瞻断言', example: 'win(?!dows) 匹配 window 中的 win', category: '断言' },
+            { pattern: '(?<=abc)', description: '正向后瞻断言', example: '(?<=\\$)\\d+ 匹配 $100 中的 100', category: '断言' },
+            { pattern: '(?<!abc)', description: '负向后瞻断言', example: '(?<!\\$)\\d+ 不匹配 $100', category: '断言' },
+            { pattern: '(?#comment)', description: '注释', example: '\\d{4}(?#匹配年份)', category: '断言' },
+
+            { pattern: 'g', description: '全局匹配（查找所有匹配项）', example: '/abc/g', category: '修饰符' },
+            { pattern: 'i', description: '忽略大小写', example: '/abc/i 匹配 ABC, Abc', category: '修饰符' },
+            { pattern: 'm', description: '多行模式（^和$匹配每行）', example: '/^abc/m', category: '修饰符' },
+            { pattern: 's', description: '单行模式（.匹配换行符）', example: '/.* /s', category: '修饰符' },
+            { pattern: 'u', description: 'Unicode 模式', example: '/\\p{L}/u', category: '修饰符' },
+            { pattern: 'y', description: '粘性匹配（从 lastIndex 开始）', example: '/abc/y', category: '修饰符' },
+            { pattern: 'd', description: '生成匹配索引', example: '/abc/d', category: '修饰符' },
+        ];
+
+        const categories = ['全部', '字符类', '量词', '锚点', '分组', '断言', '修饰符'];
+        let activeCategory = '全部';
+        let searchQuery = '';
+
+        const regexCats = document.getElementById('regexCats');
+        const regexGrid = document.getElementById('regexGrid');
+        const regexSearchInput = document.getElementById('regexSearchInput');
+        const testPattern = document.getElementById('testPattern');
+        const testFlags = document.getElementById('testFlags');
+        const testText = document.getElementById('testText');
+        const testResult = document.getElementById('testResult');
+
+        function renderCategories() {
+            regexCats.innerHTML = categories.map(cat =>
+                `<button class="regex-cat-btn${cat === activeCategory ? ' active' : ''}" data-cat="${cat}">${cat}</button>`
+            ).join('');
+            regexCats.querySelectorAll('.regex-cat-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    activeCategory = btn.dataset.cat;
+                    renderCategories();
+                    renderGrid();
+                });
+            });
+        }
+
+        function renderGrid() {
+            const filtered = regexData.filter(item => {
+                const matchCat = activeCategory === '全部' || item.category === activeCategory;
+                const matchSearch = !searchQuery ||
+                    item.pattern.toLowerCase().includes(searchQuery) ||
+                    item.description.toLowerCase().includes(searchQuery) ||
+                    item.category.toLowerCase().includes(searchQuery);
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                regexGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text-secondary)">未找到匹配的正则表达式</div>';
+                return;
+            }
+
+            regexGrid.innerHTML = filtered.map(item => `
+                <div class="regex-item" data-pattern="${item.pattern.replace(/"/g, '&quot;')}">
+                    <div class="regex-pattern">${escapeHtml(item.pattern)}</div>
+                    <div class="regex-desc">${escapeHtml(item.description)}</div>
+                    ${item.example ? `<div class="regex-example">例: ${escapeHtml(item.example)}</div>` : ''}
+                </div>
+            `).join('');
+
+            regexGrid.querySelectorAll('.regex-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const pattern = item.dataset.pattern;
+                    copyText(pattern).then(() => showToast('已复制: ' + pattern));
+                });
+            });
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function showToast(msg) {
+            const existing = document.querySelector('.copy-toast');
+            if (existing) existing.remove();
+            const toast = document.createElement('div');
+            toast.className = 'copy-toast';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 1500);
+        }
+
+        function runTest() {
+            const patternStr = testPattern.value.trim();
+            const flags = testFlags.value.trim();
+            const text = testText.value;
+
+            if (!patternStr || !text) {
+                testResult.innerHTML = '<span style="color:var(--text-muted)">输入正则表达式和测试文本以查看结果</span>';
+                return;
+            }
+
+            try {
+                const regex = new RegExp(patternStr, flags);
+                const matches = [...text.matchAll(regex)];
+
+                if (matches.length === 0) {
+                    testResult.innerHTML = '<span class="test-error">未找到匹配项</span>';
+                    return;
+                }
+
+                let highlighted = escapeHtml(text);
+                const sortedMatches = [...matches].sort((a, b) => b.index - a.index);
+                for (const match of sortedMatches) {
+                    const before = highlighted.substring(0, match.index);
+                    const matched = highlighted.substring(match.index, match.index + match[0].length);
+                    const after = highlighted.substring(match.index + match[0].length);
+                    highlighted = before + '<span class="match-highlight">' + matched + '</span>' + after;
+                }
+
+                let info = `找到 ${matches.length} 个匹配项\n\n`;
+                matches.forEach((m, i) => {
+                    info += `匹配 ${i + 1}: "${m[0]}" (位置: ${m.index})`;
+                    if (m.groups) info += ` [命名组: ${JSON.stringify(m.groups)}]`;
+                    info += '\n';
+                });
+
+                testResult.innerHTML = `<div style="margin-bottom:0.5rem">${highlighted}</div><pre style="margin:0;white-space:pre-wrap;font-size:0.8rem;color:var(--text-secondary)">${escapeHtml(info)}</pre>`;
+            } catch (e) {
+                testResult.innerHTML = `<span class="test-error">正则表达式错误: ${escapeHtml(e.message)}</span>`;
+            }
+        }
+
+        regexSearchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.toLowerCase().trim();
+            renderGrid();
+        });
+
+        testPattern.addEventListener('input', runTest);
+        testFlags.addEventListener('input', runTest);
+        testText.addEventListener('input', runTest);
+
+        renderCategories();
+        renderGrid();
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            const current = "tools/regex-cheatsheet.html";
+            const currentCat = "开发者工具";
+            const related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                const others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+                related.push(...others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+                <a href="${t.path.split('/').pop()}" class="tool-card">
+                    <div class="tool-name">${t.name}</div>
+                    <div class="tool-desc">${t.description}</div>
+                </a>
+            `).join('');
+        }).catch(() => {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

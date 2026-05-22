@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG 转 PNG - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="将 SVG 矢量图转换为 PNG 位图，支持自定义尺寸 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="svg,png,转换,导出,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/svg-to-png.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/svg-to-png.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="SVG 转 PNG - 在线工具">
+    <meta property="og:description" content="将 SVG 矢量图转换为 PNG 位图，支持自定义尺寸 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/svg-to-png.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="SVG 转 PNG - 在线工具">
+    <meta name="twitter:description" content="将 SVG 矢量图转换为 PNG 位图，支持自定义尺寸 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "SVG 转 PNG",
+                "description": "将 SVG 矢量图转换为 PNG 位图，支持自定义尺寸",
+                "url": "/tools/svg-to-png.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "设计工具",
+                        "item": "/#category-设计工具"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "SVG 转 PNG",
+                        "item": "/tools/svg-to-png.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "支持哪些颜色格式？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持 HEX、RGB、HSL 等常见颜色格式的互相转换。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "图片处理会压缩质量吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "您可以自定义压缩比例，在文件大小和画质之间取得平衡。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "导出格式有哪些？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持 PNG、JPEG、WebP 等常见图片格式导出。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-设计工具">设计工具</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>SVG 转 PNG</span>
+            </nav>
+            <div class="tool-header">
+                <h1>SVG 转 PNG</h1>
+                <p>将 SVG 矢量图转换为 PNG 位图，支持自定义尺寸</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">设计工具</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <style>
+                    .svg-input-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+                    .svg-input-tab { flex: 1; padding: 0.6rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text-secondary); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: var(--transition); text-align: center; }
+                    .svg-input-tab:hover { border-color: var(--primary); }
+                    .svg-input-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+                    .svg-input-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1rem; }
+                    .svg-input-card .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+                    .svg-input-card .card-title { font-weight: 600; font-size: 0.9rem; }
+                    .svg-input-card .line-count { font-size: 0.75rem; color: var(--text-muted); }
+                    .svg-textarea { width: 100%; min-height: 180px; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card-bg); color: var(--text); font-size: 0.8rem; resize: vertical; box-sizing: border-box; font-family: "SF Mono", Consolas, monospace; line-height: 1.5; }
+                    .svg-textarea:focus { outline: none; border-color: var(--primary); }
+                    .svg-drop-zone { border: 2px dashed var(--border); border-radius: var(--radius-sm); padding: 2rem; text-align: center; color: var(--text-muted); cursor: pointer; transition: var(--transition); }
+                    .svg-drop-zone:hover, .svg-drop-zone.drag-over { border-color: var(--primary); background: rgba(59,130,246,0.04); }
+                    .svg-drop-zone .drop-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+                    .svg-drop-zone .drop-text { font-size: 0.85rem; }
+                    .svg-drop-zone .drop-hint { font-size: 0.75rem; margin-top: 0.25rem; }
+                    .scale-selector { display: flex; gap: 0.5rem; margin-bottom: 1rem; align-items: center; }
+                    .scale-selector .scale-label { font-size: 0.85rem; color: var(--text-secondary); margin-right: 0.5rem; }
+                    .scale-btn { flex: 1; padding: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text-secondary); font-size: 0.85rem; cursor: pointer; transition: var(--transition); text-align: center; }
+                    .scale-btn:hover { border-color: var(--primary); }
+                    .scale-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+                    .svg-preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+                    .svg-preview-box { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; min-height: 150px; display: flex; align-items: center; justify-content: center; overflow: auto; }
+                    .svg-preview-box .preview-label { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; color: var(--text-secondary); }
+                    .svg-preview-box .preview-content { width: 100%; text-align: center; }
+                    .svg-info-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+                    .svg-info-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.75rem 1rem; text-align: center; }
+                    .svg-info-card .info-value { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+                    .svg-info-card .info-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; }
+                    .png-result { margin-top: 1rem; }
+                    .png-result img { max-width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); }
+                    .png-result .png-info { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem; text-align: center; }
+                    .hidden { display: none !important; }
+                    @media (max-width: 600px) { .svg-preview-grid { grid-template-columns: 1fr; } .svg-info-cards { grid-template-columns: 1fr; } }
+                </style>
+                <div class="svg-input-tabs">
+                    <button class="svg-input-tab active" data-mode="paste">粘贴SVG代码</button>
+                    <button class="svg-input-tab" data-mode="upload">上传SVG文件</button>
+                </div>
+                <div id="svgPastePanel">
+                    <div class="svg-input-card">
+                        <div class="card-header">
+                            <span class="card-title">SVG 代码</span>
+                            <span class="line-count" id="lineCount">0 行</span>
+                        </div>
+                        <textarea class="svg-textarea" id="svgInput" placeholder="在此粘贴 SVG 代码..."></textarea>
+                    </div>
+                </div>
+                <div id="svgUploadPanel" style="display:none">
+                    <div class="svg-drop-zone" id="svgDropZone">
+                        <div class="drop-icon">📁</div>
+                        <div class="drop-text">拖拽 SVG 文件到此处，或点击选择</div>
+                        <div class="drop-hint">支持 .svg 格式文件</div>
+                    </div>
+                    <input type="file" id="svgFileInput" accept=".svg" style="display:none;">
+                </div>
+                <div class="scale-selector">
+                    <span class="scale-label">缩放比例:</span>
+                    <button class="scale-btn active" data-scale="1">1x</button>
+                    <button class="scale-btn" data-scale="2">2x</button>
+                    <button class="scale-btn" data-scale="3">3x</button>
+                    <button class="scale-btn" data-scale="4">4x</button>
+                    <button class="btn btn-secondary" id="sampleSvgBtn" style="margin-left:auto">📝 示例</button>
+                </div>
+                <div class="svg-preview-grid">
+                    <div class="svg-preview-box">
+                        <div class="preview-content" id="svgPreview">
+                            <span style="color:var(--text-secondary);">SVG 预览</span>
+                        </div>
+                    </div>
+                    <div class="svg-preview-box">
+                        <div class="preview-content" id="pngPreviewBox">
+                            <span style="color:var(--text-secondary);">PNG 预览</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="svg-info-cards" id="svgInfoCards" style="display:none">
+                    <div class="svg-info-card"><div class="info-value" id="origSize">-</div><div class="info-label">原始尺寸</div></div>
+                    <div class="svg-info-card"><div class="info-value" id="outputSize">-</div><div class="info-label">输出尺寸</div></div>
+                    <div class="svg-info-card"><div class="info-value" id="fileSize">-</div><div class="info-label">文件大小</div></div>
+                </div>
+                <div class="tool-actions">
+                    <button class="btn btn-primary" id="convertBtn">🔄 转换为 PNG</button>
+                    <button class="btn btn-success" id="downloadPngBtn" disabled>📥 下载 PNG</button>
+                    <button class="btn btn-secondary" id="clearSvgBtn">🗑 清空</button>
+                </div>
+                <div class="png-result hidden" id="pngResult">
+                    <img id="pngPreview" alt="PNG 预览">
+                    <div class="png-info" id="pngInfo"></div>
+                </div>
+            </div>
+            <section class="features">
+                <h2>SVG 转 PNG功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔄</div>
+                        <h3>格式转换</h3>
+                        <p>将 SVG 矢量图快速转换为 PNG 位图格式。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📏</div>
+                        <h3>自定义尺寸</h3>
+                        <p>支持 1x 到 4x 缩放比例，满足不同分辨率需求。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📥</div>
+                        <h3>一键下载</h3>
+                        <p>转换完成后直接下载 PNG 图片，操作简单。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>转换在浏览器中完成，SVG 数据不会上传服务器。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>SVG 转 PNG常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>SVG 和 PNG 有什么区别？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>SVG 是矢量图格式，无限放大不失真；PNG 是位图格式，由像素组成，放大后会模糊。PNG 兼容性更好，适合在网页中广泛使用。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>转换后会损失质量吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>PNG 是位图，转换时需要指定分辨率。建议使用更高的缩放倍数（如 2x、4x）以保持清晰度。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>SVG 文件会被上传吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不会。转换完全在浏览器本地完成，SVG 文件不会上传。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "SVG 转 PNG", path: "tools/svg-to-png.html" };
+    </script>
+    <script src="../assets/js/libs.js"></script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        var svgInput = document.getElementById('svgInput');
+        var svgFileInput = document.getElementById('svgFileInput');
+        var svgDropZone = document.getElementById('svgDropZone');
+        var svgPreview = document.getElementById('svgPreview');
+        var pngPreviewBox = document.getElementById('pngPreviewBox');
+        var convertBtn = document.getElementById('convertBtn');
+        var downloadPngBtn = document.getElementById('downloadPngBtn');
+        var clearSvgBtn = document.getElementById('clearSvgBtn');
+        var sampleSvgBtn = document.getElementById('sampleSvgBtn');
+        var pngResult = document.getElementById('pngResult');
+        var pngPreview = document.getElementById('pngPreview');
+        var pngInfo = document.getElementById('pngInfo');
+        var lineCount = document.getElementById('lineCount');
+        var svgInfoCards = document.getElementById('svgInfoCards');
+        var currentScale = 1;
+        var pngBlob = null;
+        var currentMode = 'paste';
+
+        document.querySelectorAll('.svg-input-tab').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.svg-input-tab').forEach(function(t) { t.classList.remove('active'); });
+                this.classList.add('active');
+                currentMode = this.getAttribute('data-mode');
+                document.getElementById('svgPastePanel').style.display = currentMode === 'paste' ? 'block' : 'none';
+                document.getElementById('svgUploadPanel').style.display = currentMode === 'upload' ? 'block' : 'none';
+            });
+        });
+
+        svgInput.addEventListener('input', function() {
+            var lines = this.value.split('\n').length;
+            lineCount.textContent = lines + ' 行';
+            renderSvgPreview(this.value);
+        });
+
+        svgDropZone.addEventListener('click', function() { svgFileInput.click(); });
+        svgDropZone.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('drag-over'); });
+        svgDropZone.addEventListener('dragleave', function() { this.classList.remove('drag-over'); });
+        svgDropZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('drag-over');
+            if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+        });
+
+        svgFileInput.addEventListener('change', function() {
+            if (this.files.length) handleFile(this.files[0]);
+        });
+
+        function handleFile(file) {
+            if (!file.name.endsWith('.svg')) { alert('请上传 .svg 文件'); return; }
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                svgInput.value = e.target.result;
+                lineCount.textContent = e.target.result.split('\n').length + ' 行';
+                renderSvgPreview(e.target.result);
+                document.querySelectorAll('.svg-input-tab').forEach(function(t) { t.classList.remove('active'); });
+                document.querySelectorAll('.svg-input-tab')[0].classList.add('active');
+                document.getElementById('svgPastePanel').style.display = 'block';
+                document.getElementById('svgUploadPanel').style.display = 'none';
+            };
+            reader.readAsText(file);
+        }
+
+        function renderSvgPreview(svgCode) {
+            if (!svgCode.trim()) {
+                svgPreview.innerHTML = '<span style="color:var(--text-secondary);">SVG 预览</span>';
+                return;
+            }
+            svgPreview.innerHTML = svgCode;
+        }
+
+        document.querySelectorAll('.scale-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.scale-btn').forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                currentScale = parseInt(this.getAttribute('data-scale', 10));
+            });
+        });
+
+        sampleSvgBtn.addEventListener('click', function() {
+            svgInput.value = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#667eea"/><stop offset="100%" style="stop-color:#764ba2"/></linearGradient></defs><circle cx="100" cy="100" r="80" fill="url(#g)"/><text x="100" y="110" text-anchor="middle" fill="white" font-size="24" font-family="sans-serif">SVG</text></svg>';
+            lineCount.textContent = svgInput.value.split('\n').length + ' 行';
+            renderSvgPreview(svgInput.value);
+        });
+
+        convertBtn.addEventListener('click', function() {
+            var svgCode = svgInput.value.trim();
+            if (!svgCode) {
+                alert('请输入或上传 SVG 代码');
+                return;
+            }
+            var svgBlob = new Blob([svgCode], { type: 'image/svg+xml;charset=utf-8' });
+            var url = URL.createObjectURL(svgBlob);
+            var img = new Image();
+            img.onload = function() {
+                var w = img.naturalWidth * currentScale;
+                var h = img.naturalHeight * currentScale;
+                if (!w || !h) {
+                    var tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = svgCode;
+                    var svgNode = tempDiv.querySelector('svg');
+                    if (svgNode) {
+                        w = parseInt(svgNode.getAttribute('width', 10)) || 300;
+                        h = parseInt(svgNode.getAttribute('height', 10)) || 150;
+                        w *= currentScale;
+                        h *= currentScale;
+                    }
+                }
+                var canvas = document.createElement('canvas');
+                canvas.width = w;
+                canvas.height = h;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, w, h);
+                canvas.toBlob(function(blob) {
+                    pngBlob = blob;
+                    pngPreview.src = URL.createObjectURL(blob);
+                    pngPreviewBox.innerHTML = '<img src="' + pngPreview.src + '" style="max-width:100%">';
+                    var origW = img.naturalWidth || 300;
+                    var origH = img.naturalHeight || 150;
+                    document.getElementById('origSize').textContent = origW + '×' + origH;
+                    document.getElementById('outputSize').textContent = w + '×' + h;
+                    document.getElementById('fileSize').textContent = blob.size < 1024 ? blob.size + ' B' : (blob.size / 1024).toFixed(1) + ' KB';
+                    svgInfoCards.style.display = 'grid';
+                    pngInfo.textContent = '尺寸: ' + w + ' × ' + h + ' px | 大小: ' + (blob.size < 1024 ? blob.size + ' B' : (blob.size / 1024).toFixed(2) + ' KB');
+                    pngResult.classList.remove('hidden');
+                    downloadPngBtn.disabled = false;
+                }, 'image/png');
+                URL.revokeObjectURL(url);
+            };
+            img.onerror = function() {
+                alert('SVG 代码无效，无法渲染');
+                URL.revokeObjectURL(url);
+            };
+            img.src = url;
+        });
+
+        downloadPngBtn.addEventListener('click', function() {
+            if (!pngBlob) return;
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(pngBlob);
+            a.download = 'converted_' + Date.now() + '.png';
+            a.click();
+            URL.revokeObjectURL(a.href);
+        });
+
+        clearSvgBtn.addEventListener('click', function() {
+            svgInput.value = '';
+            lineCount.textContent = '0 行';
+            svgPreview.innerHTML = '<span style="color:var(--text-secondary);">SVG 预览</span>';
+            pngPreviewBox.innerHTML = '<span style="color:var(--text-secondary);">PNG 预览</span>';
+            pngResult.classList.add('hidden');
+            svgInfoCards.style.display = 'none';
+            downloadPngBtn.disabled = true;
+            pngBlob = null;
+        });
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            var current = "tools/svg-to-png.html";
+            var currentCat = "设计工具";
+            var related = tools.filter(function(t) { return t.path !== current && t.category === currentCat; }).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(function(t) { return t.path !== current && related.indexOf(t) === -1; }).slice(0, 5 - related.length);
+                related.push.apply(related, others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(function(t) {
+                return '<a href="' + t.path.split('/').pop() + '" class="tool-card"><div class="tool-name">' + t.name + '</div><div class="tool-desc">' + t.description + '</div></a>';
+            }).join('');
+        }).catch(function() {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

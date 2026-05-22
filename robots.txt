@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+Disallow: /assets/
+Disallow: /search-index.json
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /assets/
+Disallow: /search-index.json
+Crawl-delay: 1
+
+User-agent: Googlebot
+Allow: /
+Disallow: /assets/
+Disallow: /search-index.json
+Crawl-delay: 0
+
+Sitemap: https://tools.yzn123.cc/sitemap.xml

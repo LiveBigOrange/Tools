@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特殊符号大全 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="常用特殊符号集合，点击即可复制 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="符号, 特殊, symbol, 字符,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/special-chars.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/special-chars.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="特殊符号大全 - 在线工具">
+    <meta property="og:description" content="常用特殊符号集合，点击即可复制 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/special-chars.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="特殊符号大全 - 在线工具">
+    <meta name="twitter:description" content="常用特殊符号集合，点击即可复制 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "特殊符号大全",
+                "description": "常用特殊符号集合，点击即可复制",
+                "url": "/tools/special-chars.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "文本工具",
+                        "item": "/#category-文本工具"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "特殊符号大全",
+                        "item": "/tools/special-chars.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "支持中文处理吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "完全支持中文文本的处理、统计和转换。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "可以处理多大的文本？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "建议单次处理不超过 5MB 的文本，以保证浏览器响应速度。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "统计结果准确吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "统计基于标准算法，中文字数和字符数分别计算，结果准确可靠。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .char-search { margin-bottom: 1rem; }
+        .char-categories { display: flex; gap: 0.25rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .char-cat-btn { padding: 0.35rem 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.8rem; cursor: pointer; transition: var(--transition); color: var(--text-secondary); }
+        .char-cat-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+        .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); gap: 0.35rem; }
+        .char-item { text-align: center; padding: 0.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; cursor: pointer; transition: var(--transition); }
+        .char-item:hover { border-color: var(--primary); background: var(--primary-light); }
+        .char-symbol { font-size: 1.5rem; display: block; }
+        .char-name { font-size: 0.6rem; color: var(--text-muted); display: block; margin-top: 0.15rem; }
+        .char-preview { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%); background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 0.75rem; box-shadow: var(--shadow); z-index: 100; }
+        .preview-char { font-size: 2rem; }
+        .preview-name { font-size: 0.85rem; color: var(--text-secondary); }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-文本工具">文本工具</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>特殊符号大全</span>
+            </nav>
+            <div class="tool-header">
+                <h1>特殊符号大全</h1>
+                <p>常用特殊符号集合，点击即可复制</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">文本工具</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="char-search"><input type="text" id="charSearchInput" placeholder="搜索符号..." style="width:100%"></div>
+                <div class="char-categories" id="categoryTabs"></div>
+                <div class="char-grid" id="charGrid"></div>
+                <div class="char-preview" id="preview" style="display:none">
+                    <span class="preview-char" id="previewChar"></span>
+                    <span class="preview-name" id="previewName"></span>
+                    <button class="btn btn-primary btn-sm" id="copyPreviewBtn">📋 复制</button>
+                </div>
+            </div>
+            <section class="features">
+                <h2>特殊符号大全功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📂</div>
+                        <h3>分类浏览</h3>
+                        <p>10大符号分类，快速定位所需符号。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>点击复制</h3>
+                        <p>点击任意符号即可一键复制到剪贴板。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3>搜索查找</h3>
+                        <p>支持按名称或符号本身快速搜索。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>特殊符号大全常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>如何复制符号？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>点击任意符号即可自动复制到剪贴板，底部会显示预览提示。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持哪些类型的符号？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>支持数学符号、货币符号、箭头符号、几何图形、标点符号、制表符、上标下标、希腊字母、日文假名等200+符号。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>可以搜索符号吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>可以，在搜索框中输入符号名称或符号本身即可快速查找。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "特殊符号大全", path: "tools/special-chars.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        const symbols = [
+            { symbol: "+", name: "加号", category: "数学符号" },
+            { symbol: "−", name: "减号", category: "数学符号" },
+            { symbol: "×", name: "乘号", category: "数学符号" },
+            { symbol: "÷", name: "除号", category: "数学符号" },
+            { symbol: "=", name: "等号", category: "数学符号" },
+            { symbol: "≠", name: "不等号", category: "数学符号" },
+            { symbol: "≈", name: "约等于", category: "数学符号" },
+            { symbol: "≤", name: "小于等于", category: "数学符号" },
+            { symbol: "≥", name: "大于等于", category: "数学符号" },
+            { symbol: "<", name: "小于号", category: "数学符号" },
+            { symbol: ">", name: "大于号", category: "数学符号" },
+            { symbol: "±", name: "正负号", category: "数学符号" },
+            { symbol: "∓", name: "负正号", category: "数学符号" },
+            { symbol: "∑", name: "求和", category: "数学符号" },
+            { symbol: "∏", name: "求积", category: "数学符号" },
+            { symbol: "∫", name: "积分", category: "数学符号" },
+            { symbol: "∮", name: "曲线积分", category: "数学符号" },
+            { symbol: "∂", name: "偏导数", category: "数学符号" },
+            { symbol: "∇", name: "梯度算子", category: "数学符号" },
+            { symbol: "∞", name: "无穷大", category: "数学符号" },
+            { symbol: "√", name: "平方根", category: "数学符号" },
+            { symbol: "∛", name: "立方根", category: "数学符号" },
+            { symbol: "∜", name: "四次方根", category: "数学符号" },
+            { symbol: "∝", name: "正比于", category: "数学符号" },
+            { symbol: "∠", name: "角", category: "数学符号" },
+            { symbol: "⊥", name: "垂直", category: "数学符号" },
+            { symbol: "∥", name: "平行", category: "数学符号" },
+            { symbol: "≡", name: "恒等", category: "数学符号" },
+            { symbol: "≅", name: "同构", category: "数学符号" },
+            { symbol: "∼", name: "相似", category: "数学符号" },
+            { symbol: "∈", name: "属于", category: "数学符号" },
+            { symbol: "∉", name: "不属于", category: "数学符号" },
+            { symbol: "⊂", name: "真子集", category: "数学符号" },
+            { symbol: "⊃", name: "真包含", category: "数学符号" },
+            { symbol: "⊆", name: "子集", category: "数学符号" },
+            { symbol: "⊇", name: "包含", category: "数学符号" },
+            { symbol: "∪", name: "并集", category: "数学符号" },
+            { symbol: "∩", name: "交集", category: "数学符号" },
+            { symbol: "∅", name: "空集", category: "数学符号" },
+            { symbol: "∀", name: "任意", category: "数学符号" },
+            { symbol: "∃", name: "存在", category: "数学符号" },
+            { symbol: "∄", name: "不存在", category: "数学符号" },
+            { symbol: "¬", name: "非", category: "数学符号" },
+            { symbol: "∧", name: "且", category: "数学符号" },
+            { symbol: "∨", name: "或", category: "数学符号" },
+            { symbol: "⊕", name: "异或", category: "数学符号" },
+            { symbol: "⊗", name: "张量积", category: "数学符号" },
+            { symbol: "ℝ", name: "实数集", category: "数学符号" },
+            { symbol: "ℤ", name: "整数集", category: "数学符号" },
+            { symbol: "ℚ", name: "有理数集", category: "数学符号" },
+            { symbol: "ℕ", name: "自然数集", category: "数学符号" },
+            { symbol: "ℂ", name: "复数集", category: "数学符号" },
+            { symbol: "π", name: "圆周率", category: "数学符号" },
+            { symbol: "‰", name: "千分号", category: "数学符号" },
+            { symbol: "‱", name: "万分号", category: "数学符号" },
+            { symbol: "°", name: "度", category: "数学符号" },
+            { symbol: "′", name: "分", category: "数学符号" },
+            { symbol: "″", name: "秒", category: "数学符号" },
+            { symbol: "$", name: "美元", category: "货币符号" },
+            { symbol: "€", name: "欧元", category: "货币符号" },
+            { symbol: "£", name: "英镑", category: "货币符号" },
+            { symbol: "¥", name: "人民币/日元", category: "货币符号" },
+            { symbol: "₽", name: "卢布", category: "货币符号" },
+            { symbol: "₹", name: "印度卢比", category: "货币符号" },
+            { symbol: "₩", name: "韩元", category: "货币符号" },
+            { symbol: "₿", name: "比特币", category: "货币符号" },
+            { symbol: "₺", name: "土耳其里拉", category: "货币符号" },
+            { symbol: "₴", name: "乌克兰格里夫纳", category: "货币符号" },
+            { symbol: "₸", name: "坚戈", category: "货币符号" },
+            { symbol: "₦", name: "奈拉", category: "货币符号" },
+            { symbol: "₡", name: "科朗", category: "货币符号" },
+            { symbol: "₢", name: "克鲁塞罗", category: "货币符号" },
+            { symbol: "₣", name: "法郎", category: "货币符号" },
+            { symbol: "₤", name: "里拉", category: "货币符号" },
+            { symbol: "₧", name: "比塞塔", category: "货币符号" },
+            { symbol: "₨", name: "卢比", category: "货币符号" },
+            { symbol: "₪", name: "新谢克尔", category: "货币符号" },
+            { symbol: "₫", name: "越南盾", category: "货币符号" },
+            { symbol: "₭", name: "基普", category: "货币符号" },
+            { symbol: "₮", name: "图格里克", category: "货币符号" },
+            { symbol: "₯", name: "德拉克马", category: "货币符号" },
+            { symbol: "₱", name: "比索", category: "货币符号" },
+            { symbol: "₲", name: "瓜拉尼", category: "货币符号" },
+            { symbol: "₵", name: "塞地", category: "货币符号" },
+            { symbol: "¢", name: "分", category: "货币符号" },
+            { symbol: "¤", name: "通用货币", category: "货币符号" },
+            { symbol: "ƒ", name: "弗罗林", category: "货币符号" },
+            { symbol: "←", name: "左箭头", category: "箭头符号" },
+            { symbol: "→", name: "右箭头", category: "箭头符号" },
+            { symbol: "↑", name: "上箭头", category: "箭头符号" },
+            { symbol: "↓", name: "下箭头", category: "箭头符号" },
+            { symbol: "↔", name: "左右箭头", category: "箭头符号" },
+            { symbol: "↕", name: "上下箭头", category: "箭头符号" },
+            { symbol: "↖", name: "左上箭头", category: "箭头符号" },
+            { symbol: "↗", name: "右上箭头", category: "箭头符号" },
+            { symbol: "↘", name: "右下箭头", category: "箭头符号" },
+            { symbol: "↙", name: "左下箭头", category: "箭头符号" },
+            { symbol: "↚", name: "非左箭头", category: "箭头符号" },
+            { symbol: "↛", name: "非右箭头", category: "箭头符号" },
+            { symbol: "↜", name: "左波浪箭头", category: "箭头符号" },
+            { symbol: "↝", name: "右波浪箭头", category: "箭头符号" },
+            { symbol: "↞", name: "左双箭头", category: "箭头符号" },
+            { symbol: "↟", name: "上双箭头", category: "箭头符号" },
+            { symbol: "↠", name: "右双箭头", category: "箭头符号" },
+            { symbol: "↡", name: "下双箭头", category: "箭头符号" },
+            { symbol: "⇐", name: "左双箭头", category: "箭头符号" },
+            { symbol: "⇒", name: "右双箭头", category: "箭头符号" },
+            { symbol: "⇑", name: "上双箭头", category: "箭头符号" },
+            { symbol: "⇓", name: "下双箭头", category: "箭头符号" },
+            { symbol: "⇔", name: "等价箭头", category: "箭头符号" },
+            { symbol: "⇕", name: "上下双箭头", category: "箭头符号" },
+            { symbol: "⇖", name: "左上双箭头", category: "箭头符号" },
+            { symbol: "⇗", name: "右上双箭头", category: "箭头符号" },
+            { symbol: "⇘", name: "右下双箭头", category: "箭头符号" },
+            { symbol: "⇙", name: "左下双箭头", category: "箭头符号" },
+            { symbol: "↩", name: "左回转箭头", category: "箭头符号" },
+            { symbol: "↪", name: "右回转箭头", category: "箭头符号" },
+            { symbol: "↫", name: "左环箭头", category: "箭头符号" },
+            { symbol: "↬", name: "右环箭头", category: "箭头符号" },
+            { symbol: "↰", name: "左上钩箭头", category: "箭头符号" },
+            { symbol: "↱", name: "右上钩箭头", category: "箭头符号" },
+            { symbol: "↳", name: "右下钩箭头", category: "箭头符号" },
+            { symbol: "↴", name: "左下钩箭头", category: "箭头符号" },
+            { symbol: "↶", name: "逆时针箭头", category: "箭头符号" },
+            { symbol: "↷", name: "顺时针箭头", category: "箭头符号" },
+            { symbol: "⟵", name: "长左箭头", category: "箭头符号" },
+            { symbol: "⟶", name: "长右箭头", category: "箭头符号" },
+            { symbol: "⟷", name: "长左右箭头", category: "箭头符号" },
+            { symbol: "△", name: "白色三角形", category: "几何图形" },
+            { symbol: "▲", name: "黑色三角形", category: "几何图形" },
+            { symbol: "▽", name: "白色倒三角", category: "几何图形" },
+            { symbol: "▼", name: "黑色倒三角", category: "几何图形" },
+            { symbol: "◁", name: "白色左三角", category: "几何图形" },
+            { symbol: "◀", name: "黑色左三角", category: "几何图形" },
+            { symbol: "▷", name: "白色右三角", category: "几何图形" },
+            { symbol: "▶", name: "黑色右三角", category: "几何图形" },
+            { symbol: "◇", name: "白色菱形", category: "几何图形" },
+            { symbol: "◆", name: "黑色菱形", category: "几何图形" },
+            { symbol: "○", name: "白色圆形", category: "几何图形" },
+            { symbol: "●", name: "黑色圆形", category: "几何图形" },
+            { symbol: "◎", name: "同心圆", category: "几何图形" },
+            { symbol: "◉", name: "牛眼", category: "几何图形" },
+            { symbol: "◌", name: "虚线圆", category: "几何图形" },
+            { symbol: "◍", name: "竖线圆", category: "几何图形" },
+            { symbol: "□", name: "白色方形", category: "几何图形" },
+            { symbol: "■", name: "黑色方形", category: "几何图形" },
+            { symbol: "▢", name: "白色圆角方", category: "几何图形" },
+            { symbol: "▣", name: "黑色圆角方", category: "几何图形" },
+            { symbol: "▤", name: "横纹方", category: "几何图形" },
+            { symbol: "▥", name: "竖纹方", category: "几何图形" },
+            { symbol: "▦", name: "网格方", category: "几何图形" },
+            { symbol: "▧", name: "斜纹方", category: "几何图形" },
+            { symbol: "▨", name: "交叉纹方", category: "几何图形" },
+            { symbol: "▩", name: "点阵方", category: "几何图形" },
+            { symbol: "☆", name: "白色星形", category: "几何图形" },
+            { symbol: "★", name: "黑色星形", category: "几何图形" },
+            { symbol: "✦", name: "黑色四角星", category: "几何图形" },
+            { symbol: "✧", name: "白色四角星", category: "几何图形" },
+            { symbol: "✩", name: "空心星", category: "几何图形" },
+            { symbol: "✪", name: "圆中星", category: "几何图形" },
+            { symbol: "✫", name: "阴影星", category: "几何图形" },
+            { symbol: "✬", name: "旋转星", category: "几何图形" },
+            { symbol: "✭", name: "阴影星形", category: "几何图形" },
+            { symbol: "✮", name: "大黑星", category: "几何图形" },
+            { symbol: "✯", name: "针轮星", category: "几何图形" },
+            { symbol: "✰", name: "阴影星", category: "几何图形" },
+            { symbol: "⬟", name: "黑色五边形", category: "几何图形" },
+            { symbol: "⬠", name: "白色五边形", category: "几何图形" },
+            { symbol: "⬡", name: "白色六边形", category: "几何图形" },
+            { symbol: "⬢", name: "黑色六边形", category: "几何图形" },
+            { symbol: "⋯", name: "省略号", category: "标点符号" },
+            { symbol: "、", name: "顿号", category: "标点符号" },
+            { symbol: "。", name: "句号", category: "标点符号" },
+            { symbol: "〈", name: "左单书名号", category: "标点符号" },
+            { symbol: "〉", name: "右单书名号", category: "标点符号" },
+            { symbol: "《", name: "左双书名号", category: "标点符号" },
+            { symbol: "》", name: "右双书名号", category: "标点符号" },
+            { symbol: "「", name: "左直角引号", category: "标点符号" },
+            { symbol: "」", name: "右直角引号", category: "标点符号" },
+            { symbol: "『", name: "左双直角引", category: "标点符号" },
+            { symbol: "』", name: "右双直角引", category: "标点符号" },
+            { symbol: "【", name: "左黑括号", category: "标点符号" },
+            { symbol: "】", name: "右黑括号", category: "标点符号" },
+            { symbol: "〔", name: "左龟壳括号", category: "标点符号" },
+            { symbol: "〕", name: "右龟壳括号", category: "标点符号" },
+            { symbol: "〝", name: "左上引号", category: "标点符号" },
+            { symbol: "〞", name: "右下引号", category: "标点符号" },
+            { symbol: "〟", name: "低双引号", category: "标点符号" },
+            { symbol: "‟", name: "高双引号", category: "标点符号" },
+            { symbol: "„", name: "低单引号", category: "标点符号" },
+            { symbol: "‚", name: "低单引", category: "标点符号" },
+            { symbol: "†", name: "剑号", category: "标点符号" },
+            { symbol: "‡", name: "双剑号", category: "标点符号" },
+            { symbol: "•", name: "项目符号", category: "标点符号" },
+            { symbol: "‣", name: "三角项目符", category: "标点符号" },
+            { symbol: "⁂", name: "星组号", category: "标点符号" },
+            { symbol: "※", name: "参考号", category: "标点符号" },
+            { symbol: "⁑", name: "双星号", category: "标点符号" },
+            { symbol: "⁕", name: "商用号", category: "标点符号" },
+            { symbol: "‸", name: "插入号", category: "标点符号" },
+            { symbol: "⁇", name: "双问号", category: "标点符号" },
+            { symbol: "⁈", name: "问叹号", category: "标点符号" },
+            { symbol: "⁉", name: "叹问号", category: "标点符号" },
+            { symbol: "‼", name: "双叹号", category: "标点符号" },
+            { symbol: "⁊", name: "Tironian号", category: "标点符号" },
+            { symbol: "⁋", name: "段落号", category: "标点符号" },
+            { symbol: "§", name: "章节号", category: "标点符号" },
+            { symbol: "¶", name: "段落标记", category: "标点符号" },
+            { symbol: "©", name: "版权符号", category: "标点符号" },
+            { symbol: "®", name: "注册符号", category: "标点符号" },
+            { symbol: "™", name: "商标符号", category: "标点符号" },
+            { symbol: "℠", name: "服务标记", category: "标点符号" },
+            { symbol: "─", name: "横线", category: "制表符" },
+            { symbol: "│", name: "竖线", category: "制表符" },
+            { symbol: "┌", name: "左上角", category: "制表符" },
+            { symbol: "┐", name: "右上角", category: "制表符" },
+            { symbol: "└", name: "左下角", category: "制表符" },
+            { symbol: "┘", name: "右下角", category: "制表符" },
+            { symbol: "├", name: "左T形", category: "制表符" },
+            { symbol: "┤", name: "右T形", category: "制表符" },
+            { symbol: "┬", name: "上T形", category: "制表符" },
+            { symbol: "┴", name: "下T形", category: "制表符" },
+            { symbol: "┼", name: "十字", category: "制表符" },
+            { symbol: "═", name: "双横线", category: "制表符" },
+            { symbol: "║", name: "双竖线", category: "制表符" },
+            { symbol: "╔", name: "双左上角", category: "制表符" },
+            { symbol: "╗", name: "双右上角", category: "制表符" },
+            { symbol: "╚", name: "双左下角", category: "制表符" },
+            { symbol: "╝", name: "双右下角", category: "制表符" },
+            { symbol: "╠", name: "双左T形", category: "制表符" },
+            { symbol: "╣", name: "双右T形", category: "制表符" },
+            { symbol: "╦", name: "双上T形", category: "制表符" },
+            { symbol: "╩", name: "双下T形", category: "制表符" },
+            { symbol: "╬", name: "双十字", category: "制表符" },
+            { symbol: "╭", name: "圆左上角", category: "制表符" },
+            { symbol: "╮", name: "圆右上角", category: "制表符" },
+            { symbol: "╯", name: "圆右下角", category: "制表符" },
+            { symbol: "╰", name: "圆左下角", category: "制表符" },
+            { symbol: "╱", name: "左斜线", category: "制表符" },
+            { symbol: "╲", name: "右斜线", category: "制表符" },
+            { symbol: "╳", name: "交叉线", category: "制表符" },
+            { symbol: "▀", name: "上半块", category: "制表符" },
+            { symbol: "▄", name: "下半块", category: "制表符" },
+            { symbol: "█", name: "全块", category: "制表符" },
+            { symbol: "░", name: "浅色阴影", category: "制表符" },
+            { symbol: "▒", name: "中色阴影", category: "制表符" },
+            { symbol: "▓", name: "深色阴影", category: "制表符" },
+            { symbol: "▔", name: "上块", category: "制表符" },
+            { symbol: "▕", name: "右八分之一", category: "制表符" },
+            { symbol: "⁰", name: "上标0", category: "上标下标" },
+            { symbol: "¹", name: "上标1", category: "上标下标" },
+            { symbol: "²", name: "上标2", category: "上标下标" },
+            { symbol: "³", name: "上标3", category: "上标下标" },
+            { symbol: "⁴", name: "上标4", category: "上标下标" },
+            { symbol: "⁵", name: "上标5", category: "上标下标" },
+            { symbol: "⁶", name: "上标6", category: "上标下标" },
+            { symbol: "⁷", name: "上标7", category: "上标下标" },
+            { symbol: "⁸", name: "上标8", category: "上标下标" },
+            { symbol: "⁹", name: "上标9", category: "上标下标" },
+            { symbol: "⁺", name: "上标加号", category: "上标下标" },
+            { symbol: "⁻", name: "上标减号", category: "上标下标" },
+            { symbol: "⁼", name: "上标等号", category: "上标下标" },
+            { symbol: "⁽", name: "上标左括号", category: "上标下标" },
+            { symbol: "⁾", name: "上标右括号", category: "上标下标" },
+            { symbol: "ⁿ", name: "上标n", category: "上标下标" },
+            { symbol: "ⁱ", name: "上标i", category: "上标下标" },
+            { symbol: "₀", name: "下标0", category: "上标下标" },
+            { symbol: "₁", name: "下标1", category: "上标下标" },
+            { symbol: "₂", name: "下标2", category: "上标下标" },
+            { symbol: "₃", name: "下标3", category: "上标下标" },
+            { symbol: "₄", name: "下标4", category: "上标下标" },
+            { symbol: "₅", name: "下标5", category: "上标下标" },
+            { symbol: "₆", name: "下标6", category: "上标下标" },
+            { symbol: "₇", name: "下标7", category: "上标下标" },
+            { symbol: "₈", name: "下标8", category: "上标下标" },
+            { symbol: "₉", name: "下标9", category: "上标下标" },
+            { symbol: "₊", name: "下标加号", category: "上标下标" },
+            { symbol: "₋", name: "下标减号", category: "上标下标" },
+            { symbol: "₌", name: "下标等号", category: "上标下标" },
+            { symbol: "₍", name: "下标左括号", category: "上标下标" },
+            { symbol: "₎", name: "下标右括号", category: "上标下标" },
+            { symbol: "α", name: "阿尔法", category: "希腊字母" },
+            { symbol: "β", name: "贝塔", category: "希腊字母" },
+            { symbol: "γ", name: "伽马", category: "希腊字母" },
+            { symbol: "δ", name: "德尔塔", category: "希腊字母" },
+            { symbol: "ε", name: "艾普西龙", category: "希腊字母" },
+            { symbol: "ζ", name: "泽塔", category: "希腊字母" },
+            { symbol: "η", name: "伊塔", category: "希腊字母" },
+            { symbol: "θ", name: "西塔", category: "希腊字母" },
+            { symbol: "ι", name: "约塔", category: "希腊字母" },
+            { symbol: "κ", name: "卡帕", category: "希腊字母" },
+            { symbol: "λ", name: "拉姆达", category: "希腊字母" },
+            { symbol: "μ", name: "缪", category: "希腊字母" },
+            { symbol: "ν", name: "纽", category: "希腊字母" },
+            { symbol: "ξ", name: "克西", category: "希腊字母" },
+            { symbol: "ο", name: "奥密克戎", category: "希腊字母" },
+            { symbol: "π", name: "派", category: "希腊字母" },
+            { symbol: "ρ", name: "柔", category: "希腊字母" },
+            { symbol: "σ", name: "西格玛", category: "希腊字母" },
+            { symbol: "τ", name: "陶", category: "希腊字母" },
+            { symbol: "υ", name: "宇普西龙", category: "希腊字母" },
+            { symbol: "φ", name: "佛爱", category: "希腊字母" },
+            { symbol: "χ", name: "凯", category: "希腊字母" },
+            { symbol: "ψ", name: "普西", category: "希腊字母" },
+            { symbol: "ω", name: "欧米伽", category: "希腊字母" },
+            { symbol: "Α", name: "大写的阿尔法", category: "希腊字母" },
+            { symbol: "Β", name: "大写的贝塔", category: "希腊字母" },
+            { symbol: "Γ", name: "大写的伽马", category: "希腊字母" },
+            { symbol: "Δ", name: "大写的德尔塔", category: "希腊字母" },
+            { symbol: "Ε", name: "大写的艾普西龙", category: "希腊字母" },
+            { symbol: "Ζ", name: "大写的泽塔", category: "希腊字母" },
+            { symbol: "Η", name: "大写的伊塔", category: "希腊字母" },
+            { symbol: "Θ", name: "大写的西塔", category: "希腊字母" },
+            { symbol: "Ι", name: "大写的约塔", category: "希腊字母" },
+            { symbol: "Κ", name: "大写的卡帕", category: "希腊字母" },
+            { symbol: "Λ", name: "大写的拉姆达", category: "希腊字母" },
+            { symbol: "Μ", name: "大写的缪", category: "希腊字母" },
+            { symbol: "Ν", name: "大写的纽", category: "希腊字母" },
+            { symbol: "Ξ", name: "大写的克西", category: "希腊字母" },
+            { symbol: "Ο", name: "大写的奥密克戎", category: "希腊字母" },
+            { symbol: "Π", name: "大写的派", category: "希腊字母" },
+            { symbol: "Ρ", name: "大写的柔", category: "希腊字母" },
+            { symbol: "Σ", name: "大写的西格玛", category: "希腊字母" },
+            { symbol: "Τ", name: "大写的陶", category: "希腊字母" },
+            { symbol: "Υ", name: "大写的宇普西龙", category: "希腊字母" },
+            { symbol: "Φ", name: "大写的佛爱", category: "希腊字母" },
+            { symbol: "Χ", name: "大写的凯", category: "希腊字母" },
+            { symbol: "Ψ", name: "大写的普西", category: "希腊字母" },
+            { symbol: "Ω", name: "大写的欧米伽", category: "希腊字母" },
+            { symbol: "あ", name: "あ", category: "日文假名" },
+            { symbol: "い", name: "い", category: "日文假名" },
+            { symbol: "う", name: "う", category: "日文假名" },
+            { symbol: "え", name: "え", category: "日文假名" },
+            { symbol: "お", name: "お", category: "日文假名" },
+            { symbol: "か", name: "か", category: "日文假名" },
+            { symbol: "き", name: "き", category: "日文假名" },
+            { symbol: "く", name: "く", category: "日文假名" },
+            { symbol: "け", name: "け", category: "日文假名" },
+            { symbol: "こ", name: "こ", category: "日文假名" },
+            { symbol: "さ", name: "さ", category: "日文假名" },
+            { symbol: "し", name: "し", category: "日文假名" },
+            { symbol: "す", name: "す", category: "日文假名" },
+            { symbol: "せ", name: "せ", category: "日文假名" },
+            { symbol: "そ", name: "そ", category: "日文假名" },
+            { symbol: "た", name: "た", category: "日文假名" },
+            { symbol: "ち", name: "ち", category: "日文假名" },
+            { symbol: "つ", name: "つ", category: "日文假名" },
+            { symbol: "て", name: "て", category: "日文假名" },
+            { symbol: "と", name: "と", category: "日文假名" },
+            { symbol: "な", name: "な", category: "日文假名" },
+            { symbol: "に", name: "に", category: "日文假名" },
+            { symbol: "ぬ", name: "ぬ", category: "日文假名" },
+            { symbol: "ね", name: "ね", category: "日文假名" },
+            { symbol: "の", name: "の", category: "日文假名" },
+            { symbol: "は", name: "は", category: "日文假名" },
+            { symbol: "ひ", name: "ひ", category: "日文假名" },
+            { symbol: "ふ", name: "ふ", category: "日文假名" },
+            { symbol: "へ", name: "へ", category: "日文假名" },
+            { symbol: "ほ", name: "ほ", category: "日文假名" },
+            { symbol: "ま", name: "ま", category: "日文假名" },
+            { symbol: "み", name: "み", category: "日文假名" },
+            { symbol: "む", name: "む", category: "日文假名" },
+            { symbol: "め", name: "め", category: "日文假名" },
+            { symbol: "も", name: "も", category: "日文假名" },
+            { symbol: "や", name: "や", category: "日文假名" },
+            { symbol: "ゆ", name: "ゆ", category: "日文假名" },
+            { symbol: "よ", name: "よ", category: "日文假名" },
+            { symbol: "ら", name: "ら", category: "日文假名" },
+            { symbol: "り", name: "り", category: "日文假名" },
+            { symbol: "る", name: "る", category: "日文假名" },
+            { symbol: "れ", name: "れ", category: "日文假名" },
+            { symbol: "ろ", name: "ろ", category: "日文假名" },
+            { symbol: "わ", name: "わ", category: "日文假名" },
+            { symbol: "を", name: "を", category: "日文假名" },
+            { symbol: "ん", name: "ん", category: "日文假名" },
+            { symbol: "ア", name: "ア", category: "日文假名" },
+            { symbol: "イ", name: "イ", category: "日文假名" },
+            { symbol: "ウ", name: "ウ", category: "日文假名" },
+            { symbol: "エ", name: "エ", category: "日文假名" },
+            { symbol: "オ", name: "オ", category: "日文假名" },
+            { symbol: "カ", name: "カ", category: "日文假名" },
+            { symbol: "キ", name: "キ", category: "日文假名" },
+            { symbol: "ク", name: "ク", category: "日文假名" },
+            { symbol: "ケ", name: "ケ", category: "日文假名" },
+            { symbol: "コ", name: "コ", category: "日文假名" },
+            { symbol: "サ", name: "サ", category: "日文假名" },
+            { symbol: "シ", name: "シ", category: "日文假名" },
+            { symbol: "ス", name: "ス", category: "日文假名" },
+            { symbol: "セ", name: "セ", category: "日文假名" },
+            { symbol: "ソ", name: "ソ", category: "日文假名" },
+            { symbol: "タ", name: "タ", category: "日文假名" },
+            { symbol: "チ", name: "チ", category: "日文假名" },
+            { symbol: "ツ", name: "ツ", category: "日文假名" },
+            { symbol: "テ", name: "テ", category: "日文假名" },
+            { symbol: "ト", name: "ト", category: "日文假名" },
+            { symbol: "ナ", name: "ナ", category: "日文假名" },
+            { symbol: "ニ", name: "ニ", category: "日文假名" },
+            { symbol: "ヌ", name: "ヌ", category: "日文假名" },
+            { symbol: "ネ", name: "ネ", category: "日文假名" },
+            { symbol: "ノ", name: "ノ", category: "日文假名" },
+            { symbol: "ハ", name: "ハ", category: "日文假名" },
+            { symbol: "ヒ", name: "ヒ", category: "日文假名" },
+            { symbol: "フ", name: "フ", category: "日文假名" },
+            { symbol: "ヘ", name: "ヘ", category: "日文假名" },
+            { symbol: "ホ", name: "ホ", category: "日文假名" },
+            { symbol: "マ", name: "マ", category: "日文假名" },
+            { symbol: "ミ", name: "ミ", category: "日文假名" },
+            { symbol: "ム", name: "ム", category: "日文假名" },
+            { symbol: "メ", name: "メ", category: "日文假名" },
+            { symbol: "モ", name: "モ", category: "日文假名" },
+            { symbol: "ヤ", name: "ヤ", category: "日文假名" },
+            { symbol: "ユ", name: "ユ", category: "日文假名" },
+            { symbol: "ヨ", name: "ヨ", category: "日文假名" },
+            { symbol: "ラ", name: "ラ", category: "日文假名" },
+            { symbol: "リ", name: "リ", category: "日文假名" },
+            { symbol: "ル", name: "ル", category: "日文假名" },
+            { symbol: "レ", name: "レ", category: "日文假名" },
+            { symbol: "ロ", name: "ロ", category: "日文假名" },
+            { symbol: "ワ", name: "ワ", category: "日文假名" },
+            { symbol: "ヲ", name: "ヲ", category: "日文假名" },
+            { symbol: "ン", name: "ン", category: "日文假名" },
+            { symbol: "♠", name: "黑桃", category: "其他符号" },
+            { symbol: "♣", name: "梅花", category: "其他符号" },
+            { symbol: "♥", name: "红心", category: "其他符号" },
+            { symbol: "♦", name: "方块", category: "其他符号" },
+            { symbol: "☀", name: "太阳", category: "其他符号" },
+            { symbol: "☁", name: "云", category: "其他符号" },
+            { symbol: "☂", name: "伞", category: "其他符号" },
+            { symbol: "☃", name: "雪人", category: "其他符号" },
+            { symbol: "☎", name: "电话", category: "其他符号" },
+            { symbol: "☏", name: "电话", category: "其他符号" },
+            { symbol: "☑", name: "勾选框", category: "其他符号" },
+            { symbol: "☒", name: "叉选框", category: "其他符号" },
+            { symbol: "☐", name: "空框", category: "其他符号" },
+            { symbol: "☘", name: "三叶草", category: "其他符号" },
+            { symbol: "☙", name: "翻转叶", category: "其他符号" },
+            { symbol: "☠", name: "骷髅", category: "其他符号" },
+            { symbol: "☢", name: "辐射", category: "其他符号" },
+            { symbol: "☣", name: "生物危害", category: "其他符号" },
+            { symbol: "☯", name: "阴阳", category: "其他符号" },
+            { symbol: "☮", name: "和平", category: "其他符号" },
+            { symbol: "☸", name: "法轮", category: "其他符号" },
+            { symbol: "☹", name: "悲伤", category: "其他符号" },
+            { symbol: "☺", name: "微笑", category: "其他符号" },
+            { symbol: "♀", name: "女性", category: "其他符号" },
+            { symbol: "♂", name: "男性", category: "其他符号" },
+            { symbol: "♔", name: "白王", category: "其他符号" },
+            { symbol: "♕", name: "白后", category: "其他符号" },
+            { symbol: "♖", name: "白车", category: "其他符号" },
+            { symbol: "♗", name: "白象", category: "其他符号" },
+            { symbol: "♘", name: "白马", category: "其他符号" },
+            { symbol: "♙", name: "白兵", category: "其他符号" },
+            { symbol: "♚", name: "黑王", category: "其他符号" },
+            { symbol: "♛", name: "黑后", category: "其他符号" },
+            { symbol: "♜", name: "黑车", category: "其他符号" },
+            { symbol: "♝", name: "黑象", category: "其他符号" },
+            { symbol: "♞", name: "黑马", category: "其他符号" },
+            { symbol: "♟", name: "黑兵", category: "其他符号" },
+            { symbol: "♩", name: "四分音符", category: "其他符号" },
+            { symbol: "♪", name: "八分音符", category: "其他符号" },
+            { symbol: "♫", name: "双八分音符", category: "其他符号" },
+            { symbol: "♬", name: "双十六分音符", category: "其他符号" },
+            { symbol: "♭", name: "降号", category: "其他符号" },
+            { symbol: "♮", name: "还原号", category: "其他符号" },
+            { symbol: "♯", name: "升号", category: "其他符号" },
+            { symbol: "⚀", name: "骰子1", category: "其他符号" },
+            { symbol: "⚁", name: "骰子2", category: "其他符号" },
+            { symbol: "⚂", name: "骰子3", category: "其他符号" },
+            { symbol: "⚃", name: "骰子4", category: "其他符号" },
+            { symbol: "⚄", name: "骰子5", category: "其他符号" },
+            { symbol: "⚅", name: "骰子6", category: "其他符号" },
+            { symbol: "⚡", name: "闪电", category: "其他符号" },
+            { symbol: "⚪", name: "白圈", category: "其他符号" },
+            { symbol: "⚫", name: "黑圈", category: "其他符号" },
+            { symbol: "⚽", name: "足球", category: "其他符号" },
+            { symbol: "⚾", name: "棒球", category: "其他符号" },
+            { symbol: "⛄", name: "雪人", category: "其他符号" },
+            { symbol: "⛅", name: "多云", category: "其他符号" },
+            { symbol: "⛔", name: "禁止", category: "其他符号" },
+            { symbol: "✁", name: "剪刀", category: "其他符号" },
+            { symbol: "✂", name: "剪刀", category: "其他符号" },
+            { symbol: "✈", name: "飞机", category: "其他符号" },
+            { symbol: "✉", name: "信封", category: "其他符号" },
+            { symbol: "✌", name: "胜利手势", category: "其他符号" },
+            { symbol: "✍", name: "写字", category: "其他符号" },
+            { symbol: "✎", name: "铅笔", category: "其他符号" },
+            { symbol: "✓", name: "对勾", category: "其他符号" },
+            { symbol: "✗", name: "叉号", category: "其他符号" },
+            { symbol: "✝", name: "拉丁十字", category: "其他符号" },
+            { symbol: "✞", name: "阴影十字", category: "其他符号" },
+            { symbol: "✟", name: "粗十字", category: "其他符号" },
+            { symbol: "✠", name: "马耳他十字", category: "其他符号" },
+            { symbol: "✡", name: "大卫之星", category: "其他符号" },
+            { symbol: "✣", name: "四瓣花", category: "其他符号" },
+            { symbol: "✤", name: "八瓣花", category: "其他符号" },
+            { symbol: "✥", name: "十字花", category: "其他符号" },
+        ];
+
+        const categories = ["全部", "数学符号", "货币符号", "箭头符号", "几何图形", "标点符号", "制表符", "上标下标", "希腊字母", "日文假名", "其他符号"];
+        let currentCategory = "全部";
+        let currentSearch = "";
+        let currentPreview = null;
+
+        const categoryTabs = document.getElementById('categoryTabs');
+        const charGrid = document.getElementById('charGrid');
+        const charSearchInput = document.getElementById('charSearchInput');
+        const preview = document.getElementById('preview');
+        const previewChar = document.getElementById('previewChar');
+        const previewName = document.getElementById('previewName');
+        const copyPreviewBtn = document.getElementById('copyPreviewBtn');
+
+        function renderCategories() {
+            categoryTabs.innerHTML = categories.map(cat =>
+                `<button class="char-cat-btn${cat === currentCategory ? ' active' : ''}" data-cat="${cat}">${cat}</button>`
+            ).join('');
+            categoryTabs.querySelectorAll('.char-cat-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    currentCategory = btn.dataset.cat;
+                    renderCategories();
+                    renderGrid();
+                });
+            });
+        }
+
+        function renderGrid() {
+            let filtered = symbols;
+            if (currentCategory !== "全部") {
+                filtered = filtered.filter(s => s.category === currentCategory);
+            }
+            if (currentSearch) {
+                const q = currentSearch.toLowerCase();
+                filtered = filtered.filter(s => s.name.toLowerCase().includes(q) || s.symbol.includes(q));
+            }
+            charGrid.innerHTML = filtered.map(s =>
+                `<div class="char-item" data-symbol="${s.symbol}" data-name="${s.name}"><span class="char-symbol">${s.symbol}</span><span class="char-name">${s.name}</span></div>`
+            ).join('');
+            if (filtered.length === 0) {
+                charGrid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text-muted)">未找到匹配的符号</div>';
+            }
+            charGrid.querySelectorAll('.char-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const sym = item.dataset.symbol;
+                    const name = item.dataset.name;
+                    copyText(sym).then(() => {
+                        showPreview(sym, name);
+                    });
+                });
+            });
+        }
+
+        function showPreview(sym, name) {
+            previewChar.textContent = sym;
+            previewName.textContent = name;
+            preview.style.display = 'flex';
+            currentPreview = sym;
+        }
+
+        copyPreviewBtn.addEventListener('click', () => {
+            if (currentPreview) {
+                copyText(currentPreview).then(() => {
+                    copyPreviewBtn.textContent = '✓ 已复制!';
+                    setTimeout(() => { copyPreviewBtn.textContent = '📋 复制'; }, 1500);
+                });
+            }
+        });
+
+        charSearchInput.addEventListener('input', (e) => {
+            currentSearch = e.target.value.trim();
+            renderGrid();
+        });
+
+        renderCategories();
+        renderGrid();
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            const current = "tools/special-chars.html";
+            const currentCat = "文本工具";
+            const related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                const others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+                related.push(...others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+                <a href="${t.path.split('/').pop()}" class="tool-card">
+                    <div class="tool-name">${t.name}</div>
+                    <div class="tool-desc">${t.description}</div>
+                </a>
+            `).join('');
+        }).catch(() => {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

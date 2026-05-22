@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>条形码生成 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="在线生成条形码，支持多种格式 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="条形码,barcode,ean13,code128,code39,upc,itf,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/barcode.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/barcode.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="条形码生成 - 在线工具">
+    <meta property="og:description" content="在线生成条形码，支持多种格式 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/barcode.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="条形码生成 - 在线工具">
+    <meta name="twitter:description" content="在线生成条形码，支持多种格式 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "条形码生成",
+                "description": "在线生成条形码，支持 EAN-13、Code 128 等格式",
+                "url": "/tools/barcode.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "生成器",
+                        "item": "/#category-生成器"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "条形码生成",
+                        "item": "/tools/barcode.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "生成的内容安全吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "所有生成操作均在浏览器本地完成，生成的内容不会上传到服务器。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "可以批量生成吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持批量生成，您可以设置生成数量，一次性生成多个结果。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "如何复制生成的内容？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "点击复制按钮即可将生成的内容复制到剪贴板。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-生成器">生成器</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>条形码生成</span>
+            </nav>
+            <div class="tool-header">
+                <h1>条形码生成</h1>
+                <p>在线生成条形码，支持多种格式</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">生成器</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <style>
+                    .barcode-layout { display: grid; grid-template-columns: 1fr 280px; gap: 1.25rem; }
+                    .barcode-input-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; }
+                    .barcode-input-card .card-title { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.75rem; }
+                    .barcode-input-row { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
+                    .barcode-input-row input { flex: 1; padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card-bg); color: var(--text); font-family: "SF Mono", Consolas, monospace; font-size: 1rem; }
+                    .barcode-input-row input:focus { outline: none; border-color: var(--primary); }
+                    .barcode-input-row input.error { border-color: #ef4444; }
+                    .barcode-input-row input.valid { border-color: #22c55e; }
+                    .barcode-hint { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem; }
+                    .barcode-error { font-size: 0.8rem; color: #ef4444; min-height: 1.2rem; }
+                    .barcode-format-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1rem; }
+                    .barcode-format-card { padding: 0.6rem; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); cursor: pointer; transition: var(--transition); text-align: center; }
+                    .barcode-format-card:hover { border-color: var(--primary); }
+                    .barcode-format-card.active { border-color: var(--primary); background: rgba(59,130,246,0.08); }
+                    .barcode-format-card .fmt-name { font-weight: 600; font-size: 0.8rem; }
+                    .barcode-format-card .fmt-desc { font-size: 0.65rem; color: var(--text-muted); margin-top: 2px; }
+                    .barcode-settings { display: flex; flex-direction: column; gap: 0.75rem; }
+                    .barcode-setting label { display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.25rem; }
+                    .barcode-setting input, .barcode-setting select { width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--text); font-size: 0.85rem; box-sizing: border-box; }
+                    .barcode-preview-area { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 2rem; min-height: 180px; display: flex; align-items: center; justify-content: center; margin-top: 1rem; }
+                    .barcode-preview-area svg { max-width: 100%; }
+                    .barcode-sample-btn { font-size: 0.75rem; color: var(--primary); background: none; border: none; cursor: pointer; padding: 0; margin-top: 0.25rem; }
+                    .barcode-sample-btn:hover { text-decoration: underline; }
+                    @media (max-width: 768px) { .barcode-layout { grid-template-columns: 1fr; } }
+                </style>
+                <div class="barcode-layout">
+                    <div>
+                        <div class="barcode-input-card">
+                            <div class="card-title">条形码内容</div>
+                            <div class="barcode-input-row">
+                                <input type="text" id="barcodeValue" placeholder="输入条形码内容..." value="123456789012">
+                                <button class="btn btn-primary" id="generateBarcodeBtn">生成</button>
+                            </div>
+                            <div class="barcode-hint" id="barcodeHint">EAN-13: 12 或 13 位数字</div>
+                            <button class="barcode-sample-btn" id="barcodeSampleBtn">填入示例值</button>
+                            <div class="barcode-error" id="barcodeError"></div>
+                        </div>
+                        <div class="barcode-preview-area" id="barcodePreview">
+                            <svg id="barcodeSvg"></svg>
+                        </div>
+                        <div class="tool-actions">
+                            <button class="btn btn-success" id="downloadBarcodeBtn" style="display:none">⬇ 下载 PNG</button>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="barcode-input-card">
+                            <div class="card-title">格式</div>
+                            <div class="barcode-format-grid" id="formatGrid">
+                                <div class="barcode-format-card" data-format="CODE128"><div class="fmt-name">CODE128</div><div class="fmt-desc">任意字符</div></div>
+                                <div class="barcode-format-card active" data-format="EAN13"><div class="fmt-name">EAN-13</div><div class="fmt-desc">13位数字</div></div>
+                                <div class="barcode-format-card" data-format="EAN8"><div class="fmt-name">EAN-8</div><div class="fmt-desc">8位数字</div></div>
+                                <div class="barcode-format-card" data-format="UPC"><div class="fmt-name">UPC</div><div class="fmt-desc">12位数字</div></div>
+                                <div class="barcode-format-card" data-format="CODE39"><div class="fmt-name">CODE39</div><div class="fmt-desc">字母数字</div></div>
+                                <div class="barcode-format-card" data-format="ITF14"><div class="fmt-name">ITF</div><div class="fmt-desc">偶数数字</div></div>
+                            </div>
+                        </div>
+                        <div class="barcode-input-card">
+                            <div class="card-title">设置</div>
+                            <div class="barcode-settings">
+                                <div class="barcode-setting">
+                                    <label>宽度</label>
+                                    <input type="number" id="barcodeWidth" value="2" min="1" max="4">
+                                </div>
+                                <div class="barcode-setting">
+                                    <label>高度</label>
+                                    <input type="number" id="barcodeHeight" value="100" min="30" max="300">
+                                </div>
+                                <div class="barcode-setting">
+                                    <label>显示文字</label>
+                                    <select id="barcodeShowText">
+                                        <option value="true" selected>是</option>
+                                        <option value="false">否</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section class="features">
+                <h2>条形码生成功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>多种格式</h3>
+                        <p>支持 CODE128、EAN-13、EAN-8、UPC、CODE39、ITF 等常用条形码格式。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📥</div>
+                        <h3>下载图片</h3>
+                        <p>生成后可直接下载为 PNG 图片，方便打印和使用。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📏</div>
+                        <h3>自定义尺寸</h3>
+                        <p>可调整条形码的宽度和高度，适应不同场景需求。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>所有生成操作在浏览器中完成，数据不上传服务器。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>条形码生成常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持哪些条形码格式？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>支持 CODE128（通用）、EAN-13（商品条码）、EAN-8（短商品条码）、UPC（北美商品）、CODE39（字母数字）、ITF（交叉25码）等常用格式。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>EAN-13 和 Code 128 有什么区别？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>EAN-13 固定 13 位数字，主要用于商品零售。Code 128 支持字母数字和特殊字符，长度可变，应用更广泛。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>生成的条形码可以打印吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>可以。下载 PNG 图片后可以直接打印，建议打印时保持原始尺寸比例以确保扫描识别率。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>数据会被上传到服务器吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不会。条形码生成完全在浏览器本地完成，您的数据不会上传到任何服务器。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "条形码生成", path: "tools/barcode.html" };
+    </script>
+    <script src="../assets/js/libs.js"></script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var barcodeValue = document.getElementById('barcodeValue');
+        var barcodeWidth = document.getElementById('barcodeWidth');
+        var barcodeHeight = document.getElementById('barcodeHeight');
+        var barcodeShowText = document.getElementById('barcodeShowText');
+        var generateBarcodeBtn = document.getElementById('generateBarcodeBtn');
+        var downloadBarcodeBtn = document.getElementById('downloadBarcodeBtn');
+        var barcodeError = document.getElementById('barcodeError');
+        var barcodeHint = document.getElementById('barcodeHint');
+        var barcodeSvg = document.getElementById('barcodeSvg');
+        var barcodeSampleBtn = document.getElementById('barcodeSampleBtn');
+        var formatGrid = document.getElementById('formatGrid');
+        var currentFormat = 'EAN13';
+
+        var formatHints = {
+            CODE128: 'CODE128: 任意 ASCII 字符',
+            EAN13: 'EAN-13: 12 或 13 位数字',
+            EAN8: 'EAN-8: 7 或 8 位数字',
+            UPC: 'UPC: 11 或 12 位数字',
+            CODE39: 'CODE39: 大写字母、数字、-.$/+%',
+            ITF14: 'ITF: 偶数位数字（通常14位）'
+        };
+
+        var formatValidators = {
+            CODE128: function(v) { return v.length > 0 ? '' : '内容不能为空'; },
+            EAN13: function(v) {
+                if (!/^\d+$/.test(v)) return 'EAN-13 只能包含数字';
+                if (v.length !== 12 && v.length !== 13) return 'EAN-13 需要 12 或 13 位数字';
+                return '';
+            },
+            EAN8: function(v) {
+                if (!/^\d+$/.test(v)) return 'EAN-8 只能包含数字';
+                if (v.length !== 7 && v.length !== 8) return 'EAN-8 需要 7 或 8 位数字';
+                return '';
+            },
+            UPC: function(v) {
+                if (!/^\d+$/.test(v)) return 'UPC 只能包含数字';
+                if (v.length !== 11 && v.length !== 12) return 'UPC 需要 11 或 12 位数字';
+                return '';
+            },
+            CODE39: function(v) {
+                if (!/^[A-Z0-9\-\.\ \$\/\+\%]+$/.test(v)) return 'CODE39 只支持大写字母、数字和 -.$/+%';
+                return '';
+            },
+            ITF14: function(v) {
+                if (!/^\d+$/.test(v)) return 'ITF 只能包含数字';
+                if (v.length % 2 !== 0) return 'ITF 需要偶数位数字';
+                return '';
+            }
+        };
+
+        var formatSamples = {
+            CODE128: 'ABC-12345',
+            EAN13: '123456789012',
+            EAN8: '1234567',
+            UPC: '12345678901',
+            CODE39: 'CODE39TEST',
+            ITF14: '12345678901234'
+        };
+
+        function getFormatName(fmt) {
+            var map = { CODE128: 'CODE128', EAN13: 'EAN13', EAN8: 'EAN8', UPC: 'UPC', CODE39: 'CODE39', ITF14: 'ITF14' };
+            return map[fmt] || 'CODE128';
+        }
+
+        function setFormat(fmt) {
+            currentFormat = fmt;
+            formatGrid.querySelectorAll('.barcode-format-card').forEach(function(card) {
+                card.classList.toggle('active', card.getAttribute('data-format') === fmt);
+            });
+            barcodeHint.textContent = formatHints[fmt];
+            barcodeError.textContent = '';
+            barcodeValue.classList.remove('error', 'valid');
+        }
+
+        formatGrid.querySelectorAll('.barcode-format-card').forEach(function(card) {
+            card.addEventListener('click', function() {
+                setFormat(this.getAttribute('data-format'));
+                if (barcodeSvg.getAttribute('data-jsbarcode')) generateBarcode();
+            });
+        });
+
+        barcodeSampleBtn.addEventListener('click', function() {
+            barcodeValue.value = formatSamples[currentFormat] || '123456789012';
+            barcodeValue.classList.remove('error', 'valid');
+            barcodeError.textContent = '';
+            generateBarcode();
+        });
+
+        function generateBarcode() {
+            barcodeError.textContent = '';
+            var val = barcodeValue.value.trim();
+            var fmt = currentFormat;
+            barcodeHint.textContent = formatHints[fmt];
+
+            if (!val) {
+                barcodeError.textContent = '请输入条形码内容';
+                barcodeValue.classList.add('error');
+                barcodeValue.classList.remove('valid');
+                return;
+            }
+
+            var error = formatValidators[fmt](val);
+            if (error) {
+                barcodeError.textContent = error;
+                barcodeValue.classList.add('error');
+                barcodeValue.classList.remove('valid');
+                return;
+            }
+
+            barcodeValue.classList.remove('error');
+            barcodeValue.classList.add('valid');
+
+            loadLibs('jsbarcode').then(function() {
+                try {
+                    JsBarcode(barcodeSvg, val, {
+                        format: getFormatName(fmt),
+                        width: parseInt(barcodeWidth.value, 10),
+                        height: parseInt(barcodeHeight.value, 10),
+                        displayValue: barcodeShowText.value === 'true',
+                        font: 'monospace',
+                        fontOptions: 'bold',
+                        margin: 10
+                    });
+                    downloadBarcodeBtn.style.display = 'inline-flex';
+                } catch(e) {
+                    barcodeError.textContent = '生成失败: ' + e.message;
+                    downloadBarcodeBtn.style.display = 'none';
+                }
+            }).catch(function() {
+                barcodeError.textContent = '条形码库加载失败，请检查网络连接';
+            });
+        }
+
+        generateBarcodeBtn.addEventListener('click', generateBarcode);
+
+        barcodeWidth.addEventListener('change', function() {
+            if (barcodeSvg.getAttribute('data-jsbarcode')) generateBarcode();
+        });
+
+        barcodeHeight.addEventListener('change', function() {
+            if (barcodeSvg.getAttribute('data-jsbarcode')) generateBarcode();
+        });
+
+        barcodeShowText.addEventListener('change', function() {
+            if (barcodeSvg.getAttribute('data-jsbarcode')) generateBarcode();
+        });
+
+        barcodeValue.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') generateBarcode();
+        });
+
+        barcodeValue.addEventListener('input', function() {
+            this.classList.remove('error', 'valid');
+            barcodeError.textContent = '';
+        });
+
+        downloadBarcodeBtn.addEventListener('click', function() {
+            var svgEl = barcodeSvg;
+            var svgData = new XMLSerializer().serializeToString(svgEl);
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+            var img = new Image();
+            img.onload = function() {
+                canvas.width = img.width * 2;
+                canvas.height = img.height * 2;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                var link = document.createElement('a');
+                link.download = 'barcode.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            };
+            img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+        });
+
+        generateBarcode();
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(function(r) { return r.json(); }).then(function(tools) {
+            var current = "tools/barcode.html";
+            var currentCat = "生成器";
+            var related = tools.filter(function(t) { return t.path !== current && t.category === currentCat; }).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(function(t) { return t.path !== current && related.indexOf(t) === -1; }).slice(0, 5 - related.length);
+                related.push.apply(related, others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(function(t) {
+                return '<a href="' + t.path.split('/').pop() + '" class="tool-card">' +
+                    '<div class="tool-name">' + t.name + '</div>' +
+                    '<div class="tool-desc">' + t.description + '</div>' +
+                    '</a>';
+            }).join('');
+        }).catch(function() {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

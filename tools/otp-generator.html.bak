@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP 验证码 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="TOTP/HOTP 验证码生成，支持自定义密钥和步长 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="otp, totp, 2fa, 验证, 双因素,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/otp-generator.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/otp-generator.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="OTP 验证码 - 在线工具">
+    <meta property="og:description" content="TOTP/HOTP 验证码生成，支持自定义密钥和步长 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/otp-generator.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="OTP 验证码 - 在线工具">
+    <meta name="twitter:description" content="TOTP/HOTP 验证码生成，支持自定义密钥和步长 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <script src="../assets/js/theme.js"></script>

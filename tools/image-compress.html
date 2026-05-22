@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片压缩 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="浏览器端图片压缩，支持 JPEG/PNG/WebP 格式 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="图片,压缩,优化,jpeg,png,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/image-compress.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/image-compress.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="图片压缩 - 在线工具">
+    <meta property="og:description" content="浏览器端图片压缩，支持 JPEG/PNG/WebP 格式 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/image-compress.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="图片压缩 - 在线工具">
+    <meta name="twitter:description" content="浏览器端图片压缩，支持 JPEG/PNG/WebP 格式 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "图片压缩",
+                "description": "浏览器端图片压缩，支持 JPEG/PNG/WebP 格式",
+                "url": "/tools/image-compress.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "设计工具",
+                        "item": "/#category-设计工具"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "图片压缩",
+                        "item": "/tools/image-compress.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "支持哪些颜色格式？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持 HEX、RGB、HSL 等常见颜色格式的互相转换。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "图片处理会压缩质量吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "您可以自定义压缩比例，在文件大小和画质之间取得平衡。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "导出格式有哪些？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持 PNG、JPEG、WebP 等常见图片格式导出。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-设计工具">设计工具</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>图片压缩</span>
+            </nav>
+            <div class="tool-header">
+                <h1>图片压缩</h1>
+                <p>浏览器端图片压缩，支持 JPEG/PNG/WebP 格式</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">设计工具</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-zone-content">
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">拖拽图片到此处，或点击选择图片</div>
+                        <div class="upload-hint">支持 JPEG、PNG、WebP 格式</div>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/*" style="display:none;">
+                </div>
+                <div id="fileInfo" class="file-info hidden">
+                    <div class="file-info-name" id="fileName"></div>
+                    <div class="file-info-size" id="fileSize"></div>
+                </div>
+                <div id="settingsPanel" class="settings-panel hidden">
+                    <div class="setting-group">
+                        <div class="setting-label">
+                            <span>质量</span>
+                            <span class="setting-value" id="qualityDisplay">75%</span>
+                        </div>
+                        <input type="range" class="quality-slider" id="qualitySlider" min="10" max="95" value="75">
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-group">
+                            <div class="setting-label"><span>最大宽度 (px)</span></div>
+                            <input type="number" class="setting-input" id="maxWidth" placeholder="原始宽度" min="1">
+                        </div>
+                        <div class="setting-group">
+                            <div class="setting-label"><span>最大高度 (px)</span></div>
+                            <input type="number" class="setting-input" id="maxHeight" placeholder="原始高度" min="1">
+                        </div>
+                        <div class="setting-group">
+                            <div class="setting-label"><span>输出格式</span></div>
+                            <select class="setting-select" id="outputFormat">
+                                <option value="image/jpeg">JPEG</option>
+                                <option value="image/png">PNG</option>
+                                <option value="image/webp">WebP</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div id="previewSection" class="preview-section hidden">
+                    <div class="preview-compare">
+                        <div class="preview-box">
+                            <div class="preview-label">原始图片</div>
+                            <img id="originalImg" alt="原始图片">
+                            <div class="preview-dimensions" id="originalDim"></div>
+                        </div>
+                        <div class="preview-divider">→</div>
+                        <div class="preview-box">
+                            <div class="preview-label">压缩后</div>
+                            <img id="compressedImg" alt="压缩图片">
+                            <div class="preview-dimensions" id="compressedDim"></div>
+                        </div>
+                    </div>
+                    <div class="compression-stats" id="compStats">
+                        <div class="comp-stat-item">
+                            <div class="comp-stat-label">原始大小</div>
+                            <div class="comp-stat-value" id="statOriginal">--</div>
+                        </div>
+                        <div class="comp-stat-item">
+                            <div class="comp-stat-label">压缩后大小</div>
+                            <div class="comp-stat-value" id="statCompressed">--</div>
+                        </div>
+                        <div class="comp-stat-item">
+                            <div class="comp-stat-label">压缩率</div>
+                            <div class="comp-stat-value" id="statRatio">--</div>
+                        </div>
+                        <div class="comp-stat-item">
+                            <div class="comp-stat-label">节省空间</div>
+                            <div class="comp-stat-value highlight" id="statSaved">--</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tool-actions">
+                    <button class="btn btn-primary" id="compressBtn" disabled>▶ 压缩</button>
+                    <button class="btn btn-secondary" id="downloadBtn" disabled>📥 下载</button>
+                    <button class="btn btn-secondary" id="resetBtn">🔄 重新选择</button>
+                </div>
+            </div>
+            <section class="features">
+                <h2>图片压缩功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📸</div>
+                        <h3>多格式支持</h3>
+                        <p>支持 JPEG、PNG、WebP 格式的图片压缩。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎚️</div>
+                        <h3>质量调节</h3>
+                        <p>可自由调整压缩质量，在文件大小和画质之间找到最佳平衡。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👁️</div>
+                        <h3>实时预览</h3>
+                        <p>压缩前后对比预览，直观查看压缩效果。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>图片仅在您的浏览器中处理，不会上传到任何服务器。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>图片压缩常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持哪些图片格式？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>支持 JPEG、PNG 和 WebP 格式的图片压缩。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>压缩质量如何选择？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>质量滑块从 10（最低质量/最小文件）到 95（最高质量/最大文件）。一般建议 70-85 之间，在画质和文件大小之间取得良好平衡。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>图片会被上传吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不会。图片压缩完全在您的浏览器中使用 Canvas API 完成，图片文件不会上传到任何服务器。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "图片压缩", path: "tools/image-compress.html" };
+    </script>
+    <script src="../assets/js/libs.js"></script>
+    <script src="../assets/js/record-tool.js"></script>
+    <style>
+        .upload-zone { border: 2px dashed var(--border); border-radius: var(--radius); padding: 3rem 2rem; text-align: center; cursor: pointer; transition: var(--transition); margin-bottom: 1rem; }
+        .upload-zone:hover, .upload-zone.dragover { border-color: var(--primary); background: rgba(var(--primary-rgb, 59, 130, 246), 0.05); }
+        .upload-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+        .upload-text { font-size: 1rem; font-weight: 500; color: var(--text); margin-bottom: 0.5rem; }
+        .upload-hint { font-size: 0.8rem; color: var(--text-secondary); }
+        .file-info { padding: 0.75rem 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .file-info.hidden { display: none; }
+        .file-info-name { font-size: 0.85rem; font-weight: 500; color: var(--text); }
+        .file-info-size { font-size: 0.8rem; color: var(--text-secondary); }
+        .settings-panel { padding: 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 1rem; }
+        .settings-panel.hidden { display: none; }
+        .setting-group { margin-bottom: 0.75rem; }
+        .setting-label { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); margin-bottom: 0.35rem; }
+        .setting-value { font-weight: 600; color: var(--primary); }
+        .quality-slider { width: 100%; height: 6px; -webkit-appearance: none; appearance: none; background: var(--border); border-radius: 3px; outline: none; }
+        .quality-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--primary); cursor: pointer; }
+        .setting-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+        .setting-input, .setting-select { width: 100%; padding: 0.5rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; background: var(--card-bg); color: var(--text); }
+        .preview-section { margin-bottom: 1rem; }
+        .preview-section.hidden { display: none; }
+        .preview-compare { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; align-items: center; margin-bottom: 1rem; }
+        .preview-box { text-align: center; }
+        .preview-label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .preview-box img { max-width: 100%; max-height: 250px; border-radius: var(--radius-sm); border: 1px solid var(--border); }
+        .preview-dimensions { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.35rem; }
+        .preview-divider { font-size: 1.5rem; color: var(--text-muted); }
+        .compression-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+        .comp-stat-item { padding: 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); text-align: center; }
+        .comp-stat-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; }
+        .comp-stat-value { font-size: 1rem; font-weight: 700; color: var(--text); }
+        .comp-stat-value.highlight { color: #22c55e; }
+        .hidden { display: none !important; }
+        @media (max-width: 768px) { .preview-compare { grid-template-columns: 1fr; } .preview-divider { transform: rotate(90deg); } .compression-stats { grid-template-columns: repeat(2, 1fr); } .setting-row { grid-template-columns: 1fr; } }
+        @media (max-width: 480px) { .compression-stats { grid-template-columns: 1fr; } }
+    </style>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        var uploadZone = document.getElementById('uploadZone');
+        var fileInput = document.getElementById('fileInput');
+        var fileInfo = document.getElementById('fileInfo');
+        var fileName = document.getElementById('fileName');
+        var fileSize = document.getElementById('fileSize');
+        var settingsPanel = document.getElementById('settingsPanel');
+        var previewSection = document.getElementById('previewSection');
+        var originalImg = document.getElementById('originalImg');
+        var compressedImg = document.getElementById('compressedImg');
+        var qualitySlider = document.getElementById('qualitySlider');
+        var qualityDisplay = document.getElementById('qualityDisplay');
+        var maxWidthInput = document.getElementById('maxWidth');
+        var maxHeightInput = document.getElementById('maxHeight');
+        var outputFormat = document.getElementById('outputFormat');
+        var compressBtn = document.getElementById('compressBtn');
+        var downloadBtn = document.getElementById('downloadBtn');
+        var resetBtn = document.getElementById('resetBtn');
+        var statOriginal = document.getElementById('statOriginal');
+        var statCompressed = document.getElementById('statCompressed');
+        var statRatio = document.getElementById('statRatio');
+        var statSaved = document.getElementById('statSaved');
+        var originalDim = document.getElementById('originalDim');
+        var compressedDim = document.getElementById('compressedDim');
+        var originalFile = null;
+        var compressedBlob = null;
+        var originalWidth = 0;
+        var originalHeight = 0;
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1048576) return (bytes / 1024).toFixed(2) + ' KB';
+            return (bytes / 1048576).toFixed(2) + ' MB';
+        }
+        function loadImage(file) {
+            originalFile = file;
+            fileName.textContent = file.name;
+            fileSize.textContent = formatSize(file.size);
+            fileInfo.classList.remove('hidden');
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                originalImg.src = e.target.result;
+                var img = new Image();
+                img.onload = function() {
+                    originalWidth = img.width;
+                    originalHeight = img.height;
+                    if (!maxWidthInput.value) maxWidthInput.value = originalWidth;
+                    if (!maxHeightInput.value) maxHeightInput.value = originalHeight;
+                    originalDim.textContent = originalWidth + ' × ' + originalHeight + ' px';
+                    settingsPanel.classList.remove('hidden');
+                    previewSection.classList.remove('hidden');
+                    compressBtn.disabled = false;
+                    compressImage();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        function compressImage() {
+            if (!originalFile) return;
+            var quality = parseInt(qualitySlider.value, 10) / 100;
+            var mw = parseInt(maxWidthInput.value, 10) || originalWidth;
+            var mh = parseInt(maxHeightInput.value, 10) || originalHeight;
+            var format = outputFormat.value;
+            var img = new Image();
+            img.onload = function() {
+                var w = img.width;
+                var h = img.height;
+                if (w > mw || h > mh) {
+                    var ratio = Math.min(mw / w, mh / h);
+                    w = Math.round(w * ratio);
+                    h = Math.round(h * ratio);
+                }
+                var canvas = document.createElement('canvas');
+                canvas.width = w;
+                canvas.height = h;
+                var ctx = canvas.getContext('2d');
+                if (format === 'image/jpeg') { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h); }
+                ctx.drawImage(img, 0, 0, w, h);
+                canvas.toBlob(function(blob) {
+                    compressedBlob = blob;
+                    compressedImg.src = URL.createObjectURL(blob);
+                    compressedDim.textContent = w + ' × ' + h + ' px';
+                    statOriginal.textContent = formatSize(originalFile.size);
+                    statCompressed.textContent = formatSize(blob.size);
+                    var reduction = ((1 - blob.size / originalFile.size) * 100).toFixed(1);
+                    statRatio.textContent = (reduction > 0 ? '-' + reduction + '%' : '+' + Math.abs(reduction) + '%');
+                    var saved = originalFile.size - blob.size;
+                    statSaved.textContent = saved > 0 ? '-' + formatSize(saved) : '+' + formatSize(Math.abs(saved));
+                    downloadBtn.disabled = false;
+                }, format, quality);
+            };
+            img.src = originalImg.src;
+        }
+        uploadZone.addEventListener('click', function() { fileInput.click(); });
+        uploadZone.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('dragover'); });
+        uploadZone.addEventListener('dragleave', function() { this.classList.remove('dragover'); });
+        uploadZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            if (e.dataTransfer.files.length && e.dataTransfer.files[0].type.startsWith('image/')) {
+                loadImage(e.dataTransfer.files[0]);
+            }
+        });
+        fileInput.addEventListener('change', function() { if (this.files.length) loadImage(this.files[0]); });
+        qualitySlider.addEventListener('input', function() { qualityDisplay.textContent = this.value + '%'; });
+        qualitySlider.addEventListener('change', function() { if (originalFile) compressImage(); });
+        maxWidthInput.addEventListener('change', function() { if (originalFile) compressImage(); });
+        maxHeightInput.addEventListener('change', function() { if (originalFile) compressImage(); });
+        outputFormat.addEventListener('change', function() { if (originalFile) compressImage(); });
+        compressBtn.addEventListener('click', function() { if (originalFile) compressImage(); });
+        downloadBtn.addEventListener('click', function() {
+            if (!compressedBlob) return;
+            var ext = outputFormat.value === 'image/jpeg' ? 'jpg' : outputFormat.value === 'image/png' ? 'png' : 'webp';
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(compressedBlob);
+            a.download = 'compressed_' + Date.now() + '.' + ext;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        });
+        resetBtn.addEventListener('click', function() {
+            originalFile = null;
+            compressedBlob = null;
+            originalImg.src = '';
+            compressedImg.src = '';
+            fileInfo.classList.add('hidden');
+            settingsPanel.classList.add('hidden');
+            previewSection.classList.add('hidden');
+            compressBtn.disabled = true;
+            downloadBtn.disabled = true;
+            fileInput.value = '';
+            maxWidthInput.value = '';
+            maxHeightInput.value = '';
+            qualitySlider.value = 75;
+            qualityDisplay.textContent = '75%';
+        });
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            var current = "tools/image-compress.html";
+            var currentCat = "设计工具";
+            var related = tools.filter(function(t) { return t.path !== current && t.category === currentCat; }).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(function(t) { return t.path !== current && related.indexOf(t) === -1; }).slice(0, 5 - related.length);
+                related.push.apply(related, others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(function(t) {
+                return '<a href="' + t.path.split('/').pop() + '" class="tool-card"><div class="tool-name">' + t.name + '</div><div class="tool-desc">' + t.description + '</div></a>';
+            }).join('');
+        }).catch(function() {});
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket 测试 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="WebSocket 在线连接测试工具，支持 ws:// 和 wss:// - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="websocket,ws,wss,测试,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/websocket.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/websocket.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="WebSocket 测试 - 在线工具">
+    <meta property="og:description" content="WebSocket 在线连接测试工具，支持 ws:// 和 wss:// - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/websocket.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="WebSocket 测试 - 在线工具">
+    <meta name="twitter:description" content="WebSocket 在线连接测试工具，支持 ws:// 和 wss:// - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "WebSocket 测试",
+                "description": "WebSocket 在线连接测试工具，支持 ws:// 和 wss://",
+                "url": "/tools/websocket.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "网络工具",
+                        "item": "/#category-网络工具"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "WebSocket 测试",
+                        "item": "/tools/websocket.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "查询结果准确吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "查询结果基于公开数据库，准确性较高，但可能存在少量延迟。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "为什么我的 IP 显示不准确？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "IP 归属地数据库可能未及时更新，建议参考多个数据源。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "这些工具需要安装插件吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "不需要。所有工具均为纯网页实现，打开浏览器即可使用。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-网络工具">网络工具</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>WebSocket 测试</span>
+            </nav>
+            <div class="tool-header">
+                <h1>WebSocket 测试</h1>
+                <p>WebSocket 在线连接测试工具，支持 ws:// 和 wss://</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">网络工具</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="ws-connection-section">
+                    <div class="ws-url-row">
+                        <input type="text" class="ws-url-input" id="wsUrl" placeholder="ws:// 或 wss:// 服务器地址" value="wss://echo.websocket.org">
+                        <button class="btn btn-primary" id="connectBtn">🔌 连接</button>
+                        <button class="btn btn-secondary" id="disconnectBtn" disabled>⛔ 断开</button>
+                    </div>
+                    <div class="ws-presets">
+                        <span class="ws-presets-label">预设服务器:</span>
+                        <div class="ws-preset-chips" id="wsPresets">
+                            <button class="ws-preset-chip" data-url="wss://echo.websocket.org">echo.websocket.org</button>
+                            <button class="ws-preset-chip" data-url="wss://echo.websocket.events">echo.websocket.events</button>
+                            <button class="ws-preset-chip" data-url="ws://echo.websocket.org">ws://echo</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="ws-status-row">
+                    <div class="ws-status-indicator" id="statusIndicator">
+                        <span class="ws-status-dot"></span>
+                        <span class="ws-status-text" id="statusText">未连接</span>
+                    </div>
+                    <div class="ws-connection-info" id="connInfo">
+                        <div class="conn-info-item">
+                            <span class="conn-info-label">状态</span>
+                            <span class="conn-info-value" id="connStatus">--</span>
+                        </div>
+                        <div class="conn-info-item">
+                            <span class="conn-info-label">协议</span>
+                            <span class="conn-info-value" id="connProtocol">--</span>
+                        </div>
+                        <div class="conn-info-item">
+                            <span class="conn-info-label">消息</span>
+                            <span class="conn-info-value" id="connMsgCount">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ws-message-log" id="messageLog">
+                    <div class="ws-log-empty">等待连接...</div>
+                </div>
+                <div class="ws-send-row">
+                    <input type="text" class="ws-message-input" id="messageInput" placeholder="输入消息..." disabled>
+                    <button class="btn btn-primary" id="sendBtn" disabled>📤 发送</button>
+                    <button class="btn btn-secondary" id="formatJsonBtn" disabled>✨ 格式化JSON</button>
+                    <button class="btn btn-secondary" id="clearLogBtn">🗑 清空</button>
+                    <label class="ws-auto-scroll-label">
+                        <input type="checkbox" id="autoScrollToggle" checked>
+                        <span>自动滚动</span>
+                    </label>
+                </div>
+                <div class="ws-heartbeat-row">
+                    <label class="ws-heartbeat-label">
+                        <input type="checkbox" id="heartbeatToggle">
+                        <span>自动心跳</span>
+                    </label>
+                    <div class="ws-heartbeat-fields">
+                        <label class="ws-heartbeat-field">
+                            <span>间隔</span>
+                            <input type="number" class="ws-heartbeat-input" id="heartbeatInterval" value="30" min="1" max="3600">
+                            <span>秒</span>
+                        </label>
+                        <label class="ws-heartbeat-field">
+                            <span>消息</span>
+                            <input type="text" class="ws-heartbeat-msg-input" id="heartbeatMsg" value="ping">
+                        </label>
+                    </div>
+                    <span class="ws-heartbeat-status" id="heartbeatStatus"></span>
+                </div>
+            </div>
+            <section class="features">
+                <h2>WebSocket 测试功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔌</div>
+                        <h3>连接测试</h3>
+                        <p>测试 ws:// 和 wss:// WebSocket 连接是否正常。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📤</div>
+                        <h3>消息收发</h3>
+                        <p>发送和接收 WebSocket 消息，实时显示通信日志。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>连接信息</h3>
+                        <p>显示连接状态、协议、消息计数等详细信息。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>本地连接</h3>
+                        <p>连接直接从您的浏览器到目标服务器，不经过中间代理。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>WebSocket 测试常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>WebSocket 是什么？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>WebSocket 是一种在单个 TCP 连接上进行全双工通信的协议，允许服务器主动向客户端推送数据。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>ws:// 和 wss:// 有什么区别？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>ws:// 是未加密的 WebSocket 连接，wss:// 是加密的（类似 HTTP 和 HTTPS 的关系）。生产环境推荐使用 wss://。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>为什么连接失败？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>可能原因：目标服务器未运行 WebSocket 服务、CORS 策略阻止连接、防火墙拦截、或使用了不支持 WebSocket 的代理。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "WebSocket 测试", path: "tools/websocket.html" };
+    </script>
+    <script src="../assets/js/libs.js"></script>
+    <script src="../assets/js/record-tool.js"></script>
+    <style>
+        .ws-connection-section { margin-bottom: 1rem; }
+        .ws-url-row { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .ws-url-input { flex: 1; padding: 0.75rem 1rem; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; font-family: monospace; background: var(--bg); color: var(--text); }
+        .ws-url-input:focus { border-color: var(--primary); outline: none; }
+        .ws-presets { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+        .ws-presets-label { font-size: 0.8rem; color: var(--text-secondary); font-weight: 500; }
+        .ws-preset-chips { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .ws-preset-chip { padding: 0.35rem 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: 20px; font-size: 0.75rem; cursor: pointer; transition: var(--transition); color: var(--text-secondary); font-family: monospace; }
+        .ws-preset-chip:hover { border-color: var(--primary); color: var(--primary); }
+        .ws-status-row { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center; }
+        .ws-status-indicator { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+        .ws-status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--text-muted); transition: background 0.3s ease; }
+        .ws-status-indicator.status-disconnected .ws-status-dot { background: #ef4444; }
+        .ws-status-indicator.status-connecting .ws-status-dot { background: #f59e0b; animation: pulse 1s infinite; }
+        .ws-status-indicator.status-connected .ws-status-dot { background: #22c55e; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .ws-status-text { font-size: 0.85rem; font-weight: 500; color: var(--text); }
+        .ws-connection-info { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .conn-info-item { display: flex; flex-direction: column; align-items: center; padding: 0.5rem 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); min-width: 80px; }
+        .conn-info-label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+        .conn-info-value { font-size: 0.9rem; font-weight: 600; color: var(--text); margin-top: 0.25rem; }
+        .ws-message-log { height: 300px; overflow-y: auto; padding: 0.75rem; background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 0.75rem; font-family: monospace; font-size: 0.8rem; line-height: 1.6; }
+        .ws-log-empty { color: var(--text-muted); text-align: center; padding: 2rem; }
+        .log-entry { padding: 0.35rem 0.5rem; border-radius: 4px; margin-bottom: 0.25rem; display: flex; gap: 0.5rem; }
+        .log-time { color: var(--text-muted); flex-shrink: 0; }
+        .log-sent { color: #3b82f6; }
+        .log-received { color: #22c55e; }
+        .log-system { color: var(--text-secondary); }
+        .log-error { color: #ef4444; }
+        .ws-send-row { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+        .ws-message-input { flex: 1; padding: 0.75rem 1rem; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; background: var(--bg); color: var(--text); min-width: 200px; }
+        .ws-message-input:focus { border-color: var(--primary); outline: none; }
+        .ws-auto-scroll-label { display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--text-secondary); cursor: pointer; }
+        .ws-heartbeat-row { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-top: 0.75rem; padding: 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+        .ws-heartbeat-label { display: flex; align-items: center; gap: 0.35rem; font-size: 0.85rem; color: var(--text); cursor: pointer; font-weight: 500; }
+        .ws-heartbeat-fields { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+        .ws-heartbeat-field { display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--text-secondary); }
+        .ws-heartbeat-input { width: 70px; padding: 0.4rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.8rem; background: var(--card-bg); color: var(--text); text-align: center; }
+        .ws-heartbeat-input:focus { border-color: var(--primary); outline: none; }
+        .ws-heartbeat-msg-input { width: 100px; padding: 0.4rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.8rem; background: var(--card-bg); color: var(--text); font-family: monospace; }
+        .ws-heartbeat-msg-input:focus { border-color: var(--primary); outline: none; }
+        .ws-heartbeat-status { font-size: 0.75rem; color: var(--text-muted); }
+        .ws-heartbeat-status.active { color: var(--success); }
+        @media (max-width: 600px) { .ws-url-row { flex-direction: column; } .ws-send-row { flex-direction: column; } .ws-send-row .btn, .ws-send-row .ws-message-input { width: 100%; } .ws-heartbeat-row { flex-direction: column; align-items: flex-start; } }
+    </style>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        var wsUrlInput = document.getElementById('wsUrl');
+        var connectBtn = document.getElementById('connectBtn');
+        var disconnectBtn = document.getElementById('disconnectBtn');
+        var statusIndicator = document.getElementById('statusIndicator');
+        var statusText = document.getElementById('statusText');
+        var messageLog = document.getElementById('messageLog');
+        var messageInput = document.getElementById('messageInput');
+        var sendBtn = document.getElementById('sendBtn');
+        var clearLogBtn = document.getElementById('clearLogBtn');
+        var autoScrollToggle = document.getElementById('autoScrollToggle');
+        var connStatus = document.getElementById('connStatus');
+        var connProtocol = document.getElementById('connProtocol');
+        var connMsgCount = document.getElementById('connMsgCount');
+        var wsPresets = document.getElementById('wsPresets');
+        var formatJsonBtn = document.getElementById('formatJsonBtn');
+        var heartbeatToggle = document.getElementById('heartbeatToggle');
+        var heartbeatIntervalInput = document.getElementById('heartbeatInterval');
+        var heartbeatMsgInput = document.getElementById('heartbeatMsg');
+        var heartbeatStatusEl = document.getElementById('heartbeatStatus');
+        var ws = null;
+        var msgCount = 0;
+        var heartbeatTimer = null;
+        function getTimestamp() { var now = new Date(); return now.toLocaleTimeString('zh-CN', { hour12: false }); }
+        function addLog(text, type) {
+            if (messageLog.querySelector('.ws-log-empty')) messageLog.innerHTML = '';
+            var entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = '<span class="log-time">[' + getTimestamp() + ']</span><span class="log-' + type + '">' + escapeHtml(text) + '</span>';
+            messageLog.appendChild(entry);
+            if (autoScrollToggle.checked) messageLog.scrollTop = messageLog.scrollHeight;
+        }
+        function escapeHtml(str) { return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+        function setStatus(status, text) {
+            statusIndicator.className = 'ws-status-indicator status-' + status;
+            statusText.textContent = text;
+            connStatus.textContent = text;
+        }
+        function updateMsgCount() { msgCount++; connMsgCount.textContent = msgCount; }
+        wsPresets.addEventListener('click', function(e) {
+            var chip = e.target.closest('.ws-preset-chip');
+            if (!chip) return;
+            wsUrlInput.value = chip.getAttribute('data-url');
+        });
+        connectBtn.addEventListener('click', function() {
+            var url = wsUrlInput.value.trim();
+            if (!url) { alert('请输入 WebSocket 地址'); return; }
+            if (!url.match(/^wss?:\/\//)) { alert('地址必须以 ws:// 或 wss:// 开头'); return; }
+            if (ws && ws.readyState === WebSocket.OPEN) { ws.close(); }
+            setStatus('connecting', '连接中...');
+            connProtocol.textContent = '--';
+            addLog('正在连接 ' + url, 'system');
+            try {
+                ws = new WebSocket(url);
+                ws.onopen = function() {
+                    setStatus('connected', '已连接');
+                    connectBtn.disabled = true;
+                    disconnectBtn.disabled = false;
+                    messageInput.disabled = false;
+                    sendBtn.disabled = false;
+                    formatJsonBtn.disabled = false;
+                    connProtocol.textContent = ws.protocol || 'ws';
+                    addLog('连接成功', 'system');
+                    if (heartbeatToggle.checked) startHeartbeat();
+                };
+                ws.onmessage = function(e) {
+                    updateMsgCount();
+                    addLog('收到: ' + e.data, 'received');
+                };
+                ws.onerror = function() {
+                    addLog('连接错误', 'error');
+                };
+                ws.onclose = function(e) {
+                    setStatus('disconnected', '未连接');
+                    connectBtn.disabled = false;
+                    disconnectBtn.disabled = true;
+                    messageInput.disabled = true;
+                    sendBtn.disabled = true;
+                    formatJsonBtn.disabled = true;
+                    connProtocol.textContent = '--';
+                    stopHeartbeat();
+                    addLog('连接已关闭 (代码: ' + e.code + ')', 'system');
+                };
+            } catch (e) {
+                setStatus('disconnected', '未连接');
+                addLog('连接失败: ' + e.message, 'error');
+            }
+        });
+        disconnectBtn.addEventListener('click', function() { if (ws) { ws.close(); } });
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') sendMessage(); });
+        function sendMessage() {
+            var msg = messageInput.value.trim();
+            if (!msg || !ws || ws.readyState !== WebSocket.OPEN) return;
+            ws.send(msg);
+            updateMsgCount();
+            addLog('发送: ' + msg, 'sent');
+            messageInput.value = '';
+        }
+        clearLogBtn.addEventListener('click', function() {
+            messageLog.innerHTML = '<div class="ws-log-empty">等待连接...</div>';
+            msgCount = 0;
+            connMsgCount.textContent = '0';
+        });
+        formatJsonBtn.addEventListener('click', function() {
+            var val = messageInput.value.trim();
+            if (!val) return;
+            try {
+                var obj = JSON.parse(val);
+                messageInput.value = JSON.stringify(obj, null, 2);
+            } catch (e) {
+                addLog('不是合法的JSON格式', 'error');
+            }
+        });
+        function startHeartbeat() {
+            stopHeartbeat();
+            var interval = parseInt(heartbeatIntervalInput.value, 10);
+            if (isNaN(interval) || interval < 1) interval = 30;
+            var msg = heartbeatMsgInput.value || 'ping';
+            heartbeatTimer = setInterval(function() {
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(msg);
+                    updateMsgCount();
+                    addLog('心跳: ' + msg, 'system');
+                } else {
+                    stopHeartbeat();
+                }
+            }, interval * 1000);
+            heartbeatStatusEl.textContent = '每 ' + interval + 's 发送';
+            heartbeatStatusEl.className = 'ws-heartbeat-status active';
+        }
+        function stopHeartbeat() {
+            if (heartbeatTimer) { clearInterval(heartbeatTimer); heartbeatTimer = null; }
+            heartbeatStatusEl.textContent = '';
+            heartbeatStatusEl.className = 'ws-heartbeat-status';
+        }
+        heartbeatToggle.addEventListener('change', function() {
+            if (this.checked && ws && ws.readyState === WebSocket.OPEN) {
+                startHeartbeat();
+            } else {
+                stopHeartbeat();
+            }
+        });
+        heartbeatIntervalInput.addEventListener('change', function() {
+            if (heartbeatTimer) startHeartbeat();
+        });
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            var current = "tools/websocket.html";
+            var currentCat = "网络工具";
+            var related = tools.filter(function(t) { return t.path !== current && t.category === currentCat; }).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(function(t) { return t.path !== current && related.indexOf(t) === -1; }).slice(0, 5 - related.length);
+                related.push.apply(related, others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(function(t) {
+                return '<a href="' + t.path.split('/').pop() + '" class="tool-card"><div class="tool-name">' + t.name + '</div><div class="tool-desc">' + t.description + '</div></a>';
+            }).join('');
+        }).catch(function() {});
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

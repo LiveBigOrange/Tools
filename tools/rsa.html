@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSA 密钥生成 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="RSA 公私钥对生成器，支持不同密钥长度 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="rsa,密钥,公私钥,非对称加密,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/rsa.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/rsa.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="RSA 密钥生成 - 在线工具">
+    <meta property="og:description" content="RSA 公私钥对生成器，支持不同密钥长度 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/rsa.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="RSA 密钥生成 - 在线工具">
+    <meta name="twitter:description" content="RSA 公私钥对生成器，支持不同密钥长度 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "RSA 密钥生成",
+                "description": "RSA 公私钥对生成器，支持不同密钥长度",
+                "url": "/tools/rsa.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "加密/哈希",
+                        "item": "/#category-加密-哈希"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "RSA 密钥生成",
+                        "item": "/tools/rsa.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "加密后的数据可以解密吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "哈希算法（MD5、SHA）是单向的，不可逆。AES 等对称加密可以通过密钥解密。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "哪种加密方式更安全？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "推荐使用 SHA-256 或更高强度的哈希算法，加密推荐 AES-256。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "我的数据会被存储吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "不会。所有加密/哈希计算均在浏览器本地完成，数据不会上传或存储。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .key-length-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+        .key-length-card { padding: 1rem; text-align: center; background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); }
+        .key-length-card:hover { border-color: var(--primary); }
+        .key-length-card.active { border-color: var(--primary); background: var(--primary-light); }
+        .key-length-value { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
+        .key-length-label { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem; }
+        .key-length-badge { font-size: 0.65rem; padding: 0.1rem 0.4rem; border-radius: 3px; margin-top: 0.35rem; display: inline-block; }
+        .key-length-badge.weak { background: #fee2e2; color: #dc2626; }
+        .key-length-badge.good { background: #d1fae5; color: #059669; }
+        .key-length-badge.best { background: #dbeafe; color: #2563eb; }
+        .key-display { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
+        .key-panel { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
+        .key-panel-header { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; font-weight: 600; }
+        .key-panel-copy { background: none; border: none; font-size: 0.75rem; cursor: pointer; color: var(--text-secondary); }
+        .key-panel-copy:hover { color: var(--primary); }
+        .key-panel-body { padding: 0.75rem; font-family: "SF Mono", "Fira Code", Consolas, monospace; font-size: 0.7rem; word-break: break-all; max-height: 200px; overflow-y: auto; white-space: pre-wrap; line-height: 1.5; }
+        .key-info { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-top: 1rem; }
+        .key-info-item { padding: 0.5rem; background: var(--bg); border-radius: 4px; text-align: center; }
+        .key-info-label { font-size: 0.7rem; color: var(--text-muted); }
+        .key-info-value { font-size: 0.85rem; font-weight: 600; color: var(--primary); }
+        @media (max-width: 600px) { .key-display { grid-template-columns: 1fr; } .key-length-cards { grid-template-columns: 1fr; } .key-info { grid-template-columns: 1fr; } }
+        .crypto-tabs { display: flex; gap: 0; margin-bottom: 1rem; border-bottom: 2px solid var(--border); }
+        .crypto-tab { padding: 0.6rem 1.5rem; background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -2px; font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: var(--transition); }
+        .crypto-tab:hover { color: var(--primary); }
+        .crypto-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .crypto-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .crypto-textarea { width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; font-family: "SF Mono", "Fira Code", Consolas, monospace; resize: vertical; outline: none; transition: var(--transition); background: var(--bg); color: var(--text); }
+        .crypto-textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+        .crypto-input-section { margin-bottom: 1rem; }
+        .crypto-output-section { margin-top: 1rem; }
+        .crypto-output { padding: 1rem; background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius-sm); font-family: "SF Mono", "Fira Code", Consolas, monospace; font-size: 0.8rem; line-height: 1.6; white-space: pre-wrap; word-break: break-all; max-height: 300px; overflow-y: auto; }
+        .crypto-key-hint { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem; padding: 0.5rem 0.75rem; background: var(--primary-light); border-radius: var(--radius-sm); border-left: 3px solid var(--primary); }
+        .crypto-pem-section { margin-bottom: 1rem; }
+        .crypto-pem-inputs { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.75rem; }
+        .crypto-status { font-size: 0.8rem; margin-top: 0.5rem; }
+        .crypto-status.error { color: var(--danger); }
+        .crypto-status.success { color: var(--success); }
+        .crypto-section-title { margin-bottom: 1rem; font-size: 1.1rem; font-weight: 600; }
+        @media (max-width: 600px) { .crypto-tabs { flex-direction: column; border-bottom: none; } .crypto-tab { text-align: left; border-bottom: none; border-left: 2px solid transparent; padding: 0.5rem 1rem; } .crypto-tab.active { border-left-color: var(--primary); border-bottom-color: transparent; } }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-加密-哈希">加密/哈希</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>RSA 密钥生成</span>
+            </nav>
+            <div class="tool-header">
+                <h1>RSA 密钥生成</h1>
+                <p>RSA 公私钥对生成器，支持不同密钥长度</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">加密/哈希</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="key-length-cards" id="keyLengthCards">
+                    <div class="key-length-card" data-value="1024">
+                        <div class="key-length-value">1024</div>
+                        <div class="key-length-label">位 (bits)</div>
+                        <span class="key-length-badge weak">⚠ 不推荐</span>
+                    </div>
+                    <div class="key-length-card active" data-value="2048">
+                        <div class="key-length-value">2048</div>
+                        <div class="key-length-label">位 (bits)</div>
+                        <span class="key-length-badge good">✓ 推荐</span>
+                    </div>
+                    <div class="key-length-card" data-value="4096">
+                        <div class="key-length-value">4096</div>
+                        <div class="key-length-label">位 (bits)</div>
+                        <span class="key-length-badge best">★ 最高</span>
+                    </div>
+                </div>
+                <div class="tool-actions">
+                    <button class="btn btn-primary" id="generateBtn">🔑 生成密钥对</button>
+                    <button class="btn btn-secondary" id="regenerateBtn" style="display:none;">🔄 重新生成</button>
+                </div>
+                <div class="status-msg" id="statusMsg"></div>
+                <div class="key-info" id="keyInfo" style="display:none;">
+                    <div class="key-info-item">
+                        <span class="key-info-label">算法: </span>
+                        <span class="key-info-value" id="infoAlgo">RSA-OAEP</span>
+                    </div>
+                    <div class="key-info-item">
+                        <span class="key-info-label">密钥长度: </span>
+                        <span class="key-info-value" id="infoBits">2048 位</span>
+                    </div>
+                    <div class="key-info-item">
+                        <span class="key-info-label">格式: </span>
+                        <span class="key-info-value">PEM</span>
+                    </div>
+                </div>
+                <div class="key-display" id="keySection" style="display:none;">
+                    <div class="key-panel">
+                        <div class="key-panel-header">
+                            <span>🔑 公钥 (Public Key)</span>
+                            <button class="key-panel-copy" id="copyPublic">📋 复制</button>
+                        </div>
+                        <div class="key-panel-body" id="publicKey"></div>
+                    </div>
+                    <div class="key-panel">
+                        <div class="key-panel-header">
+                            <span>🔒 私钥 (Private Key)</span>
+                            <button class="key-panel-copy" id="copyPrivate">📋 复制</button>
+                        </div>
+                        <div class="key-panel-body" id="privateKey"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="tool-workspace" id="cryptoWorkspace" style="display:none;">
+                <div class="crypto-section-title">RSA 加密 / 解密</div>
+                <div class="crypto-tabs">
+                    <button class="crypto-tab active" data-mode="encrypt">🔒 加密</button>
+                    <button class="crypto-tab" data-mode="decrypt">🔓 解密</button>
+                </div>
+                <div class="crypto-key-hint" id="cryptoKeyHint">将使用上方生成的密钥进行操作。如需使用其他密钥，请在下方粘贴 PEM。</div>
+                <div class="crypto-pem-section">
+                    <label class="crypto-label">外部 PEM 密钥（可选，留空则使用上方生成的密钥）</label>
+                    <div class="crypto-pem-inputs">
+                        <textarea class="crypto-textarea" id="pemPublicInput" rows="4" placeholder="粘贴公钥 PEM（加密时使用，留空则用上方生成的公钥）"></textarea>
+                        <textarea class="crypto-textarea" id="pemPrivateInput" rows="4" placeholder="粘贴私钥 PEM（解密时使用，留空则用上方生成的私钥）"></textarea>
+                    </div>
+                </div>
+                <div class="crypto-input-section">
+                    <label class="crypto-label" id="inputLabel">输入明文</label>
+                    <textarea class="crypto-textarea" id="cryptoInput" rows="6" placeholder="输入要加密的文本"></textarea>
+                </div>
+                <div class="tool-actions">
+                    <button class="btn btn-primary" id="cryptoExecBtn">🔒 加密</button>
+                    <button class="btn btn-secondary" id="cryptoClearBtn">清空</button>
+                </div>
+                <div class="crypto-status" id="cryptoStatus"></div>
+                <div class="crypto-output-section" id="cryptoOutputSection" style="display:none;">
+                    <label class="crypto-label" id="outputLabel">加密结果 (Base64)</label>
+                    <div class="crypto-output" id="cryptoOutput"></div>
+                    <div class="tool-actions">
+                        <button class="btn btn-sm btn-success" id="copyCryptoOutput">📋 复制结果</button>
+                    </div>
+                </div>
+            </div>
+            <section class="features">
+                <h2>RSA 密钥生成功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔑</div>
+                        <h3>密钥对生成</h3>
+                        <p>生成 RSA 公私钥对，支持 1024/2048/4096 位密钥长度。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔐</div>
+                        <h3>PEM 格式</h3>
+                        <p>生成标准 PEM 格式密钥，兼容大多数应用。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>一键复制</h3>
+                        <p>生成的密钥可直接复制。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>密钥生成在浏览器中完成，密钥不上传服务器。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>RSA 密钥生成常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question"><span>RSA 加密是什么？</span><span class="faq-arrow">›</span></button>
+                        <div class="faq-answer"><p>RSA 是一种非对称加密算法，使用一对密钥：公钥（公开）用于加密，私钥（保密）用于解密。</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question"><span>密钥长度如何选择？</span><span class="faq-arrow">›</span></button>
+                        <div class="faq-answer"><p>建议使用 2048 位或更长。1024 位已不够安全，4096 位安全性最高但计算较慢。</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question"><span>生成的密钥安全吗？</span><span class="faq-arrow">›</span></button>
+                        <div class="faq-answer"><p>密钥在浏览器本地生成，不会上传服务器。但请注意：刷新页面后密钥会丢失，请及时保存。</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question"><span>数据会被上传吗？</span><span class="faq-arrow">›</span></button>
+                        <div class="faq-answer"><p>不会。密钥生成和加解密都在浏览器本地完成。</p></div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "RSA 密钥生成", path: "tools/rsa.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var keyLengthCards = document.getElementById('keyLengthCards');
+        var generateBtn = document.getElementById('generateBtn');
+        var regenerateBtn = document.getElementById('regenerateBtn');
+        var statusMsg = document.getElementById('statusMsg');
+        var keySection = document.getElementById('keySection');
+        var keyInfo = document.getElementById('keyInfo');
+        var publicKeyEl = document.getElementById('publicKey');
+        var privateKeyEl = document.getElementById('privateKey');
+        var copyPublic = document.getElementById('copyPublic');
+        var copyPrivate = document.getElementById('copyPrivate');
+        var infoBits = document.getElementById('infoBits');
+        var selectedBits = 2048;
+        var generatedPublicKeyPem = '';
+        var generatedPrivateKeyPem = '';
+
+        keyLengthCards.querySelectorAll('.key-length-card').forEach(function(card) {
+            card.addEventListener('click', function() {
+                keyLengthCards.querySelectorAll('.key-length-card').forEach(function(c) { c.classList.remove('active'); });
+                this.classList.add('active');
+                selectedBits = parseInt(this.dataset.value, 10);
+            });
+        });
+
+        function generateKeys() {
+            generateBtn.disabled = true;
+            generateBtn.textContent = '⏳ 生成中...';
+            statusMsg.textContent = '正在生成密钥对，请稍候...';
+            keySection.style.display = 'none';
+            keyInfo.style.display = 'none';
+
+            setTimeout(function() {
+                window.crypto.subtle.generateKey(
+                    { name: 'RSA-OAEP', modulusLength: selectedBits, publicExponent: new Uint8Array([1, 0, 1]), hash: { name: 'SHA-256' } },
+                    true, ['encrypt', 'decrypt']
+                ).then(function(keyPair) {
+                    return Promise.all([
+                        window.crypto.subtle.exportKey('spki', keyPair.publicKey),
+                        window.crypto.subtle.exportKey('pkcs8', keyPair.privateKey)
+                    ]);
+                }).then(function(exports) {
+                    var publicPem = derToPem(exports[0], 'PUBLIC KEY');
+                    var privatePem = derToPem(exports[1], 'PRIVATE KEY');
+                    generatedPublicKeyPem = publicPem;
+                    generatedPrivateKeyPem = privatePem;
+                    publicKeyEl.textContent = publicPem;
+                    privateKeyEl.textContent = privatePem;
+                    keySection.style.display = 'grid';
+                    keyInfo.style.display = 'flex';
+                    infoBits.textContent = selectedBits + ' 位';
+                    statusMsg.textContent = '密钥对生成成功！';
+                    regenerateBtn.style.display = 'inline-flex';
+                    document.getElementById('cryptoWorkspace').style.display = 'block';
+                    updateCryptoKeyHint();
+                }).catch(function(e) {
+                    statusMsg.textContent = '生成失败: ' + e.message;
+                }).finally(function() {
+                    generateBtn.disabled = false;
+                    generateBtn.textContent = '🔑 生成密钥对';
+                });
+            }, 50);
+        }
+
+        generateBtn.addEventListener('click', generateKeys);
+        regenerateBtn.addEventListener('click', generateKeys);
+
+        copyPublic.addEventListener('click', function() {
+            var text = publicKeyEl.textContent;
+            if (text) {
+                copyText(text).then(function() {
+                    var orig = this.textContent;
+                    this.textContent = '✓ 已复制';
+                    setTimeout(function() { this.textContent = orig; }.bind(this), 1500);
+                }.bind(this));
+            }
+        });
+
+        copyPrivate.addEventListener('click', function() {
+            var text = privateKeyEl.textContent;
+            if (text) {
+                copyText(text).then(function() {
+                    var orig = this.textContent;
+                    this.textContent = '✓ 已复制';
+                    setTimeout(function() { this.textContent = orig; }.bind(this), 1500);
+                }.bind(this));
+            }
+        });
+
+        function derToPem(der, label) {
+            var bytes = new Uint8Array(der);
+            var base64 = '';
+            var chunkSize = 8192;
+            for (var i = 0; i < bytes.length; i += chunkSize) {
+                var chunk = bytes.subarray(i, i + chunkSize);
+                base64 += String.fromCharCode.apply(null, chunk);
+            }
+            base64 = btoa(base64);
+            var lines = base64.match(/.{1,64}/g);
+            return '-----BEGIN ' + label + '-----\n' + lines.join('\n') + '\n-----END ' + label + '-----';
+        }
+
+        function pemToDer(pem) {
+            var b64 = pem.replace(/-----BEGIN [^-]+-----/, '').replace(/-----END [^-]+-----/, '').replace(/\s/g, '');
+            var binary = atob(b64);
+            var bytes = new Uint8Array(binary.length);
+            for (var i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        function importPemKey(pem, type) {
+            var der = pemToDer(pem);
+            if (type === 'public') {
+                return window.crypto.subtle.importKey('spki', der, { name: 'RSA-OAEP', hash: { name: 'SHA-256' } }, false, ['encrypt']);
+            } else {
+                return window.crypto.subtle.importKey('pkcs8', der, { name: 'RSA-OAEP', hash: { name: 'SHA-256' } }, false, ['decrypt']);
+            }
+        }
+
+        function arrayBufferToBase64(buf) {
+            var bytes = new Uint8Array(buf);
+            var binary = '';
+            var chunkSize = 8192;
+            for (var i = 0; i < bytes.length; i += chunkSize) {
+                var chunk = bytes.subarray(i, i + chunkSize);
+                binary += String.fromCharCode.apply(null, chunk);
+            }
+            return btoa(binary);
+        }
+
+        function base64ToArrayBuffer(b64) {
+            var binary = atob(b64);
+            var bytes = new Uint8Array(binary.length);
+            for (var i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        var cryptoMode = 'encrypt';
+        var cryptoTabs = document.querySelectorAll('.crypto-tab');
+        var cryptoExecBtn = document.getElementById('cryptoExecBtn');
+        var cryptoClearBtn = document.getElementById('cryptoClearBtn');
+        var cryptoInput = document.getElementById('cryptoInput');
+        var cryptoOutput = document.getElementById('cryptoOutput');
+        var cryptoOutputSection = document.getElementById('cryptoOutputSection');
+        var cryptoStatus = document.getElementById('cryptoStatus');
+        var inputLabel = document.getElementById('inputLabel');
+        var outputLabel = document.getElementById('outputLabel');
+        var pemPublicInput = document.getElementById('pemPublicInput');
+        var pemPrivateInput = document.getElementById('pemPrivateInput');
+        var copyCryptoOutput = document.getElementById('copyCryptoOutput');
+
+        function updateCryptoKeyHint() {
+            var hint = document.getElementById('cryptoKeyHint');
+            if (generatedPublicKeyPem && generatedPrivateKeyPem) {
+                hint.textContent = '将使用上方生成的密钥进行操作。如需使用其他密钥，请在下方粘贴 PEM。';
+            } else {
+                hint.textContent = '尚未生成密钥，请在上方先生成密钥对，或在下方粘贴 PEM 密钥。';
+            }
+        }
+
+        function switchMode(mode) {
+            cryptoMode = mode;
+            cryptoTabs.forEach(function(t) { t.classList.toggle('active', t.dataset.mode === mode); });
+            if (mode === 'encrypt') {
+                inputLabel.textContent = '输入明文';
+                cryptoInput.placeholder = '输入要加密的文本';
+                cryptoExecBtn.textContent = '🔒 加密';
+                outputLabel.textContent = '加密结果 (Base64)';
+            } else {
+                inputLabel.textContent = '输入密文 (Base64)';
+                cryptoInput.placeholder = '输入 Base64 格式的密文';
+                cryptoExecBtn.textContent = '🔓 解密';
+                outputLabel.textContent = '解密结果';
+            }
+            cryptoOutputSection.style.display = 'none';
+            cryptoStatus.textContent = '';
+            cryptoStatus.className = 'crypto-status';
+        }
+
+        cryptoTabs.forEach(function(tab) {
+            tab.addEventListener('click', function() { switchMode(this.dataset.mode); });
+        });
+
+        pemPublicInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                document.getElementById('cryptoWorkspace').style.display = 'block';
+                updateCryptoKeyHint();
+            }
+        });
+
+        pemPrivateInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                document.getElementById('cryptoWorkspace').style.display = 'block';
+                updateCryptoKeyHint();
+            }
+        });
+
+        cryptoClearBtn.addEventListener('click', function() {
+            cryptoInput.value = '';
+            cryptoOutputSection.style.display = 'none';
+            cryptoStatus.textContent = '';
+            cryptoStatus.className = 'crypto-status';
+        });
+
+        cryptoExecBtn.addEventListener('click', function() {
+            var inputText = cryptoInput.value.trim();
+            if (!inputText) {
+                cryptoStatus.textContent = '请输入内容';
+                cryptoStatus.className = 'crypto-status error';
+                return;
+            }
+
+            cryptoExecBtn.disabled = true;
+            cryptoStatus.textContent = cryptoMode === 'encrypt' ? '加密中...' : '解密中...';
+            cryptoStatus.className = 'crypto-status';
+            cryptoOutputSection.style.display = 'none';
+
+            if (cryptoMode === 'encrypt') {
+                var pemToUse = pemPublicInput.value.trim() || generatedPublicKeyPem;
+                if (!pemToUse) {
+                    cryptoStatus.textContent = '请先生成密钥或粘贴公钥 PEM';
+                    cryptoStatus.className = 'crypto-status error';
+                    cryptoExecBtn.disabled = false;
+                    return;
+                }
+                importPemKey(pemToUse, 'public').then(function(key) {
+                    var encoded = new TextEncoder().encode(inputText);
+                    return window.crypto.subtle.encrypt({ name: 'RSA-OAEP' }, key, encoded);
+                }).then(function(encrypted) {
+                    var base64Result = arrayBufferToBase64(encrypted);
+                    cryptoOutput.textContent = base64Result;
+                    cryptoOutputSection.style.display = 'block';
+                    cryptoStatus.textContent = '加密成功';
+                    cryptoStatus.className = 'crypto-status success';
+                }).catch(function(e) {
+                    cryptoStatus.textContent = '加密失败: ' + e.message;
+                    cryptoStatus.className = 'crypto-status error';
+                }).finally(function() {
+                    cryptoExecBtn.disabled = false;
+                });
+            } else {
+                var pemToUse = pemPrivateInput.value.trim() || generatedPrivateKeyPem;
+                if (!pemToUse) {
+                    cryptoStatus.textContent = '请先生成密钥或粘贴私钥 PEM';
+                    cryptoStatus.className = 'crypto-status error';
+                    cryptoExecBtn.disabled = false;
+                    return;
+                }
+                importPemKey(pemToUse, 'private').then(function(key) {
+                    var encrypted = base64ToArrayBuffer(inputText);
+                    return window.crypto.subtle.decrypt({ name: 'RSA-OAEP' }, key, encrypted);
+                }).then(function(decrypted) {
+                    var text = new TextDecoder().decode(decrypted);
+                    cryptoOutput.textContent = text;
+                    cryptoOutputSection.style.display = 'block';
+                    cryptoStatus.textContent = '解密成功';
+                    cryptoStatus.className = 'crypto-status success';
+                }).catch(function(e) {
+                    cryptoStatus.textContent = '解密失败: ' + e.message;
+                    cryptoStatus.className = 'crypto-status error';
+                }).finally(function() {
+                    cryptoExecBtn.disabled = false;
+                });
+            }
+        });
+
+        copyCryptoOutput.addEventListener('click', function() {
+            var text = cryptoOutput.textContent;
+            if (text) {
+                copyText(text).then(function() {
+                    var orig = this.textContent;
+                    this.textContent = '✓ 已复制';
+                    setTimeout(function() { this.textContent = orig; }.bind(this), 1500);
+                }.bind(this));
+            }
+        });
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            var current = "tools/rsa.html";
+            var currentCat = "加密/哈希";
+            var related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(t => t.path !== current && related.indexOf(t) === -1).slice(0, 5 - related.length);
+                related.push.apply(related, others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t =>
+                '<a href="' + t.path.split('/').pop() + '" class="tool-card"><div class="tool-name">' + t.name + '</div><div class="tool-desc">' + t.description + '</div></a>'
+            ).join('');
+        }).catch(function() {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

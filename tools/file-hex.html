@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文件转 Hex - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="文件内容与十六进制字符串互相转换 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="hex, 十六进制, 文件, 转换, 二进制,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/file-hex.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/file-hex.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="文件转 Hex - 在线工具">
+    <meta property="og:description" content="文件内容与十六进制字符串互相转换 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/file-hex.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="文件转 Hex - 在线工具">
+    <meta name="twitter:description" content="文件内容与十六进制字符串互相转换 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "文件转 Hex",
+                "description": "文件内容与十六进制字符串互相转换",
+                "url": "/tools/file-hex.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "编码/解码",
+                        "item": "/#category-编码-解码"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "文件转 Hex",
+                        "item": "/tools/file-hex.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "数据会被上传到服务器吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "不会。所有编码和解码操作都在您的浏览器本地完成，数据不会经过任何服务器。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "支持哪些编码格式？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持 Base64、URL 编码、Unicode、HTML 实体、XML 等多种常见编码格式。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "可以处理大文件吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "可以处理较大的文本内容，但建议单次处理不超过 10MB，以保证浏览器性能。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .mode-tabs { display: flex; gap: 0.25rem; margin-bottom: 1rem; }
+        .mode-tab { flex: 1; padding: 0.5rem; text-align: center; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer; transition: var(--transition); color: var(--text-secondary); }
+        .mode-tab.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+        .drop-zone { border: 2px dashed var(--border); border-radius: var(--radius-sm); padding: 2rem; text-align: center; cursor: pointer; transition: var(--transition); }
+        .drop-zone:hover, .drop-zone.dragover { border-color: var(--primary); background: var(--primary-light); }
+        .drop-zone-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .drop-zone-text { font-size: 0.85rem; color: var(--text-secondary); }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.35rem; }
+        .form-group textarea { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-family: monospace; font-size: 0.85rem; resize: vertical; box-sizing: border-box; }
+        .form-group textarea:focus { outline: none; border-color: var(--primary); }
+        .file-info { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem; }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-编码-解码">编码/解码</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>文件转 Hex</span>
+            </nav>
+            <div class="tool-header">
+                <h1>文件转 Hex</h1>
+                <p>文件内容与十六进制字符串互相转换</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">编码/解码</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="mode-tabs">
+                    <button class="mode-tab active" data-mode="file2hex">文件 → Hex</button>
+                    <button class="mode-tab" data-mode="hex2file">Hex → 文件</button>
+                </div>
+                <div id="file2hexMode">
+                    <div class="drop-zone" id="dropZone">
+                        <div class="drop-zone-icon">📁</div>
+                        <div class="drop-zone-text">拖拽文件到此处，或 <strong>点击选择</strong></div>
+                        <input type="file" id="fileInput" style="display:none">
+                    </div>
+                    <div class="file-info" id="fileInfo"></div>
+                    <div class="form-group" style="margin-top:1rem"><label>或输入文本</label><textarea id="textInput" rows="4" placeholder="输入文本将转换为Hex..."></textarea></div>
+                    <div class="tool-actions"><button class="btn btn-primary" id="convertFileBtn">🔄 转换</button><button class="btn btn-secondary" id="clearFileBtn">🗑 清空</button></div>
+                    <div class="form-group" style="margin-top:1rem"><label>Hex 结果</label><textarea id="hexOutput" rows="6" readonly></textarea></div>
+                    <div class="tool-actions"><button class="btn btn-secondary" id="copyHexBtn">📋 复制</button><button class="btn btn-secondary" id="downloadHexBtn">📥 下载</button></div>
+                </div>
+                <div id="hex2fileMode" style="display:none">
+                    <div class="form-group"><label>输入 Hex</label><textarea id="hexInput" rows="6" placeholder="输入十六进制字符串..."></textarea></div>
+                    <div class="tool-actions"><button class="btn btn-primary" id="convertHexBtn">🔄 转换</button><button class="btn btn-secondary" id="clearHexBtn">🗑 清空</button></div>
+                    <div class="form-group" style="margin-top:1rem"><label>结果</label><textarea id="fileOutput" rows="4" readonly placeholder="解码后的文本..."></textarea></div>
+                    <div class="tool-actions"><button class="btn btn-secondary" id="copyFileBtn">📋 复制</button><button class="btn btn-secondary" id="downloadFileBtn">📥 下载文件</button></div>
+                </div>
+            </div>
+            <section class="features">
+                <h2>文件转 Hex 功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📁</div>
+                        <h3>文件上传</h3>
+                        <p>支持拖拽文件或点击选择，将任意文件转换为十六进制字符串。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔄</div>
+                        <h3>双向转换</h3>
+                        <p>支持文件转 Hex 和 Hex 转文件两种模式，灵活互转。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>所有操作在浏览器中完成，数据不上传服务器，保障隐私安全。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>文件转 Hex 常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>数据会被上传到服务器吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不会。所有转换都在您的浏览器本地完成，数据不会经过任何服务器。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持哪些类型的文件？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>支持任意类型的文件，包括文本、图片、二进制文件等。文件会以字节为单位转换为十六进制字符串。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>可以处理大文件吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>可以处理较大的文件，但建议不超过 50MB，以保证浏览器性能。Hex 字符串长度约为文件大小的两倍。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "文件转 Hex", path: "tools/file-hex.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        let selectedFile = null;
+        let selectedFileBuffer = null;
+
+        const modeTabs = document.querySelectorAll('.mode-tab');
+        const file2hexMode = document.getElementById('file2hexMode');
+        const hex2fileMode = document.getElementById('hex2fileMode');
+
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const textInput = document.getElementById('textInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const hexOutput = document.getElementById('hexOutput');
+
+        const hexInput = document.getElementById('hexInput');
+        const fileOutput = document.getElementById('fileOutput');
+
+        modeTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                modeTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const mode = tab.dataset.mode;
+                file2hexMode.style.display = mode === 'file2hex' ? '' : 'none';
+                hex2fileMode.style.display = mode === 'hex2file' ? '' : 'none';
+            });
+        });
+
+        dropZone.addEventListener('click', () => fileInput.click());
+        dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+        dropZone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+        });
+        fileInput.addEventListener('change', () => { if (fileInput.files.length) handleFile(fileInput.files[0]); });
+
+        function handleFile(file) {
+            selectedFile = file;
+            const reader = new FileReader();
+            reader.onload = e => { selectedFileBuffer = e.target.result; fileInfo.textContent = `已选择: ${file.name} (${formatSize(file.size)})`; };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function formatSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / 1048576).toFixed(1) + ' MB';
+        }
+
+        function arrayBufferToHex(buffer) {
+            const bytes = new Uint8Array(buffer);
+            const hex = [];
+            for (let i = 0; i < bytes.length; i++) {
+                hex.push(bytes[i].toString(16).padStart(2, '0'));
+            }
+            return hex.join('');
+        }
+
+        function hexToUint8Array(hex) {
+            hex = hex.replace(/\s+/g, '');
+            if (hex.length % 2 !== 0) throw new Error('Hex 字符串长度必须为偶数');
+            if (!/^[0-9a-fA-F]+$/.test(hex)) throw new Error('包含无效的 Hex 字符');
+            const bytes = new Uint8Array(hex.length / 2);
+            for (let i = 0; i < hex.length; i += 2) {
+                bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+            }
+            return bytes;
+        }
+
+        document.getElementById('convertFileBtn').addEventListener('click', () => {
+            try {
+                let buffer;
+                if (selectedFileBuffer) {
+                    buffer = selectedFileBuffer;
+                } else if (textInput.value) {
+                    buffer = new TextEncoder().encode(textInput.value).buffer;
+                } else {
+                    hexOutput.value = '';
+                    return;
+                }
+                hexOutput.value = arrayBufferToHex(buffer);
+            } catch (e) {
+                hexOutput.value = '错误: ' + e.message;
+            }
+        });
+
+        document.getElementById('clearFileBtn').addEventListener('click', () => {
+            selectedFile = null;
+            selectedFileBuffer = null;
+            fileInput.value = '';
+            textInput.value = '';
+            fileInfo.textContent = '';
+            hexOutput.value = '';
+        });
+
+        document.getElementById('copyHexBtn').addEventListener('click', () => {
+            if (hexOutput.value) {
+                copyText(hexOutput.value).then(() => {
+                    const btn = document.getElementById('copyHexBtn');
+                    btn.textContent = '✓ 已复制!';
+                    setTimeout(() => { btn.textContent = '📋 复制'; }, 1500);
+                });
+            }
+        });
+
+        document.getElementById('downloadHexBtn').addEventListener('click', () => {
+            if (hexOutput.value) {
+                const blob = new Blob([hexOutput.value], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = (selectedFile ? selectedFile.name : 'output') + '.hex';
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        });
+
+        document.getElementById('convertHexBtn').addEventListener('click', () => {
+            try {
+                const hex = hexInput.value.trim();
+                if (!hex) { fileOutput.value = ''; return; }
+                const bytes = hexToUint8Array(hex);
+                try {
+                    fileOutput.value = new TextDecoder().decode(bytes);
+                } catch {
+                    fileOutput.value = '[二进制数据，请下载查看]';
+                }
+            } catch (e) {
+                fileOutput.value = '错误: ' + e.message;
+            }
+        });
+
+        document.getElementById('clearHexBtn').addEventListener('click', () => {
+            hexInput.value = '';
+            fileOutput.value = '';
+        });
+
+        document.getElementById('copyFileBtn').addEventListener('click', () => {
+            if (fileOutput.value) {
+                copyText(fileOutput.value).then(() => {
+                    const btn = document.getElementById('copyFileBtn');
+                    btn.textContent = '✓ 已复制!';
+                    setTimeout(() => { btn.textContent = '📋 复制'; }, 1500);
+                });
+            }
+        });
+
+        document.getElementById('downloadFileBtn').addEventListener('click', () => {
+            try {
+                const hex = hexInput.value.trim();
+                if (!hex) return;
+                const bytes = hexToUint8Array(hex);
+                const blob = new Blob([bytes], { type: 'application/octet-stream' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'decoded_file.bin';
+                a.click();
+                URL.revokeObjectURL(url);
+            } catch (e) {
+                alert('错误: ' + e.message);
+            }
+        });
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            const current = "tools/file-hex.html";
+            const currentCat = "编码/解码";
+            const related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                const others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+                related.push(...others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+                <a href="${t.path.split('/').pop()}" class="tool-card">
+                    <div class="tool-name">${t.name}</div>
+                    <div class="tool-desc">${t.description}</div>
+                </a>
+            `).join('');
+        }).catch(() => {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

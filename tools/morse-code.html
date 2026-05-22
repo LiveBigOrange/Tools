@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>摩斯密码 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="摩斯电码编码与解码，支持中英文 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="摩斯, 电码, morse, 加密, 解密,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/morse-code.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/morse-code.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="摩斯密码 - 在线工具">
+    <meta property="og:description" content="摩斯电码编码与解码，支持中英文 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/morse-code.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="摩斯密码 - 在线工具">
+    <meta name="twitter:description" content="摩斯电码编码与解码，支持中英文 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "摩斯密码",
+                "description": "摩斯电码编码与解码，支持中英文",
+                "url": "/tools/morse-code.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "加密/哈希",
+                        "item": "/#category-加密-哈希"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "摩斯密码",
+                        "item": "/tools/morse-code.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "加密后的数据可以解密吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "哈希算法（MD5、SHA）是单向的，不可逆。AES 等对称加密可以通过密钥解密。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "哪种加密方式更安全？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "推荐使用 SHA-256 或更高强度的哈希算法，加密推荐 AES-256。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "我的数据会被存储吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "不会。所有加密/哈希计算均在浏览器本地完成，数据不会上传或存储。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.35rem; }
+        .form-group textarea { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-family: monospace; font-size: 0.85rem; resize: vertical; }
+        .form-group textarea:focus { outline: none; border-color: var(--primary); }
+        .morse-ref { margin-top: 1.5rem; }
+        .morse-ref h3 { font-size: 1rem; margin-bottom: 0.75rem; }
+        .morse-ref-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 0.35rem; }
+        .morse-ref-item { text-align: center; padding: 0.35rem; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; font-size: 0.8rem; }
+        .morse-ref-char { font-weight: 700; display: block; }
+        .morse-ref-code { font-family: monospace; color: var(--text-secondary); font-size: 0.75rem; }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-加密-哈希">加密/哈希</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>摩斯密码</span>
+            </nav>
+            <div class="tool-header">
+                <h1>摩斯密码</h1>
+                <p>摩斯电码编码与解码，支持中英文</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">加密/哈希</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="form-group"><label>输入文本</label><textarea id="input" rows="4" placeholder="输入要编码/解码的文本..."></textarea></div>
+                <div class="tool-actions">
+                    <button class="btn btn-primary" id="encodeBtn">🔒 编码</button>
+                    <button class="btn btn-secondary" id="decodeBtn">🔓 解码</button>
+                    <button class="btn btn-secondary" id="playBtn">🔊 播放</button>
+                    <button class="btn btn-secondary" id="clearBtn">🗑 清空</button>
+                </div>
+                <div class="form-group" style="margin-top:1rem"><label>输出结果</label><textarea id="output" rows="4" readonly placeholder="结果..."></textarea></div>
+                <div class="tool-actions"><button class="btn btn-secondary" id="copyBtn">📋 复制</button></div>
+                <div class="morse-ref">
+                    <h3>摩斯电码对照表</h3>
+                    <div class="morse-ref-grid" id="morseRef"></div>
+                </div>
+            </div>
+            <section class="features">
+                <h2>摩斯密码功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>编码解码</h3>
+                        <p>支持摩斯电码的双向编码与解码操作。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔊</div>
+                        <h3>音频播放</h3>
+                        <p>使用 Web Audio API 播放摩斯电码音频。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌐</div>
+                        <h3>支持中文</h3>
+                        <p>通过 Unicode 编码转换，支持中文字符的摩斯电码编码。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>摩斯密码常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>摩斯电码可以表示中文吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>标准摩斯电码仅支持英文字母和数字。本工具通过将中文字符转换为Unicode十六进制编码后再进行摩斯电码编码，从而实现对中文的支持。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>如何播放摩斯电码音频？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>点击「播放」按钮，工具会使用 Web Audio API 生成对应的短音（点）和长音（划），模拟传统摩斯电码的听觉效果。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>我的数据会被存储吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不会。所有编码/解码操作均在浏览器本地完成，数据不会上传或存储到任何服务器。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "摩斯密码", path: "tools/morse-code.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        const input = document.getElementById('input');
+        const output = document.getElementById('output');
+        const encodeBtn = document.getElementById('encodeBtn');
+        const decodeBtn = document.getElementById('decodeBtn');
+        const playBtn = document.getElementById('playBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const copyBtn = document.getElementById('copyBtn');
+
+        const MORSE_MAP = {
+            'A':'.-','B':'-...','C':'-.-.','D':'-..','E':'.','F':'..-.',
+            'G':'--.','H':'....','I':'..','J':'.---','K':'-.-','L':'.-..',
+            'M':'--','N':'-.','O':'---','P':'.--.','Q':'--.-','R':'.-.',
+            'S':'...','T':'-','U':'..-','V':'...-','W':'.--','X':'-..-',
+            'Y':'-.--','Z':'--..','0':'-----','1':'.----','2':'..---',
+            '3':'...--','4':'....-','5':'.....','6':'-....','7':'--...',
+            '8':'---..','9':'----.'
+        };
+        const REVERSE_MAP = {};
+        for (const k in MORSE_MAP) REVERSE_MAP[MORSE_MAP[k]] = k;
+
+        function encode(text) {
+            let result = [];
+            for (const ch of text.toUpperCase()) {
+                if (ch === ' ') {
+                    result.push('/');
+                } else if (MORSE_MAP[ch]) {
+                    result.push(MORSE_MAP[ch]);
+                } else if (ch >= '\u4e00' && ch <= '\u9fff') {
+                    const hex = ch.charCodeAt(0).toString(16).toUpperCase().padStart(4, '0');
+                    for (const h of hex) {
+                        result.push(MORSE_MAP[h]);
+                    }
+                } else {
+                    result.push('?');
+                }
+            }
+            return result.join(' ');
+        }
+
+        function decode(text) {
+            const symbols = text.trim().split(/\s+/);
+            let result = [];
+            let pendingHex = '';
+            for (const sym of symbols) {
+                if (sym === '/') {
+                    if (pendingHex) {
+                        try {
+                            result.push(String.fromCharCode(parseInt(pendingHex, 16)));
+                        } catch(e) {
+                            result.push('?');
+                        }
+                        pendingHex = '';
+                    }
+                    result.push(' ');
+                } else if (REVERSE_MAP[sym]) {
+                    const ch = REVERSE_MAP[sym];
+                    if (/[0-9A-F]/.test(ch)) {
+                        pendingHex += ch;
+                        if (pendingHex.length === 4) {
+                            try {
+                                result.push(String.fromCharCode(parseInt(pendingHex, 16)));
+                            } catch(e) {
+                                result.push('?');
+                            }
+                            pendingHex = '';
+                        }
+                    } else {
+                        if (pendingHex) {
+                            result.push('?');
+                            pendingHex = '';
+                        }
+                        result.push(ch);
+                    }
+                } else {
+                    result.push('?');
+                }
+            }
+            if (pendingHex) {
+                try {
+                    result.push(String.fromCharCode(parseInt(pendingHex, 16)));
+                } catch(e) {
+                    result.push('?');
+                }
+            }
+            return result.join('');
+        }
+
+        function playMorse(text) {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
+            const ctx = new AudioCtx();
+            const symbols = text.trim().split(/\s+/);
+            const dotDur = 0.08;
+            let time = ctx.currentTime + 0.05;
+            for (const sym of symbols) {
+                if (sym === '/') {
+                    time += dotDur * 7;
+                    continue;
+                }
+                for (const ch of sym) {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.frequency.value = 600;
+                    osc.type = 'sine';
+                    if (ch === '.') {
+                        gain.gain.setValueAtTime(0.3, time);
+                        gain.gain.setValueAtTime(0, time + dotDur);
+                        time += dotDur;
+                    } else if (ch === '-') {
+                        gain.gain.setValueAtTime(0.3, time);
+                        gain.gain.setValueAtTime(0, time + dotDur * 3);
+                        time += dotDur * 3;
+                    }
+                    osc.start(time - (ch === '.' ? dotDur : dotDur * 3));
+                    osc.stop(time);
+                    time += dotDur;
+                }
+                time += dotDur * 2;
+            }
+            setTimeout(() => ctx.close(), (time - ctx.currentTime + 0.5) * 1000);
+        }
+
+        function renderRefTable() {
+            const el = document.getElementById('morseRef');
+            let html = '';
+            for (const k in MORSE_MAP) {
+                html += `<div class="morse-ref-item"><span class="morse-ref-char">${k}</span><span class="morse-ref-code">${MORSE_MAP[k]}</span></div>`;
+            }
+            el.innerHTML = html;
+        }
+
+        encodeBtn.addEventListener('click', function() {
+            const val = input.value.trim();
+            if (!val) { output.value = '请输入内容'; return; }
+            output.value = encode(val);
+        });
+
+        decodeBtn.addEventListener('click', function() {
+            const val = input.value.trim();
+            if (!val) { output.value = '请输入摩斯电码'; return; }
+            output.value = decode(val);
+        });
+
+        playBtn.addEventListener('click', function() {
+            const val = output.value.trim() || input.value.trim();
+            if (!val) return;
+            const morse = /[.\-\/]/.test(val) ? val : encode(val);
+            playMorse(morse);
+        });
+
+        clearBtn.addEventListener('click', function() {
+            input.value = '';
+            output.value = '';
+        });
+
+        copyBtn.addEventListener('click', function() {
+            if (output.value) {
+                copyText(output.value);
+                copyBtn.textContent = '✓ 已复制!';
+                setTimeout(() => { copyBtn.textContent = '📋 复制'; }, 1500);
+            }
+        });
+
+        renderRefTable();
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            const current = "tools/morse-code.html";
+            const currentCat = "加密/哈希";
+            const related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                const others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+                related.push(...others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+                <a href="${t.path.split('/').pop()}" class="tool-card">
+                    <div class="tool-name">${t.name}</div>
+                    <div class="tool-desc">${t.description}</div>
+                </a>
+            `).join('');
+        }).catch(() => {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

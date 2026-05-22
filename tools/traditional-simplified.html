@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>繁简转换 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="中文繁体与简体互相转换工具 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="繁体,简体,转换,中文,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/traditional-simplified.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/traditional-simplified.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="繁简转换 - 在线工具">
+    <meta property="og:description" content="中文繁体与简体互相转换工具 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/traditional-simplified.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="繁简转换 - 在线工具">
+    <meta name="twitter:description" content="中文繁体与简体互相转换工具 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "繁简转换",
+                "description": "中文繁体与简体互相转换工具",
+                "url": "/tools/traditional-simplified.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "文本工具",
+                        "item": "/#category-文本工具"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "繁简转换",
+                        "item": "/tools/traditional-simplified.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "支持中文处理吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "完全支持中文文本的处理、统计和转换。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "可以处理多大的文本？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "建议单次处理不超过 5MB 的文本，以保证浏览器响应速度。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "统计结果准确吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "统计基于标准算法，中文字数和字符数分别计算，结果准确可靠。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .mode-tabs { display: flex; gap: 0.25rem; margin-bottom: 1rem; }
+        .mode-tab { flex: 1; padding: 0.5rem; text-align: center; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer; transition: var(--transition); color: var(--text-secondary); }
+        .mode-tab:hover { border-color: var(--primary); color: var(--primary); }
+        .mode-tab.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+        .conversion-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .conversion-panel { display: flex; flex-direction: column; }
+        .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+        .panel-label { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+        .panel-count { font-size: 0.75rem; color: var(--text-muted); }
+        .conversion-panel textarea { width: 100%; min-height: 180px; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 0.85rem; resize: vertical; box-sizing: border-box; }
+        .conversion-panel textarea:focus { outline: none; border-color: var(--primary); }
+        .conv-stats { font-size: 0.8rem; color: var(--text-secondary); text-align: center; margin-bottom: 0.75rem; }
+        @media (max-width: 600px) { .conversion-panels { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-文本工具">文本工具</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>繁简转换</span>
+            </nav>
+            <div class="tool-header">
+                <h1>繁简转换</h1>
+                <p>中文繁体与简体互相转换工具</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">文本工具</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="mode-tabs">
+                    <button class="mode-tab active" data-mode="t2s">
+                        <span>繁体</span>
+                        <span class="mode-tab-arrow">→</span>
+                        <span>简体</span>
+                    </button>
+                    <button class="mode-tab" data-mode="s2t">
+                        <span>简体</span>
+                        <span class="mode-tab-arrow">→</span>
+                        <span>繁体</span>
+                    </button>
+                    <button class="mode-tab" data-mode="s2tw">
+                        <span>简体</span>
+                        <span class="mode-tab-arrow">→</span>
+                        <span>台灣正體</span>
+                    </button>
+                    <button class="mode-tab" data-mode="s2hk">
+                        <span>简体</span>
+                        <span class="mode-tab-arrow">→</span>
+                        <span>香港繁體</span>
+                    </button>
+                </div>
+                <div class="lib-status" id="libStatus" style="display:none;"></div>
+                <div class="conversion-panels">
+                    <div class="conversion-panel">
+                        <div class="panel-header">
+                            <span class="panel-label" id="inputLabel">输入 (繁体)</span>
+                            <span class="panel-count" id="inputCount">0 字符</span>
+                        </div>
+                        <textarea class="panel-textarea" id="input" placeholder="在此输入中文文本..."></textarea>
+                    </div>
+                    <div class="conversion-panel">
+                        <div class="panel-header">
+                            <span class="panel-label" id="outputLabel">输出 (简体)</span>
+                            <span class="panel-count" id="outputCount">0 字符</span>
+                        </div>
+                        <textarea class="panel-textarea" id="output" readonly placeholder="转换结果..."></textarea>
+                    </div>
+                </div>
+                <div class="conv-stats" id="convStats" style="display:none;"></div>
+                <div class="tool-actions">
+                    <button class="btn btn-primary" id="executeBtn">▶ 转换</button>
+                    <button class="btn btn-secondary" id="clearBtn">🗑 清空</button>
+                    <button class="btn btn-secondary" id="copyBtn">📋 复制结果</button>
+                </div>
+            </div>
+            <section class="features">
+                <h2>繁简转换功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔄</div>
+                        <h3>双向转换</h3>
+                        <p>支持繁体转简体和简体转繁体两种转换方向。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>即时转换</h3>
+                        <p>输入文本后即时显示转换结果，无需等待。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>一键复制</h3>
+                        <p>转换结果可直接复制，方便使用。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>转换在浏览器中完成，文本内容不上传服务器。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>繁简转换常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question"><span>繁简转换准确吗？</span><span class="faq-arrow">›</span></button>
+                        <div class="faq-answer"><p>转换基于字符映射表，对于一对一的字符转换准确率很高。但某些一字多义的情况可能需要人工校对。</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question"><span>支持批量转换吗？</span><span class="faq-arrow">›</span></button>
+                        <div class="faq-answer"><p>可以。将需要转换的文本粘贴到输入框中，一次性完成转换。</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question"><span>数据会被上传吗？</span><span class="faq-arrow">›</span></button>
+                        <div class="faq-answer"><p>不会。转换在浏览器本地完成，文本内容不会上传。</p></div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="../assets/js/libs.js"></script>
+    <script>
+        window.TOOL_INFO = { name: "繁简转换", path: "tools/traditional-simplified.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var mode = 't2s';
+        var openccConverters = {};
+        var openccReady = false;
+        var input = document.getElementById('input');
+        var output = document.getElementById('output');
+        var executeBtn = document.getElementById('executeBtn');
+        var clearBtn = document.getElementById('clearBtn');
+        var copyBtn = document.getElementById('copyBtn');
+        var convStats = document.getElementById('convStats');
+        var inputCount = document.getElementById('inputCount');
+        var outputCount = document.getElementById('outputCount');
+        var inputLabel = document.getElementById('inputLabel');
+        var outputLabel = document.getElementById('outputLabel');
+        var libStatus = document.getElementById('libStatus');
+
+        var modeLabels = {
+            t2s:  { input: '输入 (繁体)', output: '输出 (简体)' },
+            s2t:  { input: '输入 (简体)', output: '输出 (繁体)' },
+            s2tw: { input: '输入 (简体)', output: '输出 (台灣正體)' },
+            s2hk: { input: '输入 (简体)', output: '输出 (香港繁體)' }
+        };
+
+        var openccModes = { t2s: 't2s', s2t: 's2t', s2tw: 's2tw', s2hk: 's2hk' };
+
+        function initOpenCC() {
+            if (openccReady || typeof OpenCC === 'undefined') return;
+            try {
+                openccConverters.t2s = OpenCC.ConverterFactory.instantiate('t2s');
+                openccConverters.s2t = OpenCC.ConverterFactory.instantiate('s2t');
+                openccConverters.s2tw = OpenCC.ConverterFactory.instantiate('s2tw');
+                openccConverters.s2hk = OpenCC.ConverterFactory.instantiate('s2hk');
+                openccReady = true;
+                libStatus.style.display = 'none';
+            } catch(e) {
+                openccReady = false;
+            }
+        }
+
+        loadLibs('opencc').then(function() {
+            initOpenCC();
+        }).catch(function() {});
+
+        document.querySelectorAll('.mode-tab').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.mode-tab').forEach(function(t) { t.classList.remove('active'); });
+                this.classList.add('active');
+                mode = this.dataset.mode;
+                var labels = modeLabels[mode];
+                inputLabel.textContent = labels.input;
+                outputLabel.textContent = labels.output;
+                doConvert();
+            });
+        });
+
+        function doConvert() {
+            var val = input.value;
+            inputCount.textContent = val.length + ' 字符';
+            if (!val) { output.value = ''; outputCount.textContent = '0 字符'; convStats.style.display = 'none'; return; }
+            var result = '';
+            var converted = 0;
+            if (openccReady && openccConverters[mode]) {
+                result = openccConverters[mode](val);
+                for (var i = 0; i < val.length; i++) {
+                    if (val[i] !== result[i]) converted++;
+                }
+                if (val.length !== result.length) converted = Math.abs(val.length - result.length) + converted;
+            } else {
+                var t2sStr = '麼么麽么為为會会对對说說國国学學時时實实体體電电车车網网過过這这个個樣样經经發发門门開开关关間间问问聞闻閩闽閱阅闊阔闖闯鬧闹鬥斗鬱郁靈灵麵面麥麦黃黄點点龍龙龜龟黨党齡龄齒齿齊齐鳳凤飛飞風风馬马魚鱼鳥鸟東东動动長长專专業业叢丛絲丝兩两喪丧豐丰麗丽舉举臨临頭头頁页頂顶頃顷項项順顺須须頓顿頗颇領领頷颔頸颈頤颐頡颉頦颏頹颓頻频頼赖顆颗題题額额顎颚顏颜願愿顛颠類类顯显顰颦鷸鹬鷹鹰廳厅';
+                var t2s = {};
+                for (var i = 0; i < t2sStr.length; i += 2) { t2s[t2sStr.charAt(i)] = t2sStr.charAt(i + 1); }
+                var s2t = {};
+                for (var k in t2s) { s2t[t2s[k]] = k; }
+                var map = (mode === 't2s') ? t2s : s2t;
+                for (var i = 0; i < val.length; i++) {
+                    var ch = val[i];
+                    if (map[ch]) { result += map[ch]; converted++; }
+                    else result += ch;
+                }
+                libStatus.style.display = 'block';
+                libStatus.textContent = '⚠ 使用基础映射表（opencc-js 加载失败，转换覆盖范围有限）';
+                libStatus.style.cssText = 'display:block;padding:0.5rem 0.75rem;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:0.8rem;color:var(--text-secondary);margin-bottom:0.75rem;';
+            }
+            output.value = result;
+            outputCount.textContent = result.length + ' 字符';
+            convStats.style.display = 'block';
+            convStats.textContent = '转换了 ' + converted + ' 个字符';
+        }
+
+        executeBtn.addEventListener('click', doConvert);
+        input.addEventListener('input', doConvert);
+
+        clearBtn.addEventListener('click', function() {
+            input.value = '';
+            output.value = '';
+            inputCount.textContent = '0 字符';
+            outputCount.textContent = '0 字符';
+            convStats.style.display = 'none';
+        });
+
+        copyBtn.addEventListener('click', function() {
+            if (output.value) {
+                copyText(output.value).then(function() {
+                    copyBtn.textContent = '✓ 已复制!';
+                    setTimeout(function() { copyBtn.textContent = '📋 复制结果'; }, 1500);
+                });
+            }
+        });
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            var current = "tools/traditional-simplified.html";
+            var currentCat = "文本工具";
+            var related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(t => t.path !== current && related.indexOf(t) === -1).slice(0, 5 - related.length);
+                related.push.apply(related, others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t =>
+                '<a href="' + t.path.split('/').pop() + '" class="tool-card"><div class="tool-name">' + t.name + '</div><div class="tool-desc">' + t.description + '</div></a>'
+            ).join('');
+        }).catch(function() {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

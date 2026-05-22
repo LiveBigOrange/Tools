@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>颜色转换 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="HEX / RGB / HSL 颜色值互转，附带调色板 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="颜色,hex,rgb,hsl,转换,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/color-convert.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/color-convert.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="颜色转换 - 在线工具">
+    <meta property="og:description" content="HEX / RGB / HSL 颜色值互转，附带调色板 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/color-convert.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="颜色转换 - 在线工具">
+    <meta name="twitter:description" content="HEX / RGB / HSL 颜色值互转，附带调色板 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "颜色转换",
+                "description": "HEX / RGB / HSL 颜色值互转，附带调色板",
+                "url": "/tools/color-convert.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "设计工具",
+                        "item": "/#category-设计工具"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "颜色转换",
+                        "item": "/tools/color-convert.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "支持哪些颜色格式？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持 HEX、RGB、HSL 等常见颜色格式的互相转换。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "图片处理会压缩质量吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "您可以自定义压缩比例，在文件大小和画质之间取得平衡。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "导出格式有哪些？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持 PNG、JPEG、WebP 等常见图片格式导出。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-设计工具">设计工具</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>颜色转换</span>
+            </nav>
+            <div class="tool-header">
+                <h1>颜色转换</h1>
+                <p>HEX / RGB / HSL 颜色值互转，附带调色板</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">设计工具</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <style>
+                    .color-swatch-large { width: 100%; height: 120px; border-radius: var(--radius); border: 2px solid var(--border); margin-bottom: 1rem; background: #3b82f6; position: relative; }
+                    .color-swatch-large .color-value-overlay { position: absolute; bottom: 8px; right: 12px; font-family: "SF Mono", Consolas, monospace; font-size: 1.1rem; font-weight: 700; padding: 4px 10px; border-radius: 6px; background: rgba(0,0,0,0.5); color: #fff; cursor: pointer; }
+                    .color-picker-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+                    .color-picker-row input[type="color"] { width: 56px; height: 44px; border: 2px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; padding: 2px; background: var(--card-bg); }
+                    .color-picker-row input[type="text"] { flex: 1; padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-family: "SF Mono", "Fira Code", Consolas, monospace; font-size: 1rem; }
+                    .color-picker-row input[type="text"]:focus { outline: none; border-color: var(--primary); }
+                    .color-format-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+                    .color-format-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; }
+                    .color-format-card:hover { border-color: var(--primary); transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+                    .color-format-card .format-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; }
+                    .color-format-card .format-value { font-family: "SF Mono", "Fira Code", Consolas, monospace; font-size: 0.9rem; word-break: break-all; font-weight: 500; }
+                    .color-format-card .copy-hint { position: absolute; top: 8px; right: 8px; font-size: 0.65rem; color: var(--text-muted); opacity: 0; transition: var(--transition); }
+                    .color-format-card:hover .copy-hint { opacity: 1; }
+                    .color-harmony { margin-top: 1rem; }
+                    .color-harmony h3 { font-size: 0.9rem; margin-bottom: 0.75rem; color: var(--text-secondary); }
+                    .harmony-row { margin-bottom: 0.75rem; }
+                    .harmony-label { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.35rem; }
+                    .harmony-swatches { display: flex; gap: 0.5rem; }
+                    .harmony-swatch { flex: 1; height: 40px; border-radius: 6px; border: 1px solid var(--border); cursor: pointer; position: relative; transition: var(--transition); }
+                    .harmony-swatch:hover { transform: scale(1.05); }
+                    .harmony-swatch .swatch-value { position: absolute; bottom: 2px; left: 0; right: 0; text-align: center; font-size: 0.6rem; font-family: monospace; color: rgba(255,255,255,0.9); text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+                    .color-swatch-large .checkerboard { position: absolute; inset: 0; border-radius: var(--radius); background: repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 0 0 / 12px 12px; z-index: 0; }
+                    .color-swatch-large .swatch-alpha { position: absolute; inset: 0; border-radius: var(--radius); z-index: 1; }
+                    .color-swatch-large .color-value-overlay { z-index: 2; }
+                    .alpha-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+                    .alpha-row label { font-size: 0.85rem; color: var(--text-secondary); white-space: nowrap; }
+                    .alpha-row input[type="range"] { flex: 1; height: 6px; -webkit-appearance: none; appearance: none; background: linear-gradient(to right, transparent, var(--primary)); border-radius: 3px; outline: none; }
+                    .alpha-row input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--primary); border: 2px solid var(--card-bg); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+                    .alpha-value { font-family: "SF Mono", Consolas, monospace; font-size: 0.9rem; min-width: 3.5rem; text-align: right; color: var(--text); font-weight: 500; }
+                    .contrast-section { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+                    .contrast-section h3 { font-size: 0.9rem; margin-bottom: 0.75rem; color: var(--text-secondary); }
+                    .contrast-inputs { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+                    .contrast-input-group { flex: 1; min-width: 200px; }
+                    .contrast-input-group label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.35rem; }
+                    .contrast-input-group input[type="color"] { width: 40px; height: 32px; border: 1px solid var(--border); border-radius: 4px; cursor: pointer; padding: 1px; vertical-align: middle; margin-right: 0.5rem; }
+                    .contrast-input-group input[type="text"] { width: calc(100% - 50px); padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: 4px; font-family: "SF Mono", Consolas, monospace; font-size: 0.8rem; vertical-align: middle; background: var(--bg); color: var(--text); }
+                    .contrast-result { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; }
+                    .contrast-ratio { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 0.75rem; }
+                    .contrast-ratio span { font-size: 0.85rem; font-weight: 400; color: var(--text-secondary); margin-left: 0.5rem; }
+                    .contrast-levels { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.5rem; }
+                    .contrast-level { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; padding: 0.35rem 0.6rem; border-radius: 4px; }
+                    .contrast-level.pass { background: var(--success-light); color: var(--success); }
+                    .contrast-level.fail { background: var(--danger-light); color: var(--danger); }
+                    .contrast-preview { display: flex; gap: 1rem; margin-top: 0.75rem; }
+                    .contrast-preview-sample { padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.9rem; flex: 1; text-align: center; }
+                    .format-value-alpha { font-family: "SF Mono", "Fira Code", Consolas, monospace; font-size: 0.78rem; word-break: break-all; color: var(--text-secondary); margin-top: 0.25rem; }
+                </style>
+                <div class="color-swatch-large" id="colorPreview">
+                    <div class="checkerboard"></div>
+                    <div class="swatch-alpha" id="swatchAlpha"></div>
+                    <div class="color-value-overlay" id="swatchOverlay">#3B82F6</div>
+                </div>
+                <div class="color-picker-row">
+                    <input type="color" id="colorPicker" value="#3b82f6">
+                    <input type="text" id="hexInput" value="#3b82f6" placeholder="输入 HEX 颜色值，如 #3b82f6">
+                    <button class="btn btn-secondary" id="randomColorBtn">🎲 随机</button>
+                </div>
+                <div class="alpha-row">
+                    <label>Alpha</label>
+                    <input type="range" id="alphaSlider" min="0" max="100" value="100">
+                    <span class="alpha-value" id="alphaDisplay">100%</span>
+                </div>
+                <div class="color-format-grid" id="colorFormats"></div>
+                <div class="color-harmony" id="colorHarmony">
+                    <h3>配色方案</h3>
+                    <div id="harmonyRows"></div>
+                </div>
+                <div class="contrast-section" id="contrastSection">
+                    <h3>对比度检查 (WCAG 2.1)</h3>
+                    <div class="contrast-inputs">
+                        <div class="contrast-input-group">
+                            <label>前景色</label>
+                            <input type="color" id="contrastFgColor" value="#3b82f6">
+                            <input type="text" id="contrastFgText" value="#3b82f6" placeholder="#000000">
+                        </div>
+                        <div class="contrast-input-group">
+                            <label>背景色</label>
+                            <input type="color" id="contrastBgColor" value="#ffffff">
+                            <input type="text" id="contrastBgText" value="#ffffff" placeholder="#ffffff">
+                        </div>
+                    </div>
+                    <div class="contrast-result" id="contrastResult"></div>
+                </div>
+                <div class="tool-actions">
+                    <button class="btn btn-secondary" id="copyHexBtn">📋 复制 HEX</button>
+                    <button class="btn btn-secondary" id="copyRgbBtn">📋 复制 RGB</button>
+                    <button class="btn btn-secondary" id="copyHslBtn">📋 复制 HSL</button>
+                </div>
+            </div>
+            <section class="features">
+                <h2>颜色转换功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <h3>多格式互转</h3>
+                        <p>支持 HEX、RGB、HSL 颜色值之间的互相转换。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👁️</div>
+                        <h3>实时预览</h3>
+                        <p>输入颜色值后即时显示颜色效果，方便确认。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>一键复制</h3>
+                        <p>点击即可复制任意格式的颜色值，提高设计效率。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>所有转换在浏览器中完成，数据不上传服务器。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>颜色转换常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>HEX、RGB、HSL 有什么区别？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>HEX 是十六进制颜色表示法（如 #FF0000），RGB 用红绿蓝三原色值表示（如 rgb(255,0,0)），HSL 用色相、饱和度、亮度表示（如 hsl(0,100%,50%)）。三者可以互相转换。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>如何选择适合的颜色格式？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Web 开发中 HEX 最常用，CSS 中 RGB/HSL 也广泛使用。HSL 更直观，方便调整色相和亮度。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>数据会被上传到服务器吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不会。所有颜色转换在浏览器本地完成，数据不会上传。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "颜色转换", path: "tools/color-convert.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var colorPicker = document.getElementById('colorPicker');
+        var hexInput = document.getElementById('hexInput');
+        var colorPreview = document.getElementById('colorPreview');
+        var colorFormats = document.getElementById('colorFormats');
+        var swatchOverlay = document.getElementById('swatchOverlay');
+        var swatchAlpha = document.getElementById('swatchAlpha');
+        var harmonyRows = document.getElementById('harmonyRows');
+        var alphaSlider = document.getElementById('alphaSlider');
+        var alphaDisplay = document.getElementById('alphaDisplay');
+        var contrastFgColor = document.getElementById('contrastFgColor');
+        var contrastFgText = document.getElementById('contrastFgText');
+        var contrastBgColor = document.getElementById('contrastBgColor');
+        var contrastBgText = document.getElementById('contrastBgText');
+        var contrastResult = document.getElementById('contrastResult');
+        var currentAlpha = 100;
+
+        function hexToRgb(hex) {
+            hex = hex.replace('#', '');
+            if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+            var n = parseInt(hex, 16);
+            return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+        }
+
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(function(x) { return x.toString(16).padStart(2, '0'); }).join('');
+        }
+
+        function rgbToHsl(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            var max = Math.max(r, g, b), min = Math.min(r, g, b);
+            var h, s, l = (max + min) / 2;
+            if (max === min) { h = s = 0; }
+            else {
+                var d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                    case g: h = ((b - r) / d + 2) / 6; break;
+                    case b: h = ((r - g) / d + 4) / 6; break;
+                }
+            }
+            return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+        }
+
+        function hslToRgb(h, s, l) {
+            h /= 360; s /= 100; l /= 100;
+            var r, g, b;
+            if (s === 0) { r = g = b = l; }
+            else {
+                var hue2rgb = function(p, q, t) {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                };
+                var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                var p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1/3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1/3);
+            }
+            return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+        }
+
+        function rgbToCmyk(r, g, b) {
+            if (r === 0 && g === 0 && b === 0) return [0, 0, 0, 100];
+            var c = 1 - r / 255;
+            var m = 1 - g / 255;
+            var y = 1 - b / 255;
+            var k = Math.min(c, m, y);
+            return [
+                Math.round((c - k) / (1 - k) * 100),
+                Math.round((m - k) / (1 - k) * 100),
+                Math.round((y - k) / (1 - k) * 100),
+                Math.round(k * 100)
+            ];
+        }
+
+        function getLuminance(r, g, b) {
+            return (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+        }
+
+        function wcagLuminance(r, g, b) {
+            var sRGB = [r, g, b].map(function(c) { return c / 255; });
+            var linear = sRGB.map(function(c) {
+                return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+            });
+            return 0.2126 * linear[0] + 0.7152 * linear[1] + 0.0722 * linear[2];
+        }
+
+        function contrastRatio(l1, l2) {
+            var lighter = Math.max(l1, l2);
+            var darker = Math.min(l1, l2);
+            return (lighter + 0.05) / (darker + 0.05);
+        }
+
+        function updateColor(hex) {
+            hex = hex.trim();
+            if (!/^#?[0-9a-fA-F]{3,6}$/.test(hex)) return;
+            if (!hex.startsWith('#')) hex = '#' + hex;
+            if (hex.length === 4) hex = '#' + hex[1]+hex[1]+hex[2]+hex[2]+hex[3]+hex[3];
+            if (hex.length !== 7) return;
+
+            var rgb = hexToRgb(hex);
+            var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+            var cmyk = rgbToCmyk(rgb[0], rgb[1], rgb[2]);
+            var alpha = currentAlpha / 100;
+
+            swatchAlpha.style.background = hex;
+            colorPicker.value = hex;
+            hexInput.value = hex;
+
+            var lum = getLuminance(rgb[0], rgb[1], rgb[2]);
+            swatchOverlay.textContent = alpha < 1 ? hex.toUpperCase() + Math.round(alpha * 255).toString(16).padStart(2, '0').toUpperCase() : hex.toUpperCase();
+            swatchOverlay.style.background = lum > 0.5 ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.2)';
+
+            var alphaHex = Math.round(alpha * 255).toString(16).padStart(2, '0');
+            var formats = [
+                { label: 'HEX', value: hex, alphaValue: hex + alphaHex },
+                { label: 'RGB', value: 'rgb(' + rgb.join(', ') + ')', alphaValue: 'rgba(' + rgb.join(', ') + ', ' + alpha.toFixed(2) + ')' },
+                { label: 'HSL', value: 'hsl(' + hsl.join(', ') + ')', alphaValue: 'hsla(' + hsl.join(', ') + ', ' + alpha.toFixed(2) + ')' },
+                { label: 'CMYK', value: 'cmyk(' + cmyk.join(', ') + '%)', alphaValue: '' }
+            ];
+
+            colorFormats.innerHTML = formats.map(function(f) {
+                var alphaHtml = f.alphaValue ? '<div class="format-value-alpha">' + f.alphaValue + '</div>' : '';
+                return '<div class="color-format-card" data-copy="' + f.value + '" data-copy-alpha="' + (f.alphaValue || '') + '"><span class="copy-hint">点击复制</span><div class="format-label">' + f.label + '</div><div class="format-value">' + f.value + '</div>' + alphaHtml + '</div>';
+            }).join('');
+
+            colorFormats.querySelectorAll('.color-format-card').forEach(function(card) {
+                card.addEventListener('click', function() {
+                    var copyVal = alpha < 1 && card.getAttribute('data-copy-alpha') ? card.getAttribute('data-copy-alpha') : card.getAttribute('data-copy');
+                    copyText(copyVal).then(function() {
+                        var label = card.querySelector('.format-label');
+                        var orig = label.textContent;
+                        label.textContent = '已复制!';
+                        setTimeout(function() { label.textContent = orig; }, 1000);
+                    });
+                });
+            });
+
+            swatchOverlay.onclick = function() {
+                var copyText = alpha < 1 ? hex + alphaHex : hex.toUpperCase();
+                copyText(copyText).then(function() {
+                    var orig = swatchOverlay.textContent;
+                    swatchOverlay.textContent = '已复制!';
+                    setTimeout(function() { swatchOverlay.textContent = orig; }, 1000);
+                });
+            };
+
+            updateHarmony(hsl[0], hsl[1], hsl[2]);
+            contrastFgColor.value = hex;
+            contrastFgText.value = hex;
+            updateContrast();
+        }
+
+        function updateAlpha() {
+            currentAlpha = parseInt(alphaSlider.value, 10);
+            alphaDisplay.textContent = currentAlpha + '%';
+            var alpha = currentAlpha / 100;
+            swatchAlpha.style.background = colorPicker.value;
+            swatchAlpha.style.opacity = alpha;
+            var hex = colorPicker.value;
+            var rgb = hexToRgb(hex);
+            var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+            var cmyk = rgbToCmyk(rgb[0], rgb[1], rgb[2]);
+            var alphaHex = Math.round(alpha * 255).toString(16).padStart(2, '0');
+            var lum = getLuminance(rgb[0], rgb[1], rgb[2]);
+            swatchOverlay.textContent = alpha < 1 ? hex.toUpperCase() + alphaHex.toUpperCase() : hex.toUpperCase();
+            swatchOverlay.style.background = lum > 0.5 ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.2)';
+
+            var formats = [
+                { label: 'HEX', value: hex, alphaValue: hex + alphaHex },
+                { label: 'RGB', value: 'rgb(' + rgb.join(', ') + ')', alphaValue: 'rgba(' + rgb.join(', ') + ', ' + alpha.toFixed(2) + ')' },
+                { label: 'HSL', value: 'hsl(' + hsl.join(', ') + ')', alphaValue: 'hsla(' + hsl.join(', ') + ', ' + alpha.toFixed(2) + ')' },
+                { label: 'CMYK', value: 'cmyk(' + cmyk.join(', ') + '%)', alphaValue: '' }
+            ];
+
+            colorFormats.innerHTML = formats.map(function(f) {
+                var alphaHtml = f.alphaValue ? '<div class="format-value-alpha">' + f.alphaValue + '</div>' : '';
+                return '<div class="color-format-card" data-copy="' + f.value + '" data-copy-alpha="' + (f.alphaValue || '') + '"><span class="copy-hint">点击复制</span><div class="format-label">' + f.label + '</div><div class="format-value">' + f.value + '</div>' + alphaHtml + '</div>';
+            }).join('');
+
+            colorFormats.querySelectorAll('.color-format-card').forEach(function(card) {
+                card.addEventListener('click', function() {
+                    var copyVal = alpha < 1 && card.getAttribute('data-copy-alpha') ? card.getAttribute('data-copy-alpha') : card.getAttribute('data-copy');
+                    copyText(copyVal).then(function() {
+                        var label = card.querySelector('.format-label');
+                        var orig = label.textContent;
+                        label.textContent = '已复制!';
+                        setTimeout(function() { label.textContent = orig; }, 1000);
+                    });
+                });
+            });
+
+            var copyText = alpha < 1 ? hex + alphaHex : hex.toUpperCase();
+            swatchOverlay.onclick = function() {
+                copyText(copyText).then(function() {
+                    var orig = swatchOverlay.textContent;
+                    swatchOverlay.textContent = '已复制!';
+                    setTimeout(function() { swatchOverlay.textContent = orig; }, 1000);
+                });
+            };
+        }
+
+        function updateHarmony(h, s, l) {
+            var harmonies = [
+                { name: '互补色', colors: [[h, s, l], [(h + 180) % 360, s, l]] },
+                { name: '三角色', colors: [[h, s, l], [(h + 120) % 360, s, l], [(h + 240) % 360, s, l]] },
+                { name: '类似色', colors: [[h, s, l], [(h + 30) % 360, s, l], [(h + 60) % 360, s, l]] }
+            ];
+
+            harmonyRows.innerHTML = harmonies.map(function(harmony) {
+                var swatches = harmony.colors.map(function(c) {
+                    var rgb = hslToRgb(c[0], c[1], c[2]);
+                    var hex = rgbToHex(rgb[0], rgb[1], rgb[2]);
+                    return '<div class="harmony-swatch" style="background:' + hex + '" data-copy="' + hex + '" title="' + hex + '"><span class="swatch-value">' + hex + '</span></div>';
+                }).join('');
+                return '<div class="harmony-row"><div class="harmony-label">' + harmony.name + '</div><div class="harmony-swatches">' + swatches + '</div></div>';
+            }).join('');
+
+            harmonyRows.querySelectorAll('.harmony-swatch').forEach(function(swatch) {
+                swatch.addEventListener('click', function() {
+                    copyText(this.getAttribute('data-copy')).then(function() {
+                        var val = this.querySelector('.swatch-value');
+                        var orig = val.textContent;
+                        val.textContent = '已复制';
+                        var self = this;
+                        setTimeout(function() { val.textContent = orig; }, 800);
+                    }.bind(this));
+                });
+            });
+        }
+
+        function updateContrast() {
+            var fgHex = contrastFgText.value.trim();
+            var bgHex = contrastBgText.value.trim();
+            if (!/^#[0-9a-fA-F]{6}$/.test(fgHex) || !/^#[0-9a-fA-F]{6}$/.test(bgHex)) {
+                contrastResult.innerHTML = '<div style="color:var(--text-muted);font-size:0.85rem;">请输入有效的6位HEX颜色值</div>';
+                return;
+            }
+            var fgRgb = hexToRgb(fgHex);
+            var bgRgb = hexToRgb(bgHex);
+            var fgL = wcagLuminance(fgRgb[0], fgRgb[1], fgRgb[2]);
+            var bgL = wcagLuminance(bgRgb[0], bgRgb[1], bgRgb[2]);
+            var ratio = contrastRatio(fgL, bgL);
+            var ratioStr = ratio.toFixed(2) + ':1';
+
+            function levelPass(threshold) { return ratio >= threshold; }
+            function badge(pass, label) {
+                return '<div class="contrast-level ' + (pass ? 'pass' : 'fail') + '">' + (pass ? '✓' : '✗') + ' ' + label + '</div>';
+            }
+
+            contrastResult.innerHTML =
+                '<div class="contrast-ratio">' + ratioStr + '<span>对比度比率</span></div>' +
+                '<div class="contrast-levels">' +
+                    badge(levelPass(4.5), 'AA 正常文本 (4.5:1)') +
+                    badge(levelPass(3), 'AA 大文本 (3:1)') +
+                    badge(levelPass(7), 'AAA 正常文本 (7:1)') +
+                    badge(levelPass(4.5), 'AAA 大文本 (4.5:1)') +
+                '</div>' +
+                '<div class="contrast-preview">' +
+                    '<div class="contrast-preview-sample" style="background:' + bgHex + ';color:' + fgHex + '">示例文本 Aa</div>' +
+                    '<div class="contrast-preview-sample" style="background:' + fgHex + ';color:' + bgHex + '">示例文本 Aa</div>' +
+                '</div>';
+        }
+
+        colorPicker.addEventListener('input', function() { updateColor(this.value); });
+        hexInput.addEventListener('input', function() { updateColor(this.value); });
+        alphaSlider.addEventListener('input', updateAlpha);
+
+        document.getElementById('randomColorBtn').addEventListener('click', function() {
+            var randomHex = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+            updateColor(randomHex);
+        });
+
+        document.getElementById('copyHexBtn').addEventListener('click', function() {
+            var alpha = currentAlpha / 100;
+            var hex = hexInput.value;
+            var copyVal = alpha < 1 ? hex + Math.round(alpha * 255).toString(16).padStart(2, '0') : hex;
+            copyText(copyVal).then(function() { showCopied('copyHexBtn', '📋 复制 HEX'); });
+        });
+        document.getElementById('copyRgbBtn').addEventListener('click', function() {
+            var rgb = hexToRgb(hexInput.value);
+            var alpha = currentAlpha / 100;
+            var copyVal = alpha < 1 ? 'rgba(' + rgb.join(', ') + ', ' + alpha.toFixed(2) + ')' : 'rgb(' + rgb.join(', ') + ')';
+            copyText(copyVal).then(function() { showCopied('copyRgbBtn', '📋 复制 RGB'); });
+        });
+        document.getElementById('copyHslBtn').addEventListener('click', function() {
+            var rgb = hexToRgb(hexInput.value);
+            var hsl = rgbToHsl(rgb[0], rgb[1], rgb[2]);
+            var alpha = currentAlpha / 100;
+            var copyVal = alpha < 1 ? 'hsla(' + hsl.join(', ') + ', ' + alpha.toFixed(2) + ')' : 'hsl(' + hsl.join(', ') + ')';
+            copyText(copyVal).then(function() { showCopied('copyHslBtn', '📋 复制 HSL'); });
+        });
+
+        contrastFgColor.addEventListener('input', function() {
+            contrastFgText.value = this.value;
+            updateContrast();
+        });
+        contrastFgText.addEventListener('input', function() {
+            var v = this.value.trim();
+            if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+                contrastFgColor.value = v;
+                updateContrast();
+            }
+        });
+        contrastBgColor.addEventListener('input', function() {
+            contrastBgText.value = this.value;
+            updateContrast();
+        });
+        contrastBgText.addEventListener('input', function() {
+            var v = this.value.trim();
+            if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+                contrastBgColor.value = v;
+                updateContrast();
+            }
+        });
+
+        function showCopied(btnId, orig) {
+            var btn = document.getElementById(btnId);
+            btn.textContent = '✓ 已复制!';
+            setTimeout(function() { btn.textContent = orig; }, 1500);
+        }
+
+        updateColor('#3b82f6');
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            const current = "tools/color-convert.html";
+            const currentCat = "设计工具";
+            const related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                const others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+                related.push(...others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+                <a href="${t.path.split('/').pop()}" class="tool-card">
+                    <div class="tool-name">${t.name}</div>
+                    <div class="tool-desc">${t.description}</div>
+                </a>
+            `).join('');
+        }).catch(() => {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>

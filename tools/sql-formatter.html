@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL 格式化 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="SQL 语句格式化美化与压缩，支持多种 SQL 方言 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="sql, 格式化, 美化, 压缩, 数据库,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/sql-formatter.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/sql-formatter.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="SQL 格式化 - 在线工具">
+    <meta property="og:description" content="SQL 语句格式化美化与压缩，支持多种 SQL 方言 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/sql-formatter.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="SQL 格式化 - 在线工具">
+    <meta name="twitter:description" content="SQL 语句格式化美化与压缩，支持多种 SQL 方言 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "SQL 格式化",
+                "description": "SQL 语句格式化美化与压缩，支持多种 SQL 方言",
+                "url": "/tools/sql-formatter.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "开发者工具",
+                        "item": "/#category-开发者工具"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "SQL 格式化",
+                        "item": "/tools/sql-formatter.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "这些工具需要联网使用吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "大部分工具可以在离线状态下使用，因为所有处理都在浏览器本地完成。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "支持哪些编程语言？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "工具支持多种常见编程语言格式，包括 JavaScript、CSS、HTML、JSON 等。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "数据安全如何保障？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "所有数据处理均在您的设备本地完成，不会上传到任何服务器。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .sql-options { margin-bottom: 1rem; }
+        .option-row { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+        .option-row label { font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; }
+        .option-row select { padding: 0.35rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 0.85rem; cursor: pointer; }
+        .option-row select:focus { outline: none; border-color: var(--primary); }
+        .form-group { margin-bottom: 0; }
+        .form-group label { display: block; font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; margin-bottom: 0.35rem; }
+        .form-group textarea { width: 100%; min-height: 160px; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 0.85rem; font-family: "SF Mono", "Fira Code", Consolas, monospace; resize: vertical; box-sizing: border-box; }
+        .form-group textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+        .form-group textarea[readonly] { background: var(--card-bg); cursor: default; }
+        @media (max-width: 600px) {
+            .form-group textarea { min-height: 120px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-开发者工具">开发者工具</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>SQL 格式化</span>
+            </nav>
+            <div class="tool-header">
+                <h1>SQL 格式化</h1>
+                <p>SQL 语句格式化美化与压缩，支持多种 SQL 方言</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">开发者工具</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="sql-options">
+                    <div class="option-row">
+                        <label>缩进</label>
+                        <select id="indentSize">
+                            <option value="2">2 空格</option>
+                            <option value="4" selected>4 空格</option>
+                            <option value="tab">Tab</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>输入 SQL</label>
+                    <textarea id="sqlInput" rows="10" placeholder="输入 SQL 语句..."></textarea>
+                </div>
+                <div class="tool-actions">
+                    <button class="btn btn-primary" id="formatBtn">✨ 美化</button>
+                    <button class="btn btn-secondary" id="minifyBtn">📦 压缩</button>
+                    <button class="btn btn-secondary" id="clearBtn">🗑 清空</button>
+                </div>
+                <div class="form-group" style="margin-top:1rem">
+                    <label>输出结果</label>
+                    <textarea id="sqlOutput" rows="10" readonly placeholder="格式化结果..."></textarea>
+                </div>
+                <div class="tool-actions">
+                    <button class="btn btn-secondary" id="copyBtn">📋 复制结果</button>
+                </div>
+            </div>
+            <section class="features">
+                <h2>SQL 格式化功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">✨</div>
+                        <h3>智能美化</h3>
+                        <p>自动识别 SQL 关键字并大写，添加换行和缩进，让杂乱的 SQL 语句清晰可读。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📦</div>
+                        <h3>一键压缩</h3>
+                        <p>去除多余空白字符，将 SQL 压缩为紧凑格式，减小传输体积。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>所有操作在浏览器中完成，数据不上传服务器，保障隐私安全。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>SQL 格式化常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持哪些 SQL 语句？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>支持 SELECT、INSERT、UPDATE、DELETE、CREATE、ALTER、DROP 等常见 SQL 语句，以及 JOIN、子查询等复杂语法。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>格式化会改变 SQL 的逻辑吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不会。格式化仅调整空白、换行和关键字大小写，不修改任何逻辑内容。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>数据安全如何保障？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>所有数据处理均在您的设备本地完成，不会上传到任何服务器。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "SQL 格式化", path: "tools/sql-formatter.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var sqlInput = document.getElementById('sqlInput');
+        var sqlOutput = document.getElementById('sqlOutput');
+        var formatBtn = document.getElementById('formatBtn');
+        var minifyBtn = document.getElementById('minifyBtn');
+        var clearBtn = document.getElementById('clearBtn');
+        var copyBtn = document.getElementById('copyBtn');
+        var indentSize = document.getElementById('indentSize');
+
+        var KEYWORDS = [
+            'SELECT','FROM','WHERE','INSERT','INTO','UPDATE','DELETE','CREATE','ALTER','DROP',
+            'TABLE','INDEX','VIEW','JOIN','LEFT','RIGHT','INNER','OUTER','CROSS','FULL',
+            'ON','AND','OR','NOT','IN','IS','NULL','LIKE','BETWEEN','EXISTS','AS',
+            'ORDER','BY','GROUP','HAVING','LIMIT','OFFSET','SET','VALUES',
+            'DISTINCT','ALL','UNION','INTERSECT','EXCEPT','CASE','WHEN','THEN','ELSE','END',
+            'ASC','DESC','PRIMARY','KEY','FOREIGN','REFERENCES','CONSTRAINT','DEFAULT',
+            'UNIQUE','CHECK','CASCADE','BEGIN','COMMIT','ROLLBACK','GRANT','REVOKE',
+            'IF','ELSE','WHILE','FOR','RETURN','DECLARE','PROCEDURE','FUNCTION','TRIGGER',
+            'DATABASE','SCHEMA','USE','SHOW','DESCRIBE','EXPLAIN','TRUNCATE','REPLACE',
+            'MERGE','USING','OVER','PARTITION','ROW_NUMBER','RANK','DENSE_RANK',
+            'WITH','RECURSIVE','LATERAL','NATURAL','FETCH','NEXT','ROWS','ONLY',
+            'TOP','PERCENT','OUTPUT','APPLY','PIVOT','UNPIVOT'
+        ];
+
+        var COMPOUND_KEYWORDS = {
+            'ORDER BY':1,'GROUP BY':1,'LEFT JOIN':1,'RIGHT JOIN':1,'INNER JOIN':1,
+            'OUTER JOIN':1,'CROSS JOIN':1,'FULL JOIN':1,'FULL OUTER JOIN':1,
+            'LEFT OUTER JOIN':1,'RIGHT OUTER JOIN':1,'NATURAL JOIN':1,
+            'INSERT INTO':1,'IS NOT':1,'NOT IN':1,'NOT LIKE':1,'NOT BETWEEN':1,
+            'NOT EXISTS':1,'IS NULL':1,'UNION ALL':1
+        };
+
+        var NEWLINE_KEYWORDS = new Set([
+            'SELECT','FROM','WHERE','JOIN','LEFT JOIN','RIGHT JOIN','INNER JOIN',
+            'OUTER JOIN','CROSS JOIN','FULL JOIN','FULL OUTER JOIN','LEFT OUTER JOIN',
+            'RIGHT OUTER JOIN','NATURAL JOIN','ON','AND','OR','SET',
+            'GROUP BY','ORDER BY','HAVING','LIMIT','OFFSET','INSERT INTO',
+            'VALUES','UNION','UNION ALL','INTERSECT','EXCEPT','INTO',
+            'WHEN','ELSE','END','CASE','CREATE','ALTER','DROP','DELETE','UPDATE',
+            'REPLACE','MERGE','USING'
+        ]);
+
+        function getIndentStr() {
+            var v = indentSize.value;
+            if (v === 'tab') return '\t';
+            return ' '.repeat(parseInt(v, 10));
+        }
+
+        function tokenize(sql) {
+            var tokens = [];
+            var i = 0;
+            var len = sql.length;
+            while (i < len) {
+                if (/\s/.test(sql[i])) {
+                    var start = i;
+                    while (i < len && /\s/.test(sql[i])) i++;
+                    tokens.push({type:'ws', value:sql.slice(start,i)});
+                } else if (sql[i] === "'" || sql[i] === '"') {
+                    var q = sql[i];
+                    var s = i;
+                    i++;
+                    while (i < len) {
+                        if (sql[i] === q) {
+                            if (i + 1 < len && sql[i+1] === q) { i += 2; }
+                            else { i++; break; }
+                        } else { i++; }
+                    }
+                    tokens.push({type:'string', value:sql.slice(s,i)});
+                } else if (sql[i] === '-' && i+1 < len && sql[i+1] === '-') {
+                    var s = i;
+                    while (i < len && sql[i] !== '\n') i++;
+                    tokens.push({type:'comment', value:sql.slice(s,i)});
+                } else if (sql[i] === '/' && i+1 < len && sql[i+1] === '*') {
+                    var s = i;
+                    i += 2;
+                    while (i < len && !(sql[i-1] === '*' && sql[i] === '/')) i++;
+                    if (i < len) i++;
+                    tokens.push({type:'comment', value:sql.slice(s,i)});
+                } else if (sql[i] === '(' || sql[i] === ')') {
+                    tokens.push({type:'paren', value:sql[i]});
+                    i++;
+                } else if (sql[i] === ',' || sql[i] === ';') {
+                    tokens.push({type:'punct', value:sql[i]});
+                    i++;
+                } else if (/[0-9]/.test(sql[i]) || (sql[i] === '.' && i+1 < len && /[0-9]/.test(sql[i+1]))) {
+                    var s = i;
+                    while (i < len && /[0-9.eExXa-fA-F]/.test(sql[i])) i++;
+                    tokens.push({type:'number', value:sql.slice(s,i)});
+                } else if (/[<>=!]/.test(sql[i])) {
+                    var s = i;
+                    while (i < len && /[<>=!]/.test(sql[i])) i++;
+                    tokens.push({type:'operator', value:sql.slice(s,i)});
+                } else if (sql[i] === '.' || sql[i] === '*' || sql[i] === '+' || sql[i] === '/' || sql[i] === '%' || sql[i] === '|' || sql[i] === '&') {
+                    tokens.push({type:'operator', value:sql[i]});
+                    i++;
+                } else if (/[a-zA-Z_]/.test(sql[i])) {
+                    var s = i;
+                    while (i < len && /[a-zA-Z0-9_]/.test(sql[i])) i++;
+                    tokens.push({type:'word', value:sql.slice(s,i)});
+                } else {
+                    tokens.push({type:'other', value:sql[i]});
+                    i++;
+                }
+            }
+            return tokens;
+        }
+
+        function classifyKeywords(tokens) {
+            for (var t = 0; t < tokens.length; t++) {
+                if (tokens[t].type !== 'word') continue;
+                var upper = tokens[t].value.toUpperCase();
+                if (KEYWORDS.indexOf(upper) !== -1) {
+                    tokens[t].type = 'keyword';
+                    tokens[t].value = upper;
+                }
+            }
+            for (var t = 0; t < tokens.length; t++) {
+                if (tokens[t].type !== 'keyword') continue;
+                for (var compound in COMPOUND_KEYWORDS) {
+                    var parts = compound.split(' ');
+                    if (tokens[t].value !== parts[0]) continue;
+                    var wsCount = 0;
+                    var nextKw = t + 1;
+                    while (nextKw < tokens.length && wsCount < 2) {
+                        if (tokens[nextKw].type === 'ws') { wsCount++; nextKw++; continue; }
+                        break;
+                    }
+                    if (nextKw >= tokens.length || tokens[nextKw].type !== 'keyword' || tokens[nextKw].value !== parts[1]) continue;
+                    var nextAfter = nextKw + 1;
+                    if (parts.length === 3) {
+                        var wsCount2 = 0;
+                        while (nextAfter < tokens.length && wsCount2 < 2) {
+                            if (tokens[nextAfter].type === 'ws') { wsCount2++; nextAfter++; continue; }
+                            break;
+                        }
+                        if (nextAfter >= tokens.length || tokens[nextAfter].type !== 'keyword' || tokens[nextAfter].value !== parts[2]) continue;
+                    }
+                    tokens[t].compound = compound;
+                    for (var k = t + 1; k < (parts.length === 3 ? nextAfter : nextKw + 1); k++) {
+                        if (tokens[k].type === 'ws') tokens[k].skip = true;
+                        else if (tokens[k].type === 'keyword') tokens[k].skip = true;
+                    }
+                    break;
+                }
+            }
+        }
+
+        function formatSQL(sql) {
+            var tokens = tokenize(sql);
+            classifyKeywords(tokens);
+            var indentStr = getIndentStr();
+            var level = 0;
+            var result = '';
+            var prevType = '';
+            var prevValue = '';
+            var newlinePending = false;
+
+            function addIndent() {
+                for (var j = 0; j < level; j++) result += indentStr;
+            }
+
+            for (var i = 0; i < tokens.length; i++) {
+                var tok = tokens[i];
+                if (tok.skip) continue;
+                if (tok.type === 'ws') continue;
+
+                if (tok.type === 'comment') {
+                    if (result.length > 0 && result[result.length-1] !== '\n') result += '\n';
+                    addIndent();
+                    result += tok.value + '\n';
+                    prevType = 'comment';
+                    newlinePending = false;
+                    continue;
+                }
+
+                var kw = tok.compound || (tok.type === 'keyword' ? tok.value : '');
+                var isNewlineKw = NEWLINE_KEYWORDS.has(kw);
+
+                if (isNewlineKw && result.length > 0) {
+                    result = result.replace(/\s+$/, '');
+                    result += '\n';
+                    addIndent();
+                    newlinePending = false;
+                }
+
+                if (tok.type === 'paren' && tok.value === '(') {
+                    if (prevType === 'keyword' || prevType === 'word' || prevValue === ')') {
+                        result += ' ';
+                    }
+                    result += '(';
+                    level++;
+                    newlinePending = true;
+                    prevType = 'paren';
+                    prevValue = '(';
+                    continue;
+                }
+
+                if (tok.type === 'paren' && tok.value === ')') {
+                    level = Math.max(0, level - 1);
+                    if (newlinePending || prevType === 'paren') {
+                        result = result.replace(/\s+$/, '');
+                        result += '\n';
+                        addIndent();
+                    } else {
+                        result = result.replace(/\s+$/, '');
+                    }
+                    result += ')';
+                    newlinePending = false;
+                    prevType = 'paren';
+                    prevValue = ')';
+                    continue;
+                }
+
+                if (newlinePending && tok.type !== 'paren') {
+                    result += '\n';
+                    addIndent();
+                    newlinePending = false;
+                }
+
+                if (result.length > 0) {
+                    var lastChar = result[result.length - 1];
+                    if (lastChar !== '\n' && lastChar !== ' ' && lastChar !== '(') {
+                        var needSpace = true;
+                        if (tok.type === 'punct' && (tok.value === ',' || tok.value === ';')) needSpace = false;
+                        if (tok.type === 'operator' && tok.value === '.') needSpace = false;
+                        if (prevValue === '(' || prevValue === '.') needSpace = false;
+                        if (needSpace) result += ' ';
+                    }
+                }
+
+                result += tok.compound || tok.value;
+
+                if (tok.type === 'punct' && tok.value === ',') result += ' ';
+                if (tok.type === 'punct' && tok.value === ';') { result += '\n'; prevType = 'punct'; prevValue = ';'; newlinePending = false; continue; }
+
+                if (isNewlineKw) {
+                    newlinePending = true;
+                } else {
+                    newlinePending = false;
+                }
+
+                prevType = tok.type;
+                prevValue = tok.value;
+            }
+
+            return result.replace(/\s+$/, '') + '\n';
+        }
+
+        function minifySQL(sql) {
+            var tokens = tokenize(sql);
+            var result = '';
+            var prevType = '';
+            var prevValue = '';
+            for (var i = 0; i < tokens.length; i++) {
+                var tok = tokens[i];
+                if (tok.type === 'ws') continue;
+                if (tok.type === 'comment') continue;
+                if (result.length > 0) {
+                    var lastChar = result[result.length - 1];
+                    var needSpace = true;
+                    if (tok.value === ',' || tok.value === ';' || tok.value === ')') needSpace = false;
+                    if (lastChar === '(' || lastChar === '.') needSpace = false;
+                    if (tok.type === 'operator' && tok.value === '.') needSpace = false;
+                    if (needSpace) result += ' ';
+                }
+                if (tok.type === 'keyword') {
+                    result += tok.value.toUpperCase();
+                } else {
+                    result += tok.value;
+                }
+                prevType = tok.type;
+                prevValue = tok.value;
+            }
+            return result;
+        }
+
+        formatBtn.addEventListener('click', function() {
+            var val = sqlInput.value.trim();
+            if (!val) { sqlOutput.value = ''; return; }
+            try {
+                sqlOutput.value = formatSQL(val);
+            } catch(e) {
+                sqlOutput.value = '格式化错误: ' + e.message;
+            }
+        });
+
+        minifyBtn.addEventListener('click', function() {
+            var val = sqlInput.value.trim();
+            if (!val) { sqlOutput.value = ''; return; }
+            try {
+                sqlOutput.value = minifySQL(val);
+            } catch(e) {
+                sqlOutput.value = '压缩错误: ' + e.message;
+            }
+        });
+
+        clearBtn.addEventListener('click', function() {
+            sqlInput.value = '';
+            sqlOutput.value = '';
+        });
+
+        copyBtn.addEventListener('click', function() {
+            var text = sqlOutput.value;
+            if (!text) return;
+            copyText(text).then(function() {
+                var orig = copyBtn.textContent;
+                copyBtn.textContent = '✓ 已复制!';
+                setTimeout(function() { copyBtn.textContent = orig; }, 1500);
+            });
+        });
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            var current = "tools/sql-formatter.html";
+            var currentCat = "开发者工具";
+            var related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+                related.push(...others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+                <a href="${t.path.split('/').pop()}" class="tool-card">
+                    <div class="tool-name">${t.name}</div>
+                    <div class="tool-desc">${t.description}</div>
+                </a>
+            `).join('');
+        }).catch(() => {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

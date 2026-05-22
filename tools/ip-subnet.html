@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP 子网计算 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="IP 子网掩码计算器，计算网段范围、可用主机数和广播地址 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="ip, 子网, 掩码, cidr, 网段,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/ip-subnet.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/ip-subnet.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="IP 子网计算 - 在线工具">
+    <meta property="og:description" content="IP 子网掩码计算器，计算网段范围、可用主机数和广播地址 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/ip-subnet.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="IP 子网计算 - 在线工具">
+    <meta name="twitter:description" content="IP 子网掩码计算器，计算网段范围、可用主机数和广播地址 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "IP 子网计算",
+                "description": "IP 子网掩码计算器，计算网段范围、可用主机数和广播地址",
+                "url": "/tools/ip-subnet.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "网络工具",
+                        "item": "/#category-网络工具"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "IP 子网计算",
+                        "item": "/tools/ip-subnet.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "查询结果准确吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "查询结果基于公开数据库，准确性较高，但可能存在少量延迟。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "为什么我的 IP 显示不准确？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "IP 归属地数据库可能未及时更新，建议参考多个数据源。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "这些工具需要安装插件吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "不需要。所有工具均为纯网页实现，打开浏览器即可使用。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .subnet-input-group { display: grid; grid-template-columns: 1fr auto 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .subnet-field { display: flex; flex-direction: column; gap: 0.35rem; }
+        .subnet-field label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
+        .subnet-field input, .subnet-field select {
+            padding: 0.6rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm);
+            background: var(--bg); color: var(--text); font-size: 0.95rem;
+            font-family: "SF Mono","Fira Code","Cascadia Code","JetBrains Mono",Consolas,monospace;
+            transition: var(--transition); outline: none;
+        }
+        .subnet-field input:focus, .subnet-field select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); }
+        .subnet-field select { cursor: pointer; min-width: 80px; }
+        .subnet-presets { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .presets-label { font-size: 0.8rem; color: var(--text-muted); }
+        .preset-btn {
+            padding: 0.3rem 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm);
+            background: var(--bg); color: var(--text-secondary); font-size: 0.8rem;
+            cursor: pointer; transition: var(--transition); font-family: "SF Mono","Fira Code",Consolas,monospace;
+        }
+        .preset-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+        .subnet-results { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.75rem; margin-top: 1.25rem; }
+        .result-card {
+            background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm);
+            padding: 0.85rem 1rem; display: flex; align-items: center; justify-content: space-between;
+            gap: 0.75rem; transition: var(--transition);
+        }
+        .result-card:hover { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .result-info { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+        .result-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+        .result-value {
+            font-size: 0.95rem; color: var(--text); word-break: break-all;
+            font-family: "SF Mono","Fira Code","Cascadia Code","JetBrains Mono",Consolas,monospace;
+        }
+        .copy-btn {
+            flex-shrink: 0; padding: 0.3rem 0.5rem; border: 1px solid var(--border);
+            border-radius: var(--radius-sm); background: none; color: var(--text-muted);
+            cursor: pointer; font-size: 0.75rem; transition: var(--transition); line-height: 1;
+        }
+        .copy-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .copy-btn.copied { border-color: var(--primary); color: var(--primary); }
+        .subnet-error {
+            color: #e53e3e; font-size: 0.85rem; margin-top: 0.75rem;
+            padding: 0.6rem 0.85rem; background: rgba(229,62,62,0.08);
+            border-radius: var(--radius-sm); border: 1px solid rgba(229,62,62,0.2);
+        }
+        @media (max-width: 640px) {
+            .subnet-input-group { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-网络工具">网络工具</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>IP 子网计算</span>
+            </nav>
+            <div class="tool-header">
+                <h1>IP 子网计算</h1>
+                <p>IP 子网掩码计算器，计算网段范围、可用主机数和广播地址</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">网络工具</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="subnet-input-group">
+                    <div class="subnet-field">
+                        <label for="ipInput">IP 地址</label>
+                        <input type="text" id="ipInput" placeholder="例如 192.168.1.100" autocomplete="off">
+                    </div>
+                    <div class="subnet-field">
+                        <label for="cidrSelect">CIDR 前缀长度</label>
+                        <select id="cidrSelect"></select>
+                    </div>
+                    <div class="subnet-field">
+                        <label for="maskInput">子网掩码</label>
+                        <input type="text" id="maskInput" placeholder="例如 255.255.255.0" autocomplete="off">
+                    </div>
+                </div>
+                <div class="subnet-presets">
+                    <span class="presets-label">常用前缀：</span>
+                    <button class="preset-btn" data-cidr="8">/8</button>
+                    <button class="preset-btn" data-cidr="16">/16</button>
+                    <button class="preset-btn" data-cidr="24">/24</button>
+                    <button class="preset-btn" data-cidr="25">/25</button>
+                    <button class="preset-btn" data-cidr="28">/28</button>
+                    <button class="preset-btn" data-cidr="30">/30</button>
+                </div>
+                <div class="tool-actions">
+                    <button class="btn btn-primary" id="executeBtn">计算</button>
+                    <button class="btn btn-secondary" id="clearBtn">清空</button>
+                </div>
+                <div class="subnet-results" id="results"></div>
+            </div>
+            <section class="features">
+                <h2>IP 子网计算功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">✨</div>
+                        <h3>实时查询</h3>
+                        <p>快速查询网络信息，即时显示结果。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>多种协议</h3>
+                        <p>支持 HTTP、WebSocket 等多种网络协议。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>所有操作在浏览器中完成，数据不上传服务器，保障隐私安全。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>IP 子网计算常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>查询结果准确吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>查询结果基于公开数据库，准确性较高，但可能存在少量延迟。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>为什么我的 IP 显示不准确？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>IP 归属地数据库可能未及时更新，建议参考多个数据源。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>这些工具需要安装插件吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不需要。所有工具均为纯网页实现，打开浏览器即可使用。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "IP 子网计算", path: "tools/ip-subnet.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var ipInput = document.getElementById('ipInput');
+        var cidrSelect = document.getElementById('cidrSelect');
+        var maskInput = document.getElementById('maskInput');
+        var resultsDiv = document.getElementById('results');
+
+        for (var i = 1; i <= 32; i++) {
+            var opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = '/' + i;
+            if (i === 24) opt.selected = true;
+            cidrSelect.appendChild(opt);
+        }
+
+        function cidrToMask(prefix) {
+            if (prefix === 0) return 0;
+            return (~0 << (32 - prefix)) >>> 0;
+        }
+
+        function maskToCidr(mask) {
+            if (mask === 0) return 0;
+            var count = 0;
+            var m = mask >>> 0;
+            while ((m & 0x80000000) >>> 0) { count++; m = (m << 1) >>> 0; }
+            return count;
+        }
+
+        function ipToInt(ip) {
+            var parts = ip.split('.');
+            if (parts.length !== 4) throw new Error('IP 格式错误');
+            var result = 0;
+            for (var i = 0; i < 4; i++) {
+                var n = parseInt(parts[i], 10);
+                if (isNaN(n) || n < 0 || n > 255 || parts[i] !== String(n)) throw new Error('IP 格式错误');
+                result = (result << 8) | n;
+            }
+            return result >>> 0;
+        }
+
+        function intToIp(num) {
+            return [
+                (num >>> 24) & 0xFF,
+                (num >>> 16) & 0xFF,
+                (num >>> 8) & 0xFF,
+                num & 0xFF
+            ].join('.');
+        }
+
+        function isValidMask(mask) {
+            var m = mask >>> 0;
+            var inv = (~m) >>> 0;
+            return (inv & (inv + 1)) === 0;
+        }
+
+        function getIpClass(ipInt) {
+            var first = (ipInt >>> 24) & 0xFF;
+            var isPrivate = (
+                (first === 10) ||
+                (first === 172 && ((ipInt >>> 16) & 0xFF) >= 16 && ((ipInt >>> 16) & 0xFF) <= 31) ||
+                (first === 192 && ((ipInt >>> 16) & 0xFF) === 168)
+            );
+            var cls = '';
+            if (first < 128) cls = 'A 类';
+            else if (first < 192) cls = 'B 类';
+            else if (first < 224) cls = 'C 类';
+            else if (first < 240) cls = 'D 类（组播）';
+            else cls = 'E 类（保留）';
+            return isPrivate ? cls + '（私有地址）' : cls;
+        }
+
+        cidrSelect.addEventListener('change', function() {
+            var prefix = parseInt(this.value, 10);
+            maskInput.value = intToIp(cidrToMask(prefix));
+        });
+
+        maskInput.addEventListener('input', function() {
+            var val = this.value.trim();
+            if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(val)) {
+                try {
+                    var maskInt = ipToInt(val);
+                    if (isValidMask(maskInt)) {
+                        var cidr = maskToCidr(maskInt);
+                        cidrSelect.value = cidr;
+                    }
+                } catch(e) {}
+            }
+        });
+
+        document.querySelectorAll('.preset-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var cidr = parseInt(this.dataset.cidr, 10);
+                cidrSelect.value = cidr;
+                maskInput.value = intToIp(cidrToMask(cidr));
+            });
+        });
+
+        maskInput.value = intToIp(cidrToMask(24));
+
+        function copyValue(btn, value) {
+            copyText(value).then(function() {
+                btn.textContent = '✓';
+                btn.classList.add('copied');
+                setTimeout(function() {
+                    btn.textContent = '复制';
+                    btn.classList.remove('copied');
+                }, 1200);
+            });
+        }
+
+        function calculate() {
+            resultsDiv.innerHTML = '';
+            var ipVal = ipInput.value.trim();
+            if (!ipVal) { resultsDiv.innerHTML = '<div class="subnet-error">请输入 IP 地址</div>'; return; }
+
+            var ipInt;
+            try { ipInt = ipToInt(ipVal); } catch(e) {
+                resultsDiv.innerHTML = '<div class="subnet-error">IP 地址格式错误，请输入如 192.168.1.100</div>';
+                return;
+            }
+
+            var maskVal = maskInput.value.trim();
+            var maskInt;
+            if (maskVal && /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(maskVal)) {
+                try { maskInt = ipToInt(maskVal); } catch(e) {
+                    resultsDiv.innerHTML = '<div class="subnet-error">子网掩码格式错误</div>'; return;
+                }
+                if (!isValidMask(maskInt)) {
+                    resultsDiv.innerHTML = '<div class="subnet-error">无效的子网掩码</div>'; return;
+                }
+            } else {
+                var prefix = parseInt(cidrSelect.value, 10);
+                maskInt = cidrToMask(prefix);
+            }
+
+            var prefix = maskToCidr(maskInt);
+            var networkInt = (ipInt & maskInt) >>> 0;
+            var broadcastInt = (networkInt | ((~maskInt) >>> 0)) >>> 0;
+            var totalHosts = Math.pow(2, 32 - prefix);
+            var availableHosts = prefix >= 31 ? (prefix === 31 ? 2 : (prefix === 32 ? 1 : 0)) : totalHosts - 2;
+            var firstHost = prefix >= 31 ? networkInt : (networkInt + 1) >>> 0;
+            var lastHost = prefix >= 31 ? broadcastInt : (broadcastInt - 1) >>> 0;
+            var wildcardInt = (~maskInt) >>> 0;
+
+            var items = [
+                { label: '网络地址', value: intToIp(networkInt) },
+                { label: '广播地址', value: intToIp(broadcastInt) },
+                { label: '子网掩码', value: intToIp(maskInt) },
+                { label: '可用主机数', value: String(availableHosts) },
+                { label: 'IP 范围', value: intToIp(firstHost) + ' - ' + intToIp(lastHost) },
+                { label: '通配符掩码', value: intToIp(wildcardInt) },
+                { label: 'CIDR 表示', value: intToIp(networkInt) + '/' + prefix },
+                { label: 'IP 类型', value: getIpClass(ipInt) }
+            ];
+
+            items.forEach(function(item) {
+                var card = document.createElement('div');
+                card.className = 'result-card';
+                var info = document.createElement('div');
+                info.className = 'result-info';
+                var label = document.createElement('span');
+                label.className = 'result-label';
+                label.textContent = item.label;
+                var value = document.createElement('span');
+                value.className = 'result-value';
+                value.textContent = item.value;
+                info.appendChild(label);
+                info.appendChild(value);
+                var btn = document.createElement('button');
+                btn.className = 'copy-btn';
+                btn.textContent = '复制';
+                btn.addEventListener('click', function() { copyValue(btn, item.value); });
+                card.appendChild(info);
+                card.appendChild(btn);
+                resultsDiv.appendChild(card);
+            });
+        }
+
+        document.getElementById('executeBtn').addEventListener('click', calculate);
+        ipInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') calculate(); });
+
+        document.getElementById('clearBtn').addEventListener('click', function() {
+            ipInput.value = '';
+            maskInput.value = intToIp(cidrToMask(24));
+            cidrSelect.value = 24;
+            resultsDiv.innerHTML = '';
+        });
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            var current = "tools/ip-subnet.html";
+            var currentCat = "网络工具";
+            var related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+                related.push(...others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+                <a href="${t.path.split('/').pop()}" class="tool-card">
+                    <div class="tool-name">${t.name}</div>
+                    <div class="tool-desc">${t.description}</div>
+                </a>
+            `).join('');
+        }).catch(() => {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

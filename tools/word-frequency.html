@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>词频统计 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="统计文本中各词汇的出现频率，支持中文分词 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="词频,统计,关键词,分析,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/word-frequency.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/word-frequency.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="词频统计 - 在线工具">
+    <meta property="og:description" content="统计文本中各词汇的出现频率，支持中文分词 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/word-frequency.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="词频统计 - 在线工具">
+    <meta name="twitter:description" content="统计文本中各词汇的出现频率，支持中文分词 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "词频统计",
+                "description": "统计文本中各词汇的出现频率，支持中文分词",
+                "url": "/tools/word-frequency.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "文本工具",
+                        "item": "/#category-文本工具"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "词频统计",
+                        "item": "/tools/word-frequency.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "支持中文处理吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "完全支持中文文本的处理、统计和转换。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "可以处理多大的文本？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "建议单次处理不超过 5MB 的文本，以保证浏览器响应速度。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "统计结果准确吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "统计基于标准算法，中文字数和字符数分别计算，结果准确可靠。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-文本工具">文本工具</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>词频统计</span>
+            </nav>
+            <div class="tool-header">
+                <h1>词频统计</h1>
+                <p>统计文本中各词汇的出现频率，支持中文分词</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">文本工具</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <style>
+                    .wf-input-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1rem; }
+                    .wf-input-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+                    .wf-input-header .card-title { font-weight: 600; font-size: 0.9rem; }
+                    .wf-input-header .char-count { font-size: 0.75rem; color: var(--text-muted); }
+                    .wf-input-card textarea { width: 100%; min-height: 150px; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card-bg); color: var(--text); font-size: 0.8rem; resize: vertical; box-sizing: border-box; }
+                    .wf-input-card textarea:focus { outline: none; border-color: var(--primary); }
+                    .wf-options { display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+                    .wf-option-card { flex: 1; min-width: 160px; padding: 0.75rem 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: space-between; }
+                    .wf-option-card:hover { border-color: var(--primary); }
+                    .wf-option-card.active { border-color: var(--primary); background: rgba(59,130,246,0.05); }
+                    .wf-option-card .option-label { font-size: 0.85rem; font-weight: 500; }
+                    .wf-toggle { width: 36px; height: 20px; background: var(--border); border-radius: 10px; position: relative; transition: var(--transition); }
+                    .wf-toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: #fff; border-radius: 50%; transition: var(--transition); }
+                    .wf-option-card.active .wf-toggle { background: var(--primary); }
+                    .wf-option-card.active .wf-toggle::after { left: 18px; }
+                    .wf-summary-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+                    .wf-summary-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.75rem 1rem; text-align: center; }
+                    .wf-summary-card .summary-value { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+                    .wf-summary-card .summary-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; }
+                    .wf-results { margin-top: 1rem; }
+                    .wf-bar-header { display: grid; grid-template-columns: 40px 1fr 60px 60px 50px; gap: 0.5rem; padding: 0.5rem 0.75rem; font-size: 0.75rem; color: var(--text-muted); border-bottom: 1px solid var(--border); font-weight: 600; }
+                    .wf-bar-row { display: grid; grid-template-columns: 40px 1fr 60px 60px 50px; gap: 0.5rem; align-items: center; padding: 0.4rem 0.75rem; font-size: 0.8rem; transition: var(--transition); }
+                    .wf-bar-row:nth-child(even) { background: rgba(0,0,0,0.02); }
+                    .wf-bar-row:hover { background: rgba(59,130,246,0.04); }
+                    .wf-rank { font-weight: 600; color: var(--text-muted); text-align: center; }
+                    .wf-bar-label { font-family: "SF Mono", Consolas, monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+                    .wf-bar-track { height: 18px; background: var(--bg); border-radius: 3px; overflow: hidden; }
+                    .wf-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary), color-mix(in srgb, var(--primary) 60%, #818cf8)); border-radius: 3px; transition: width 0.3s ease; min-width: 2px; }
+                    .wf-bar-count { text-align: right; font-weight: 600; }
+                    .wf-bar-pct { text-align: right; color: var(--text-secondary); font-size: 0.75rem; }
+                    @media (max-width: 600px) { .wf-summary-cards { grid-template-columns: 1fr; } .wf-bar-header, .wf-bar-row { grid-template-columns: 30px 1fr 50px; } .wf-bar-pct, .wf-bar-count:nth-of-type(2) { display: none; } }
+                </style>
+                <div class="wf-input-card">
+                    <div class="wf-input-header">
+                        <span class="card-title">输入文本</span>
+                        <span class="char-count" id="charCount">0 字符</span>
+                    </div>
+                    <textarea id="input" placeholder="在此输入文本..."></textarea>
+                </div>
+                <div class="wf-options">
+                    <input type="checkbox" id="stopWordsToggle" checked style="display:none;">
+                    <input type="checkbox" id="charMode" style="display:none;">
+                    <div class="wf-option-card active" id="stopWordsCard" onclick="this.classList.toggle('active');document.getElementById('stopWordsToggle').checked=this.classList.contains('active');analyze();">
+                        <span class="option-label">过滤常用词</span>
+                        <div class="wf-toggle"></div>
+                    </div>
+                    <div class="wf-option-card" id="charModeCard" onclick="this.classList.toggle('active');document.getElementById('charMode').checked=this.classList.contains('active');analyze();">
+                        <span class="option-label">按字符统计</span>
+                        <div class="wf-toggle"></div>
+                    </div>
+                </div>
+                <div class="tool-actions">
+                    <button class="btn btn-primary" id="executeBtn">📊 统计</button>
+                    <button class="btn btn-secondary" id="sampleBtn">📝 示例</button>
+                    <button class="btn btn-secondary" id="clearBtn">🗑 清空</button>
+                    <button class="btn btn-secondary" id="copyBtn">📋 复制结果</button>
+                    <button class="btn btn-secondary" id="exportCsvBtn">📥 导出CSV</button>
+                </div>
+                <div class="wf-summary-cards" id="summaryCards" style="display:none">
+                    <div class="wf-summary-card"><div class="summary-value" id="totalWords">0</div><div class="summary-label">总词数</div></div>
+                    <div class="wf-summary-card"><div class="summary-value" id="uniqueWords">0</div><div class="summary-label">唯一词数</div></div>
+                    <div class="wf-summary-card"><div class="summary-value" id="avgFreq">0</div><div class="summary-label">平均频率</div></div>
+                </div>
+                <div class="wf-results" id="wfResults"></div>
+            </div>
+            <section class="features">
+                <h2>词频统计功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>词频分析</h3>
+                        <p>统计文本中各词汇的出现频率，生成词频报告。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3>中文分词</h3>
+                        <p>支持中文文本分词处理，准确识别词汇边界。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>排序导出</h3>
+                        <p>按频率或字母顺序排序，结果可复制导出。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>分析在浏览器中完成，文本内容不上传服务器。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>词频统计常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持中文分词吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>支持。使用基于词典的中文分词方法，将连续中文文本切为独立词汇进行统计。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>统计结果如何排序？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>默认按词频从高到低排序，也可以按字母顺序排序。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>数据会被上传吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不会。分析在浏览器本地完成，文本内容不会上传。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "词频统计", path: "tools/word-frequency.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var stopWords = new Set(['的','了','在','是','我','有','和','就','不','人','都','一','一个','上','也','很','到','说','要','去','你','会','着','没有','看','好','自己','这','他','她','它','们','那','里','什么','因为','所以','如果','虽然','但是','而且','或者','可以','被','让','给','把','从','向','对','于','以','而','之','与','及','等','者','所','能','还','已经','又','再','才','只','可','应该','觉得','认为','知道','想','来','去','回','过','做','用','像','为','比','得','到','跟','同','跟','和','跟','或','the','a','an','is','are','was','were','be','been','being','have','has','had','do','does','did','will','would','shall','should','may','might','must','can','could','of','in','to','for','with','on','at','from','by','about','as','into','through','during','before','after','above','below','between','out','against','under','again','further','then','once','here','there','when','where','why','how','all','each','every','both','few','more','most','other','some','such','no','nor','not','only','own','same','so','than','too','very','just','because','but','and','or','if','while','that','this','these','those','it','its','he','him','his','she','her','they','them','their','we','us','our','you','your','i','me','my','what','which','who','whom','whose']);
+
+        var input = document.getElementById('input');
+        var executeBtn = document.getElementById('executeBtn');
+        var sampleBtn = document.getElementById('sampleBtn');
+        var clearBtn = document.getElementById('clearBtn');
+        var copyBtn = document.getElementById('copyBtn');
+        var wfResults = document.getElementById('wfResults');
+        var stopWordsToggle = document.getElementById('stopWordsToggle');
+        var charMode = document.getElementById('charMode');
+        var charCount = document.getElementById('charCount');
+        var summaryCards = document.getElementById('summaryCards');
+        var lastResultText = '';
+        var lastResultData = null;
+
+        input.addEventListener('input', function() {
+            charCount.textContent = this.value.length + ' 字符';
+        });
+
+        function tokenize(text) {
+            var useCharMode = charMode.checked;
+            var filterStop = stopWordsToggle.checked;
+            var tokens = [];
+            var i = 0;
+            while (i < text.length) {
+                var ch = text[i];
+                if (ch >= 'a' && ch <= 'z' || ch >= 'A' && ch <= 'Z') {
+                    var word = '';
+                    while (i < text.length && ((text[i] >= 'a' && text[i] <= 'z') || (text[i] >= 'A' && text[i] <= 'Z') || text[i] === "'")) {
+                        word += text[i].toLowerCase();
+                        i++;
+                    }
+                    if (word.length > 1 || (word.length === 1 && !filterStop)) {
+                        if (!filterStop || !stopWords.has(word)) tokens.push(word);
+                    }
+                } else if (ch >= '一' && ch <= '鿿') {
+                    if (!filterStop || !stopWords.has(ch)) tokens.push(ch);
+                    i++;
+                } else {
+                    i++;
+                }
+            }
+            return tokens;
+        }
+
+        function analyze() {
+            var text = input.value;
+            if (!text.trim()) { wfResults.innerHTML = ''; summaryCards.style.display = 'none'; lastResultText = ''; lastResultData = null; return; }
+            var tokens = tokenize(text);
+            var freq = {};
+            tokens.forEach(function(t) {
+                freq[t] = (freq[t] || 0) + 1;
+            });
+            var sorted = Object.keys(freq).sort(function(a, b) { return freq[b] - freq[a]; });
+            var top50 = sorted.slice(0, 50);
+            var maxCount = top50.length > 0 ? freq[top50[0]] : 1;
+            var totalTokens = tokens.length;
+            var uniqueCount = Object.keys(freq).length;
+            var avg = uniqueCount > 0 ? (totalTokens / uniqueCount).toFixed(1) : 0;
+
+            document.getElementById('totalWords').textContent = totalTokens;
+            document.getElementById('uniqueWords').textContent = uniqueCount;
+            document.getElementById('avgFreq').textContent = avg;
+            summaryCards.style.display = 'grid';
+
+            var html = '<div class="wf-bar-header"><span>#</span><span>词汇</span><span>频次</span><span>占比</span><span>条形</span></div>';
+            top50.forEach(function(word, idx) {
+                var pct = (freq[word] / maxCount * 100).toFixed(1);
+                var pctOfTotal = (freq[word] / totalTokens * 100).toFixed(1);
+                html += '<div class="wf-bar-row"><span class="wf-rank">' + (idx + 1) + '</span><span class="wf-bar-label" title="' + word.replace(/</g, '&lt;') + '">' + word.replace(/</g, '&lt;') + '</span><span class="wf-bar-count">' + freq[word] + '</span><span class="wf-bar-pct">' + pctOfTotal + '%</span><div class="wf-bar-track"><div class="wf-bar-fill" style="width:' + pct + '%"></div></div></div>';
+            });
+            wfResults.innerHTML = html;
+
+            lastResultText = '总词数: ' + totalTokens + ', 唯一词数: ' + uniqueCount + ', 平均频率: ' + avg + '\n';
+            top50.forEach(function(word) {
+                lastResultText += word + ': ' + freq[word] + '\n';
+            });
+            lastResultData = top50.map(function(word, idx) {
+                return { rank: idx + 1, word: word, count: freq[word], pct: (freq[word] / totalTokens * 100).toFixed(2) };
+            });
+        }
+
+        sampleBtn.addEventListener('click', function() {
+            input.value = 'JavaScript is a versatile programming language. JavaScript is used for web development. Python is also a popular programming language. Many developers use JavaScript and Python for building applications. Web development often requires JavaScript knowledge. Programming languages like JavaScript, Python, and Java are widely used in the industry.';
+            charCount.textContent = input.value.length + ' 字符';
+            analyze();
+        });
+
+        executeBtn.addEventListener('click', analyze);
+        input.addEventListener('input', analyze);
+        stopWordsToggle.addEventListener('change', analyze);
+        charMode.addEventListener('change', analyze);
+
+        clearBtn.addEventListener('click', function() {
+            input.value = '';
+            charCount.textContent = '0 字符';
+            wfResults.innerHTML = '';
+            summaryCards.style.display = 'none';
+            lastResultText = '';
+            lastResultData = null;
+        });
+
+        copyBtn.addEventListener('click', function() {
+            if (lastResultText) {
+                copyText(lastResultText).then(function() {
+                    copyBtn.textContent = '✓ 已复制!';
+                    setTimeout(function() { copyBtn.textContent = '📋 复制结果'; }, 1500);
+                });
+            }
+        });
+
+        var exportCsvBtn = document.getElementById('exportCsvBtn');
+        exportCsvBtn.addEventListener('click', function() {
+            if (!lastResultData || lastResultData.length === 0) return;
+            var bom = '\uFEFF';
+            var header = '排名,词汇,频次,占比';
+            var rows = lastResultData.map(function(item) {
+                return item.rank + ',' + item.word + ',' + item.count + ',' + item.pct + '%';
+            });
+            var csv = bom + header + '\n' + rows.join('\n');
+            var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'word-frequency-结果.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+            exportCsvBtn.textContent = '✓ 已导出!';
+            setTimeout(function() { exportCsvBtn.textContent = '📥 导出CSV'; }, 1500);
+        });
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            const current = "tools/word-frequency.html";
+            const currentCat = "文本工具";
+            const related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                const others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+                related.push(...others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+                <a href="${t.path.split('/').pop()}" class="tool-card">
+                    <div class="tool-name">${t.name}</div>
+                    <div class="tool-desc">${t.description}</div>
+                </a>
+            `).join('');
+        }).catch(() => {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>

@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>进制转换 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="二进制、八进制、十进制、十六进制互相转换 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="进制,转换,二进制,十六进制,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/base-converter.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/base-converter.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="进制转换 - 在线工具">
+    <meta property="og:description" content="二进制、八进制、十进制、十六进制互相转换 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/base-converter.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="进制转换 - 在线工具">
+    <meta name="twitter:description" content="二进制、八进制、十进制、十六进制互相转换 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "进制转换",
+                "description": "二进制、八进制、十进制、十六进制互相转换",
+                "url": "/tools/base-converter.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "数学/计算",
+                        "item": "/#category-数学-计算"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "进制转换",
+                        "item": "/tools/base-converter.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "计算精度如何？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持高精度计算，浮点数精度可达小数点后 15 位。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "支持哪些运算？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持基本四则运算、三角函数、对数、幂运算等科学计算功能。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "可以在手机上使用吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "可以。网站完全适配移动端，在手机浏览器上也能正常使用。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    
+        .tool-page .tool-workspace textarea {
+            width: 100%;
+            padding: 0.625rem 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            color: var(--text);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            transition: var(--transition);
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        .tool-page .tool-workspace textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+        .tool-page .tool-workspace textarea::placeholder {
+            color: var(--text-muted);
+        }
+</style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-数学-计算">数学/计算</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>进制转换</span>
+            </nav>
+            <div class="tool-header">
+                <h1>进制转换</h1>
+                <p>二进制、八进制、十进制、十六进制互相转换</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">数学/计算</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="base-tabs">
+                    <button class="base-tab active" data-base="2">BIN<span class="base-sub">2</span></button>
+                    <button class="base-tab" data-base="8">OCT<span class="base-sub">8</span></button>
+                    <button class="base-tab" data-base="10">DEC<span class="base-sub">10</span></button>
+                    <button class="base-tab" data-base="16">HEX<span class="base-sub">16</span></button>
+                </div>
+                <div class="input-area">
+                    <textarea id="baseInput" placeholder="输入数字..." spellcheck="false" autocomplete="off"></textarea>
+                    <span class="char-count" id="validationMsg"></span>
+                </div>
+                <div class="options-row">
+                    <label class="float-toggle"><input type="checkbox" id="floatMode"> 浮点数模式</label>
+                    <div class="custom-base-row">
+                        <label for="customBase">自定义进制:</label>
+                        <input type="number" id="customBase" min="2" max="36" value="" placeholder="2-36">
+                    </div>
+                </div>
+                <div class="results-grid">
+                    <div class="result-card" id="cardBinary">
+                        <div class="result-card-header">
+                            <span class="result-card-label">二进制 <span class="base-tag">Base-2</span></span>
+                            <button class="btn-sm copy-btn" data-target="valBinary">📋</button>
+                        </div>
+                        <div class="result-card-value" id="valBinary">—</div>
+                    </div>
+                    <div class="result-card" id="cardOctal">
+                        <div class="result-card-header">
+                            <span class="result-card-label">八进制 <span class="base-tag">Base-8</span></span>
+                            <button class="btn-sm copy-btn" data-target="valOctal">📋</button>
+                        </div>
+                        <div class="result-card-value" id="valOctal">—</div>
+                    </div>
+                    <div class="result-card" id="cardDecimal">
+                        <div class="result-card-header">
+                            <span class="result-card-label">十进制 <span class="base-tag">Base-10</span></span>
+                            <button class="btn-sm copy-btn" data-target="valDecimal">📋</button>
+                        </div>
+                        <div class="result-card-value" id="valDecimal">—</div>
+                    </div>
+                    <div class="result-card" id="cardHex">
+                        <div class="result-card-header">
+                            <span class="result-card-label">十六进制 <span class="base-tag">Base-16</span></span>
+                            <button class="btn-sm copy-btn" data-target="valHex">📋</button>
+                        </div>
+                        <div class="result-card-value" id="valHex">—</div>
+                    </div>
+                </div>
+                <div class="result-card" id="cardCustom" style="display:none;">
+                    <div class="result-card-header">
+                        <span class="result-card-label" id="customLabel">自定义 <span class="base-tag" id="customTag">Base-N</span></span>
+                        <button class="btn-sm copy-btn" data-target="valCustom">📋</button>
+                    </div>
+                    <div class="result-card-value" id="valCustom">—</div>
+                </div>
+                <div class="bit-display" id="bitDisplay" style="display:none;">
+                    <h3>位表示</h3>
+                    <div class="bits" id="bitsContainer"></div>
+                </div>
+                <div class="tool-actions">
+                    <button class="btn btn-secondary" id="clearBtn">🗑 清空</button>
+                </div>
+            </div>
+            <section class="features">
+                <h2>进制转换功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔢</div>
+                        <h3>多进制互转</h3>
+                        <p>支持二进制、八进制、十进制、十六进制之间的互相转换。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>实时转换</h3>
+                        <p>输入任意进制数值后，其他进制结果实时更新。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>一键复制</h3>
+                        <p>各进制转换结果可直接复制。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>转换在浏览器中完成，数据不上传服务器。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>进制转换常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持哪些进制？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>支持二进制（Base-2）、八进制（Base-8）、十进制（Base-10）和十六进制（Base-16）之间的互相转换。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>转换是实时的吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>是的。在任意一个输入框中输入数值，其他进制结果会实时同步更新。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>数据会被上传吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不会。转换在浏览器本地完成，数据不会上传。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "进制转换", path: "tools/base-converter.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <style>
+        .base-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+        .base-tab { padding: 0.5rem 1.25rem; border: 2px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text-secondary); font-size: 0.9rem; cursor: pointer; transition: var(--transition); font-weight: 600; font-family: monospace; display: flex; align-items: center; gap: 0.35rem; }
+        .base-tab:hover { border-color: var(--primary); color: var(--primary); }
+        .base-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .base-sub { font-size: 0.7rem; opacity: 0.7; font-weight: 400; }
+        .input-area { position: relative; margin-bottom: 1rem; }
+        #baseInput { width: 100%; padding: 0.75rem 1rem; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 1.1rem; font-family: monospace; background: var(--bg); color: var(--text); transition: var(--transition); resize: none; }
+        #baseInput:focus { outline: none; border-color: var(--primary); }
+        #baseInput.invalid { border-color: var(--error, #e06c75); }
+        .char-count { position: absolute; right: 0.75rem; bottom: 0.5rem; font-size: 0.75rem; color: var(--text-muted); }
+        .char-count.error { color: var(--error, #e06c75); }
+        .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+        .result-card { padding: 0.75rem 1rem; background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius-sm); }
+        .result-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; }
+        .result-card-label { font-size: 0.8rem; color: var(--text-secondary); font-weight: 600; }
+        .base-tag { font-size: 0.7rem; padding: 0.1rem 0.4rem; background: var(--primary-light); color: var(--primary); border-radius: 3px; font-weight: 500; }
+        .result-card-value { font-family: monospace; font-size: 0.9rem; word-break: break-all; color: var(--text); min-height: 1.2rem; }
+        .copy-btn { background: none; border: none; cursor: pointer; font-size: 0.85rem; opacity: 0.5; transition: var(--transition); padding: 0.15rem; }
+        .copy-btn:hover { opacity: 1; }
+        .bit-display { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+        .bit-display h3 { font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text); }
+        .bits { display: flex; flex-wrap: wrap; gap: 2px; }
+        .bit { display: inline-flex; align-items: center; justify-content: center; width: 1.5rem; height: 1.5rem; font-size: 0.75rem; font-family: monospace; font-weight: 600; border-radius: 3px; }
+        .bit.on { background: var(--primary); color: #fff; }
+        .bit.off { background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
+        .bit-group { margin-right: 0.5rem; }
+        .options-row { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .float-toggle { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--text-secondary); cursor: pointer; }
+        .float-toggle input { accent-color: var(--primary); }
+        .custom-base-row { display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: var(--text-secondary); }
+        .custom-base-row input { width: 70px; padding: 0.3rem 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; font-family: monospace; background: var(--bg); color: var(--text); }
+        .custom-base-row input:focus { outline: none; border-color: var(--primary); }
+        @media (max-width: 600px) {
+            .results-grid { grid-template-columns: 1fr; }
+            .base-tabs { flex-wrap: wrap; }
+            .base-tab { flex: 1; justify-content: center; min-width: calc(50% - 0.25rem); }
+        }
+    </style>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var baseInput = document.getElementById('baseInput');
+        var clearBtn = document.getElementById('clearBtn');
+        var validationMsg = document.getElementById('validationMsg');
+        var bitDisplay = document.getElementById('bitDisplay');
+        var bitsContainer = document.getElementById('bitsContainer');
+        var currentBase = 2;
+        var floatMode = document.getElementById('floatMode');
+        var customBaseInput = document.getElementById('customBase');
+        var cardCustom = document.getElementById('cardCustom');
+        var customLabel = document.getElementById('customLabel');
+        var customTag = document.getElementById('customTag');
+        var resultCustom = document.getElementById('valCustom');
+
+        var resultBinary = document.getElementById('valBinary');
+        var resultOctal = document.getElementById('valOctal');
+        var resultDecimal = document.getElementById('valDecimal');
+        var resultHex = document.getElementById('valHex');
+
+        document.querySelectorAll('.base-tab').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.base-tab').forEach(function(t) { t.classList.remove('active'); });
+                this.classList.add('active');
+                currentBase = parseInt(this.dataset.base, 10);
+                convertBase();
+            });
+        });
+
+        function getValidChars(base) {
+            if (base === 2) return /^[01\s]*$/;
+            if (base === 8) return /^[0-7\s]*$/;
+            if (base === 10) return /^[0-9\s]*$/;
+            if (base === 16) return /^[0-9a-fA-F\s]*$/;
+            return /^.*$/;
+        }
+
+        function convertFloatToBase(num, radix) {
+            if (num === 0) return '0';
+            var isNeg = num < 0;
+            num = Math.abs(num);
+            var intPart = Math.floor(num);
+            var fracPart = num - intPart;
+            var intStr = intPart === 0 ? '0' : '';
+            while (intPart > 0) { intStr = (intPart % radix).toString(radix).toUpperCase() + intStr; intPart = Math.floor(intPart / radix); }
+            var fracStr = '';
+            if (fracPart > 0) {
+                fracStr = '.';
+                var precision = 32;
+                while (fracPart > 0 && precision-- > 0) { fracPart *= radix; var digit = Math.floor(fracPart); fracStr += digit.toString(radix).toUpperCase(); fracPart -= digit; }
+            }
+            return (isNeg ? '-' : '') + intStr + fracStr;
+        }
+
+        function parseFloatFromBase(val, radix) {
+            var isNeg = val.charAt(0) === '-';
+            if (isNeg) val = val.substring(1);
+            var parts = val.split('.');
+            var intVal = parseInt(parts[0], radix);
+            if (isNaN(intVal)) return NaN;
+            var fracVal = 0;
+            if (parts[1]) {
+                for (var i = 0; i < parts[1].length; i++) {
+                    var digit = parseInt(parts[1].charAt(i), radix);
+                    if (isNaN(digit)) return NaN;
+                    fracVal += digit / Math.pow(radix, i + 1);
+                }
+            }
+            var result = intVal + fracVal;
+            return isNeg ? -result : result;
+        }
+
+        function convertBase() {
+            var val = baseInput.value.trim().replace(/\s/g, '');
+            var isFloat = floatMode.checked;
+            var customRadix = parseInt(customBaseInput.value, 10);
+            var hasCustomBase = customRadix >= 2 && customRadix <= 36;
+            cardCustom.style.display = hasCustomBase ? '' : 'none';
+            if (hasCustomBase) { customTag.textContent = 'Base-' + customRadix; }
+
+            if (!val) {
+                resultBinary.textContent = '—';
+                resultOctal.textContent = '—';
+                resultDecimal.textContent = '—';
+                resultHex.textContent = '—';
+                resultCustom.textContent = '—';
+                validationMsg.textContent = '';
+                validationMsg.className = 'char-count';
+                baseInput.classList.remove('invalid');
+                bitDisplay.style.display = 'none';
+                return;
+            }
+
+            if (isFloat) {
+                var decimal = parseFloatFromBase(val, currentBase);
+                if (isNaN(decimal)) {
+                    validationMsg.textContent = '无效浮点数输入';
+                    validationMsg.className = 'char-count error';
+                    baseInput.classList.add('invalid');
+                    resultBinary.textContent = '无效输入';
+                    resultOctal.textContent = '无效输入';
+                    resultDecimal.textContent = '无效输入';
+                    resultHex.textContent = '无效输入';
+                    resultCustom.textContent = '无效输入';
+                    bitDisplay.style.display = 'none';
+                    return;
+                }
+                validationMsg.textContent = '';
+                validationMsg.className = 'char-count';
+                baseInput.classList.remove('invalid');
+                resultBinary.textContent = convertFloatToBase(decimal, 2);
+                resultOctal.textContent = convertFloatToBase(decimal, 8);
+                resultDecimal.textContent = convertFloatToBase(decimal, 10);
+                resultHex.textContent = convertFloatToBase(decimal, 16);
+                if (hasCustomBase) { resultCustom.textContent = convertFloatToBase(decimal, customRadix); }
+                bitDisplay.style.display = 'none';
+                return;
+            }
+
+            var pattern = getValidChars(currentBase);
+
+            if (!pattern.test(val)) {
+                var expected = currentBase === 2 ? '0-1' : currentBase === 8 ? '0-7' : currentBase === 10 ? '0-9' : '0-9, A-F';
+                validationMsg.textContent = '无效字符 (仅支持 ' + expected + ')';
+                validationMsg.className = 'char-count error';
+                baseInput.classList.add('invalid');
+                resultBinary.textContent = '无效输入';
+                resultOctal.textContent = '无效输入';
+                resultDecimal.textContent = '无效输入';
+                resultHex.textContent = '无效输入';
+                resultCustom.textContent = '无效输入';
+                bitDisplay.style.display = 'none';
+                return;
+            }
+
+            validationMsg.textContent = '';
+            validationMsg.className = 'char-count';
+            baseInput.classList.remove('invalid');
+
+            try {
+                var decimal = parseInt(val, currentBase);
+                if (isNaN(decimal)) {
+                    resultBinary.textContent = '无效输入';
+                    resultOctal.textContent = '无效输入';
+                    resultDecimal.textContent = '无效输入';
+                    resultHex.textContent = '无效输入';
+                    resultCustom.textContent = '无效输入';
+                    bitDisplay.style.display = 'none';
+                    return;
+                }
+
+                resultBinary.textContent = decimal.toString(2);
+                resultOctal.textContent = decimal.toString(8);
+                resultDecimal.textContent = decimal.toString(10);
+                resultHex.textContent = decimal.toString(16).toUpperCase();
+                if (hasCustomBase) { resultCustom.textContent = decimal.toString(customRadix).toUpperCase(); }
+
+                if (decimal >= 0 && decimal <= 0xFFFFFFFF) {
+                    var binary = decimal.toString(2).padStart(8, '0');
+                    while (binary.length % 8 !== 0) binary = '0' + binary;
+                    var html = '';
+                    for (var i = 0; i < binary.length; i++) {
+                        if (i > 0 && i % 8 === 0) html += '</span>';
+                        if (i % 8 === 0) html += '<span class="bit-group">';
+                        html += '<span class="bit ' + (binary[i] === '1' ? 'on' : 'off') + '">' + binary[i] + '</span>';
+                    }
+                    html += '</span>';
+                    bitsContainer.innerHTML = html;
+                    bitDisplay.style.display = 'block';
+                } else {
+                    bitDisplay.style.display = 'none';
+                }
+            } catch(e) {
+                resultBinary.textContent = '错误';
+                resultOctal.textContent = '错误';
+                resultDecimal.textContent = '错误';
+                resultHex.textContent = '错误';
+                resultCustom.textContent = '错误';
+                bitDisplay.style.display = 'none';
+            }
+        }
+
+        baseInput.addEventListener('input', convertBase);
+        floatMode.addEventListener('change', convertBase);
+        customBaseInput.addEventListener('input', convertBase);
+
+        clearBtn.addEventListener('click', function() {
+            baseInput.value = '';
+            resultBinary.textContent = '—';
+            resultOctal.textContent = '—';
+            resultDecimal.textContent = '—';
+            resultHex.textContent = '—';
+            resultCustom.textContent = '—';
+            validationMsg.textContent = '';
+            validationMsg.className = 'char-count';
+            baseInput.classList.remove('invalid');
+            bitDisplay.style.display = 'none';
+        });
+
+        document.querySelectorAll('.copy-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var target = document.getElementById(this.dataset.target);
+                if (target.textContent && target.textContent !== '—' && target.textContent !== '无效输入' && target.textContent !== '错误') {
+                    copyText(target.textContent).then(function() {
+                        var orig = this.textContent;
+                        this.textContent = '✓';
+                        var self = this;
+                        setTimeout(function() { self.textContent = orig; }, 1000);
+                    }.bind(this));
+                }
+            });
+        });
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            var current = "tools/base-converter.html";
+            var currentCat = "数学/计算";
+            var related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(t => t.path !== current && related.indexOf(t) === -1).slice(0, 5 - related.length);
+                related.push.apply(related, others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => '<a href="' + t.path.split('/').pop() + '" class="tool-card"><div class="tool-name">' + t.name + '</div><div class="tool-desc">' + t.description + '</div></a>').join('');
+        }).catch(function() {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

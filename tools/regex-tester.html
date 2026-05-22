@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正则测试 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="在线正则表达式测试工具，实时匹配高亮，支持常用正则预设 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="正则, 表达式, regex, 匹配, 测试,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/regex-tester.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/regex-tester.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="正则测试 - 在线工具">
+    <meta property="og:description" content="在线正则表达式测试工具，实时匹配高亮，支持常用正则预设 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/regex-tester.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="正则测试 - 在线工具">
+    <meta name="twitter:description" content="在线正则表达式测试工具，实时匹配高亮，支持常用正则预设 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "正则测试",
+                "description": "在线正则表达式测试工具，实时匹配高亮，支持常用正则预设",
+                "url": "/tools/regex-tester.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "开发者工具",
+                        "item": "/#category-开发者工具"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "正则测试",
+                        "item": "/tools/regex-tester.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "这些工具需要联网使用吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "大部分工具可以在离线状态下使用，因为所有处理都在浏览器本地完成。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "支持哪些编程语言？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "工具支持多种常见编程语言格式，包括 JavaScript、CSS、HTML、JSON 等。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "数据安全如何保障？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "所有数据处理均在您的设备本地完成，不会上传到任何服务器。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .regex-input-row {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 0.75rem;
+        }
+        .regex-input-row input[type="text"] {
+            flex: 1;
+            padding: 0.6rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 0;
+            font-family: "SF Mono", "Fira Code", Consolas, monospace;
+            font-size: 1rem;
+            background: var(--bg);
+            color: var(--text);
+            outline: none;
+            transition: var(--transition);
+        }
+        .regex-input-row input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+        .regex-delimiter {
+            padding: 0.6rem 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            font-family: "SF Mono", "Fira Code", Consolas, monospace;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            user-select: none;
+        }
+        .regex-delimiter:first-child {
+            border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+            border-right: none;
+        }
+        .regex-delimiter:last-of-type {
+            border-radius: 0;
+            border-left: none;
+        }
+        .regex-input-row input[type="text"] {
+            border-left: none !important;
+            border-right: none !important;
+            border-radius: 0 !important;
+        }
+        .flag-display {
+            padding: 0.6rem 0.6rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-family: "SF Mono", "Fira Code", Consolas, monospace;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-left: none;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            min-width: 2.5rem;
+            text-align: center;
+            user-select: none;
+        }
+        .flag-checks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .flag-checks label {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.3rem 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            user-select: none;
+        }
+        .flag-checks label:hover {
+            border-color: var(--primary);
+            color: var(--text);
+        }
+        .flag-checks label:has(input:checked) {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+        .flag-checks input[type="checkbox"] {
+            accent-color: var(--primary);
+            width: 15px;
+            height: 15px;
+        }
+        .preset-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .preset-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        .preset-btn {
+            padding: 0.3rem 0.7rem;
+            font-size: 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .preset-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+        #testString {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", Consolas, monospace;
+            font-size: 0.9rem;
+            background: var(--bg);
+            color: var(--text);
+            resize: vertical;
+            outline: none;
+            transition: var(--transition);
+            line-height: 1.6;
+            box-sizing: border-box;
+        }
+        #testString:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary-light);
+        }
+        .error-msg {
+            display: none;
+            padding: 0.6rem 0.75rem;
+            margin-top: 0.75rem;
+            background: #fef2f2;
+            border: 1px solid #fca5a5;
+            border-radius: var(--radius-sm);
+            color: #dc2626;
+            font-size: 0.85rem;
+        }
+        .error-msg.visible {
+            display: block;
+        }
+        .result-section {
+            margin-top: 1rem;
+        }
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        .match-count {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .highlight-area {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            font-family: "SF Mono", "Fira Code", Consolas, monospace;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin-bottom: 1rem;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .match-highlight {
+            background: yellow;
+            color: #000;
+            border-radius: 2px;
+            padding: 1px 0;
+        }
+        .match-results {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .match-item {
+            padding: 0.6rem 0.75rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            margin-bottom: 0.5rem;
+            font-family: "SF Mono", "Fira Code", Consolas, monospace;
+            font-size: 0.82rem;
+            line-height: 1.6;
+        }
+        .match-item .match-index {
+            color: var(--primary);
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        .match-item .match-value {
+            color: var(--text);
+            word-break: break-all;
+        }
+        .match-item .match-pos {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            margin-left: 0.5rem;
+        }
+        .match-item .match-groups {
+            margin-top: 0.35rem;
+            padding-top: 0.35rem;
+            border-top: 1px dashed var(--border);
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+        }
+        @media (max-width: 600px) {
+            .regex-input-row { flex-wrap: wrap; }
+            .flag-checks { gap: 0.5rem; }
+            .preset-row { gap: 0.35rem; }
+            .preset-btn { font-size: 0.75rem; padding: 0.25rem 0.5rem; }
+        }
+    
+        .tool-page .tool-workspace textarea {
+            width: 100%;
+            padding: 0.625rem 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            color: var(--text);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            transition: var(--transition);
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        .tool-page .tool-workspace textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+        .tool-page .tool-workspace textarea::placeholder {
+            color: var(--text-muted);
+        }
+</style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-开发者工具">开发者工具</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>正则测试</span>
+            </nav>
+            <div class="tool-header">
+                <h1>正则测试</h1>
+                <p>在线正则表达式测试工具，实时匹配高亮，支持常用正则预设</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">开发者工具</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="regex-input-row">
+                    <span class="regex-delimiter">/</span>
+                    <input type="text" id="regexPattern" placeholder="输入正则表达式" spellcheck="false" autocomplete="off">
+                    <span class="regex-delimiter">/</span>
+                    <span id="flagDisplay" class="flag-display">gi</span>
+                </div>
+                <div class="flag-checks">
+                    <label><input type="checkbox" id="flagG" value="g" checked> g (全局)</label>
+                    <label><input type="checkbox" id="flagI" value="i" checked> i (忽略大小写)</label>
+                    <label><input type="checkbox" id="flagM" value="m"> m (多行)</label>
+                    <label><input type="checkbox" id="flagS" value="s"> s (dotAll)</label>
+                    <label><input type="checkbox" id="flagU" value="u"> u (Unicode)</label>
+                </div>
+                <div class="preset-row">
+                    <span class="preset-label">常用预设：</span>
+                    <button class="preset-btn" data-pattern="[\\w.+-]+@[\\w-]+\\.[\\w.]+" data-flags="gi">邮箱</button>
+                    <button class="preset-btn" data-pattern="1[3-9]\\d{9}" data-flags="g">手机号</button>
+                    <button class="preset-btn" data-pattern="https?://[\\w\\-._~:/?#\\[\\]@!$&'()*+,;=%]+" data-flags="gi">URL</button>
+                    <button class="preset-btn" data-pattern="(?:(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)" data-flags="g">IP地址</button>
+                    <button class="preset-btn" data-pattern="[\\u4e00-\\u9fa5]+" data-flags="g">中文字符</button>
+                    <button class="preset-btn" data-pattern="\\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\\d|3[01])" data-flags="g">日期</button>
+                    <button class="preset-btn" data-pattern="<[^>]+>" data-flags="g">HTML标签</button>
+                </div>
+                <textarea id="testString" placeholder="输入测试字符串..." rows="6"></textarea>
+                <div class="error-msg" id="errorMsg"></div>
+                <div class="result-section" id="resultSection" style="display:none;">
+                    <div class="result-header">
+                        <span class="match-count" id="matchCount"></span>
+                    </div>
+                    <div class="highlight-area" id="highlightArea"></div>
+                    <div class="match-results" id="matchResults"></div>
+                </div>
+            </div>
+            <section class="features">
+                <h2>正则测试功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">✨</div>
+                        <h3>语法高亮</h3>
+                        <p>支持多种编程语言语法高亮显示。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>实时预览</h3>
+                        <p>输入内容后即时显示处理结果。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>所有操作在浏览器中完成，数据不上传服务器，保障隐私安全。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>正则测试常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>这些工具需要联网使用吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>大部分工具可以在离线状态下使用，因为所有处理都在浏览器本地完成。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持哪些编程语言？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>工具支持多种常见编程语言格式，包括 JavaScript、CSS、HTML、JSON 等。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>数据安全如何保障？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>所有数据处理均在您的设备本地完成，不会上传到任何服务器。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "正则测试", path: "tools/regex-tester.html" };
+    </script>
+    <script src="../assets/js/libs.js"></script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var patternInput = document.getElementById('regexPattern');
+        var testStringEl = document.getElementById('testString');
+        var errorMsg = document.getElementById('errorMsg');
+        var resultSection = document.getElementById('resultSection');
+        var matchCountEl = document.getElementById('matchCount');
+        var highlightArea = document.getElementById('highlightArea');
+        var matchResults = document.getElementById('matchResults');
+        var flagDisplay = document.getElementById('flagDisplay');
+        var flagCheckboxes = document.querySelectorAll('.flag-checks input[type="checkbox"]');
+
+        function getFlags() {
+            var flags = '';
+            flagCheckboxes.forEach(function(cb) {
+                if (cb.checked) flags += cb.value;
+            });
+            return flags;
+        }
+
+        function updateFlagDisplay() {
+            flagDisplay.textContent = getFlags() || '—';
+        }
+
+        flagCheckboxes.forEach(function(cb) {
+            cb.addEventListener('change', function() {
+                updateFlagDisplay();
+                runMatch();
+            });
+        });
+
+        patternInput.addEventListener('input', runMatch);
+        testStringEl.addEventListener('input', runMatch);
+
+        document.querySelectorAll('.preset-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var pattern = this.getAttribute('data-pattern');
+                var flags = this.getAttribute('data-flags') || 'g';
+                patternInput.value = pattern;
+                flagCheckboxes.forEach(function(cb) {
+                    cb.checked = flags.indexOf(cb.value) !== -1;
+                });
+                updateFlagDisplay();
+                runMatch();
+            });
+        });
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function runMatch() {
+            var pattern = patternInput.value;
+            var testStr = testStringEl.value;
+            var flags = getFlags();
+
+            errorMsg.classList.remove('visible');
+            errorMsg.textContent = '';
+
+            if (!pattern) {
+                resultSection.style.display = 'none';
+                return;
+            }
+
+            try {
+                var regex = new RegExp(pattern, flags);
+            } catch(e) {
+                errorMsg.textContent = '正则表达式错误：' + e.message;
+                errorMsg.classList.add('visible');
+                resultSection.style.display = 'none';
+                return;
+            }
+
+            if (!testStr) {
+                resultSection.style.display = 'none';
+                return;
+            }
+
+            var matches = [];
+            var match;
+
+            if (flags.indexOf('g') !== -1) {
+                while ((match = regex.exec(testStr)) !== null) {
+                    matches.push({
+                        value: match[0],
+                        index: match.index,
+                        groups: match.slice(1),
+                        namedGroups: match.groups || null
+                    });
+                    if (match[0].length === 0) regex.lastIndex++;
+                }
+            } else {
+                match = regex.exec(testStr);
+                if (match) {
+                    matches.push({
+                        value: match[0],
+                        index: match.index,
+                        groups: match.slice(1),
+                        namedGroups: match.groups || null
+                    });
+                }
+            }
+
+            resultSection.style.display = 'block';
+
+            if (matches.length === 0) {
+                matchCountEl.textContent = '无匹配结果';
+                highlightArea.innerHTML = escapeHtml(testStr);
+                matchResults.innerHTML = '';
+                return;
+            }
+
+            matchCountEl.textContent = '找到 ' + matches.length + ' 个匹配';
+
+            var html = '';
+            var lastIndex = 0;
+            for (var i = 0; i < matches.length; i++) {
+                var m = matches[i];
+                html += escapeHtml(testStr.substring(lastIndex, m.index));
+                html += '<mark class="match-highlight">' + escapeHtml(m.value) + '</mark>';
+                lastIndex = m.index + m.value.length;
+            }
+            html += escapeHtml(testStr.substring(lastIndex));
+            highlightArea.innerHTML = html;
+
+            var resultsHtml = '';
+            for (var j = 0; j < matches.length; j++) {
+                var m2 = matches[j];
+                resultsHtml += '<div class="match-item">';
+                resultsHtml += '<span class="match-index">#' + (j + 1) + '</span>';
+                resultsHtml += '<span class="match-value">' + escapeHtml(m2.value) + '</span>';
+                resultsHtml += '<span class="match-pos">索引: ' + m2.index + ' ~ ' + (m2.index + m2.value.length) + '</span>';
+                if (m2.groups.length > 0 || m2.namedGroups) {
+                    resultsHtml += '<div class="match-groups">';
+                    if (m2.namedGroups) {
+                        var keys = Object.keys(m2.namedGroups);
+                        for (var k = 0; k < keys.length; k++) {
+                            resultsHtml += escapeHtml(keys[k]) + ': ' + escapeHtml(m2.namedGroups[keys[k]] || '(空)') + '  ';
+                        }
+                    }
+                    for (var g = 0; g < m2.groups.length; g++) {
+                        if (!m2.namedGroups || !Object.values(m2.namedGroups).includes(m2.groups[g])) {
+                            resultsHtml += '$' + (g + 1) + ': ' + escapeHtml(m2.groups[g] || '(空)') + '  ';
+                        }
+                    }
+                    resultsHtml += '</div>';
+                }
+                resultsHtml += '</div>';
+            }
+            matchResults.innerHTML = resultsHtml;
+        }
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            var current = "tools/regex-tester.html";
+            var currentCat = "开发者工具";
+            var related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+                related.push(...others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+                <a href="${t.path.split('/').pop()}" class="tool-card">
+                    <div class="tool-name">${t.name}</div>
+                    <div class="tool-desc">${t.description}</div>
+                </a>
+            `).join('');
+        }).catch(() => {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

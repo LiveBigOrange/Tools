@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>科学计算器 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="在线科学计算器，支持三角函数、对数等运算 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="计算器,科学,计算,数学,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/calculator.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/calculator.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="科学计算器 - 在线工具">
+    <meta property="og:description" content="在线科学计算器，支持三角函数、对数等运算 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/calculator.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="科学计算器 - 在线工具">
+    <meta name="twitter:description" content="在线科学计算器，支持三角函数、对数等运算 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "科学计算器",
+                "description": "在线科学计算器，支持三角函数、对数等运算",
+                "url": "/tools/calculator.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "数学/计算",
+                        "item": "/#category-数学-计算"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "科学计算器",
+                        "item": "/tools/calculator.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "计算精度如何？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持高精度计算，浮点数精度可达小数点后 15 位。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "支持哪些运算？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持基本四则运算、三角函数、对数、幂运算等科学计算功能。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "可以在手机上使用吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "可以。网站完全适配移动端，在手机浏览器上也能正常使用。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-数学-计算">数学/计算</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>科学计算器</span>
+            </nav>
+            <div class="tool-header">
+                <h1>科学计算器</h1>
+                <p>在线科学计算器，支持三角函数、对数等运算</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">数学/计算</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="calc-layout">
+                    <div class="calc-main">
+                        <div class="calc-toolbar">
+                            <button class="calc-mode-btn" id="modeToggle">🔬 科学模式</button>
+                            <button class="calc-mode-btn" id="angleToggle">DEG</button>
+                            <span class="keyboard-hint">⌨️ 支持键盘输入</span>
+                        </div>
+                        <div class="calc-display">
+                            <div class="calc-expression" id="calcExpression"></div>
+                            <div class="calc-result" id="calcResult">0</div>
+                        </div>
+                        <div class="calc-memory" id="calcMemory">
+                            <button class="mem-btn" data-action="mc">MC</button>
+                            <button class="mem-btn" data-action="mr">MR</button>
+                            <button class="mem-btn" data-action="m+">M+</button>
+                            <button class="mem-btn" data-action="m-">M−</button>
+                            <span class="mem-indicator" id="memIndicator">M</span>
+                        </div>
+                        <div class="calc-buttons" id="calcButtons">
+                            <button class="calc-btn func" data-action="sin">sin</button>
+                            <button class="calc-btn func" data-action="cos">cos</button>
+                            <button class="calc-btn func" data-action="tan">tan</button>
+                            <button class="calc-btn func" data-action="log">log</button>
+                            <button class="calc-btn func" data-action="ln">ln</button>
+                            <button class="calc-btn func" data-action="sqrt">√</button>
+                            <button class="calc-btn func" data-action="pow2">x²</button>
+                            <button class="calc-btn func" data-action="pow">xⁿ</button>
+                            <button class="calc-btn func" data-action="pi">π</button>
+                            <button class="calc-btn func" data-action="e">e</button>
+                            <button class="calc-btn func" data-action="(">(</button>
+                            <button class="calc-btn func" data-action=")">)</button>
+                            <button class="calc-btn func" data-action="%">%</button>
+                            <button class="calc-btn func" data-action="±">±</button>
+                            <button class="calc-btn clear" data-action="clear">AC</button>
+                            <button class="calc-btn" data-action="7">7</button>
+                            <button class="calc-btn" data-action="8">8</button>
+                            <button class="calc-btn" data-action="9">9</button>
+                            <button class="calc-btn op" data-action="÷">÷</button>
+                            <button class="calc-btn op" data-action="×">×</button>
+                            <button class="calc-btn" data-action="4">4</button>
+                            <button class="calc-btn" data-action="5">5</button>
+                            <button class="calc-btn" data-action="6">6</button>
+                            <button class="calc-btn op" data-action="-">−</button>
+                            <button class="calc-btn op" data-action="+">+</button>
+                            <button class="calc-btn" data-action="1">1</button>
+                            <button class="calc-btn" data-action="2">2</button>
+                            <button class="calc-btn" data-action="3">3</button>
+                            <button class="calc-btn" data-action=".">.</button>
+                            <button class="calc-btn equals" data-action="=">=</button>
+                            <button class="calc-btn span-2" data-action="0">0</button>
+                            <button class="calc-btn backspace" data-action="backspace">⌫</button>
+                        </div>
+                    </div>
+                    <div class="calc-history-panel" id="calcHistory">
+                        <div class="history-header">
+                            <span>历史记录</span>
+                            <button class="btn-sm" id="clearHistoryBtn">清空</button>
+                        </div>
+                        <div class="history-list" id="calcHistoryList"></div>
+                        <div class="history-empty" id="historyEmpty">暂无记录</div>
+                    </div>
+                </div>
+            </div>
+            <section class="features">
+                <h2>科学计算器功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔢</div>
+                        <h3>科学运算</h3>
+                        <p>支持三角函数、对数、幂运算、平方根等科学计算。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⌨️</div>
+                        <h3>键盘支持</h3>
+                        <p>支持键盘直接输入数字和运算符，提升输入效率。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>历史记录</h3>
+                        <p>显示最近 5 条计算历史记录，点击可复用结果。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>计算在浏览器中完成，数据不上传服务器。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>科学计算器常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持哪些函数？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>支持三角函数（sin、cos、tan）、对数（log、ln）、幂运算、平方根、平方、π、e 等常用科学计算函数。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>三角函数使用角度还是弧度？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>点击计算器工具栏中的 DEG/RAD 按钮切换。DEG 模式下输入角度值，RAD 模式下输入弧度值。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>数据会被上传吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不会。计算在浏览器本地完成，数据不会上传。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "科学计算器", path: "tools/calculator.html" };
+    </script>
+    <script src="../assets/js/libs.js"></script>
+    <script src="../assets/js/record-tool.js"></script>
+    <style>
+        .calc-layout { display: grid; grid-template-columns: 1fr 240px; gap: 1rem; }
+        .calc-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+        .calc-mode-btn { padding: 0.4rem 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.8rem; cursor: pointer; transition: var(--transition); color: var(--text-secondary); }
+        .calc-mode-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .calc-mode-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .keyboard-hint { font-size: 0.75rem; color: var(--text-muted); }
+        .calc-display { padding: 1.25rem; background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 0.75rem; text-align: right; min-height: 80px; }
+        .calc-expression { font-size: 0.9rem; color: var(--text-secondary); min-height: 1.2em; word-break: break-all; font-family: monospace; }
+        .calc-result { font-size: 2rem; font-weight: 700; color: var(--text); font-family: monospace; margin-top: 0.25rem; word-break: break-all; }
+        .calc-memory { display: flex; gap: 0.35rem; margin-bottom: 0.75rem; align-items: center; }
+        .mem-btn { flex: 1; padding: 0.5rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.8rem; cursor: pointer; transition: var(--transition); color: var(--text-secondary); font-weight: 500; }
+        .mem-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .mem-indicator { font-size: 0.75rem; font-weight: 700; color: var(--primary); margin-left: auto; opacity: 0; transition: opacity 0.2s; }
+        .mem-indicator.visible { opacity: 1; }
+        .calc-buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; }
+        .calc-btn { padding: 0.85rem 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 1rem; cursor: pointer; transition: var(--transition); background: var(--bg); color: var(--text); font-weight: 500; font-family: inherit; }
+        .calc-btn:hover { border-color: var(--primary); transform: translateY(-1px); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .calc-btn:active { transform: translateY(0); box-shadow: none; }
+        .calc-btn.func { background: rgba(var(--primary-rgb, 59, 130, 246), 0.08); color: var(--primary); font-size: 0.85rem; }
+        .calc-btn.op { background: rgba(var(--primary-rgb, 59, 130, 246), 0.12); color: var(--primary); font-size: 1.1rem; font-weight: 600; }
+        .calc-btn.clear { background: rgba(239, 68, 68, 0.1); color: #ef4444; font-weight: 600; }
+        .calc-btn.equals { background: var(--primary); color: #fff; font-size: 1.2rem; font-weight: 700; }
+        .calc-btn.equals:hover { opacity: 0.9; }
+        .calc-btn.backspace { font-size: 1.1rem; }
+        .calc-btn.span-2 { grid-column: span 2; }
+        .calc-history-panel { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 0.75rem; max-height: 500px; overflow-y: auto; }
+        .history-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
+        .history-item { padding: 0.6rem 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: var(--transition); }
+        .history-item:last-child { border-bottom: none; }
+        .history-item:hover { color: var(--primary); }
+        .history-expr { font-size: 0.75rem; color: var(--text-secondary); font-family: monospace; }
+        .history-result { font-size: 0.95rem; font-weight: 600; color: var(--text); font-family: monospace; }
+        .history-empty { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.8rem; }
+        .calc-buttons.scientific-hidden .func { display: none; }
+        @media (max-width: 768px) { .calc-layout { grid-template-columns: 1fr; } .calc-history-panel { max-height: 200px; } }
+        @media (max-width: 480px) { .calc-buttons { grid-template-columns: repeat(4, 1fr); } .calc-btn.func { font-size: 0.75rem; padding: 0.65rem 0.35rem; } }
+    </style>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        var calcExpression = '';
+        var calcDisplay = '0';
+        var calcJustEvaluated = false;
+        var calcHistory; try { calcHistory = JSON.parse(localStorage.getItem('calc_history') || '[]'); } catch(e) { calcHistory = []; }
+        var memory = parseFloat(localStorage.getItem('calc_memory') || '0');
+        var expressionEl = document.getElementById('calcExpression');
+        var resultEl = document.getElementById('calcResult');
+        var historyListEl = document.getElementById('calcHistoryList');
+        var historyEmpty = document.getElementById('historyEmpty');
+        var memIndicator = document.getElementById('memIndicator');
+        var modeToggle = document.getElementById('modeToggle');
+        var angleToggle = document.getElementById('angleToggle');
+        var calcButtons = document.getElementById('calcButtons');
+        var isScientific = true;
+        var isDegreeMode = true;
+        function updateDisplay() { expressionEl.textContent = calcExpression; resultEl.textContent = calcDisplay; }
+        function formatNumber(n) { if (typeof n !== 'number' || !isFinite(n)) return 'Error'; if (Number.isInteger(n) && Math.abs(n) < 1e15) return n.toString(); var s = n.toPrecision(12); return parseFloat(s).toString(); }
+        function evaluateExpression(expr) {
+            var sanitized = expr.replace(/×/g, '*').replace(/÷/g, '/').replace(/−/g, '-').replace(/π/g, '(' + Math.PI + ')').replace(/e(?![x])/g, '(' + Math.E + ')');
+            try { var __deg = function(x) { return Math.PI / 180 * x; }; var result = Function('"use strict"; var __deg = function(x) { return Math.PI / 180 * x; }; return (' + sanitized + ')')(); return formatNumber(result); } catch (e) { return 'Error'; }
+        }
+        function addToHistory(expr, result) {
+            calcHistory.unshift({ expr: expr, result: result });
+            if (calcHistory.length > 5) calcHistory.pop();
+            localStorage.setItem('calc_history', JSON.stringify(calcHistory));
+            renderHistory();
+        }
+        function renderHistory() {
+            if (calcHistory.length === 0) { historyEmpty.style.display = 'block'; historyListEl.innerHTML = ''; return; }
+            historyEmpty.style.display = 'none';
+            historyListEl.innerHTML = calcHistory.map(function(h, i) {
+                return '<div class="history-item" data-index="' + i + '"><div class="history-expr">' + h.expr + ' =</div><div class="history-result">' + h.result + '</div></div>';
+            }).join('');
+        }
+        function updateMemIndicator() { memIndicator.classList.toggle('visible', memory !== 0); }
+        function handleAction(action) {
+            if (action >= '0' && action <= '9') {
+                if (calcJustEvaluated) { calcExpression = ''; calcDisplay = ''; calcJustEvaluated = false; }
+                calcExpression += action; calcDisplay = calcExpression;
+            } else if (action === '.') {
+                if (calcJustEvaluated) { calcExpression = '0'; calcDisplay = '0'; calcJustEvaluated = false; }
+                calcExpression += '.'; calcDisplay = calcExpression;
+            } else if (action === '+' || action === '−' || action === '×' || action === '÷') {
+                calcJustEvaluated = false; calcExpression += action; calcDisplay = calcExpression;
+            } else if (action === '(' || action === ')') {
+                if (calcJustEvaluated && action === '(') { calcExpression = ''; calcJustEvaluated = false; }
+                calcExpression += action; calcDisplay = calcExpression;
+            } else if (action === '%') { calcExpression += '%'; calcDisplay = calcExpression; }
+            else if (action === '±') {
+                if (calcDisplay !== '0' && calcDisplay !== 'Error') {
+                    if (calcDisplay.charAt(0) === '-') { calcDisplay = calcDisplay.substring(1); } else { calcDisplay = '-' + calcDisplay; }
+                    calcExpression = calcDisplay;
+                }
+            } else if (action === 'sin' || action === 'cos' || action === 'tan') {
+                if (calcJustEvaluated) { calcExpression = action + '(' + calcDisplay + ')'; calcJustEvaluated = false; } else { calcExpression += action + '('; }
+                calcDisplay = calcExpression;
+            } else if (action === 'log') {
+                if (calcJustEvaluated) { calcExpression = 'log10(' + calcDisplay + ')'; calcJustEvaluated = false; } else { calcExpression += 'log10('; }
+                calcDisplay = calcExpression;
+            } else if (action === 'ln') {
+                if (calcJustEvaluated) { calcExpression = 'ln(' + calcDisplay + ')'; calcJustEvaluated = false; } else { calcExpression += 'ln('; }
+                calcDisplay = calcExpression;
+            } else if (action === 'sqrt') {
+                if (calcJustEvaluated) { calcExpression = '√(' + calcDisplay + ')'; calcJustEvaluated = false; } else { calcExpression += '√('; }
+                calcDisplay = calcExpression;
+            } else if (action === 'pow2') { calcExpression += '²'; calcDisplay = calcExpression; }
+            else if (action === 'pow') { calcExpression += '^'; calcDisplay = calcExpression; }
+            else if (action === 'pi') { if (calcJustEvaluated) { calcExpression = ''; calcJustEvaluated = false; } calcExpression += 'π'; calcDisplay = calcExpression; }
+            else if (action === 'e') { if (calcJustEvaluated) { calcExpression = ''; calcJustEvaluated = false; } calcExpression += 'e'; calcDisplay = calcExpression; }
+            else if (action === '=') {
+                var evalExpr = calcExpression.replace(/sin\(/g, isDegreeMode ? 'Math.sin(__deg(' : 'Math.sin(').replace(/cos\(/g, isDegreeMode ? 'Math.cos(__deg(' : 'Math.cos(').replace(/tan\(/g, isDegreeMode ? 'Math.tan(__deg(' : 'Math.tan(').replace(/log10\(/g, 'Math.log10(').replace(/ln\(/g, 'Math.log(').replace(/√\(/g, 'Math.sqrt(').replace(/²/g, '**2').replace(/\^/g, '**');
+                var result = evaluateExpression(evalExpr);
+                addToHistory(calcExpression, result);
+                calcExpression = result; calcDisplay = result; calcJustEvaluated = true;
+            } else if (action === 'clear') { calcExpression = ''; calcDisplay = '0'; calcJustEvaluated = false; }
+            else if (action === 'backspace') {
+                if (calcJustEvaluated) { calcExpression = ''; calcDisplay = '0'; calcJustEvaluated = false; }
+                else if (calcExpression.length > 0) { calcExpression = calcExpression.slice(0, -1); calcDisplay = calcExpression || '0'; }
+            } else if (action === 'mc') { memory = 0; localStorage.setItem('calc_memory', '0'); updateMemIndicator(); }
+            else if (action === 'mr') { if (calcJustEvaluated) { calcExpression = ''; calcJustEvaluated = false; } calcExpression += formatNumber(memory); calcDisplay = calcExpression; }
+            else if (action === 'm+') { var val = parseFloat(calcDisplay) || 0; memory += val; localStorage.setItem('calc_memory', memory.toString()); updateMemIndicator(); }
+            else if (action === 'm-') { var val = parseFloat(calcDisplay) || 0; memory -= val; localStorage.setItem('calc_memory', memory.toString()); updateMemIndicator(); }
+            updateDisplay();
+        }
+        document.querySelectorAll('.calc-btn').forEach(function(btn) { btn.addEventListener('click', function() { handleAction(this.getAttribute('data-action')); }); });
+        document.querySelectorAll('.mem-btn').forEach(function(btn) { btn.addEventListener('click', function() { handleAction(this.getAttribute('data-action')); }); });
+        modeToggle.addEventListener('click', function() {
+            isScientific = !isScientific;
+            modeToggle.classList.toggle('active', isScientific);
+            modeToggle.textContent = isScientific ? '🔬 科学模式' : '🔢 基础模式';
+            calcButtons.querySelectorAll('.func').forEach(function(btn) { btn.style.display = isScientific ? '' : 'none'; });
+        });
+        angleToggle.addEventListener('click', function() {
+            isDegreeMode = !isDegreeMode;
+            angleToggle.classList.toggle('active', !isDegreeMode);
+            angleToggle.textContent = isDegreeMode ? 'DEG' : 'RAD';
+        });
+        document.addEventListener('keydown', function(e) {
+            var key = e.key;
+            if (key >= '0' && key <= '9') handleAction(key);
+            else if (key === '.') handleAction('.');
+            else if (key === '+') handleAction('+');
+            else if (key === '-') handleAction('−');
+            else if (key === '*') handleAction('×');
+            else if (key === '/') { e.preventDefault(); handleAction('÷'); }
+            else if (key === '(') handleAction('(');
+            else if (key === ')') handleAction(')');
+            else if (key === '%') handleAction('%');
+            else if (key === 'Enter' || key === '=') { e.preventDefault(); handleAction('='); }
+            else if (key === 'Backspace') handleAction('backspace');
+            else if (key === 'Escape' || key === 'Delete') handleAction('clear');
+        });
+        historyListEl.addEventListener('click', function(e) {
+            var item = e.target.closest('.history-item');
+            if (item) { var idx = parseInt(item.getAttribute('data-index', 10)); calcExpression = calcHistory[idx].result; calcDisplay = calcHistory[idx].result; calcJustEvaluated = true; updateDisplay(); }
+        });
+        document.getElementById('clearHistoryBtn').addEventListener('click', function() {
+            calcHistory = []; localStorage.removeItem('calc_history'); renderHistory();
+        });
+        updateMemIndicator();
+        renderHistory();
+        updateDisplay();
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            var current = "tools/calculator.html";
+            var currentCat = "数学/计算";
+            var related = tools.filter(function(t) { return t.path !== current && t.category === currentCat; }).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(function(t) { return t.path !== current && related.indexOf(t) === -1; }).slice(0, 5 - related.length);
+                related.push.apply(related, others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(function(t) {
+                return '<a href="' + t.path.split('/').pop() + '" class="tool-card"><div class="tool-name">' + t.name + '</div><div class="tool-desc">' + t.description + '</div></a>';
+            }).join('');
+        }).catch(function() {});
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

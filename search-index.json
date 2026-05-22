@@ -1,0 +1,2474 @@
+[
+    {
+        "name": "M3U8 在线播放器",
+        "aliases": [
+            "HLS播放器",
+            "m3u8播放",
+            "hls播放",
+            "视频流播放"
+        ],
+        "description": "在线播放 M3U8/HLS 直播和视频流，支持 AES-128 加密流、字幕加载、倍速播放、画中画",
+        "category": "视频/流媒体",
+        "path": "tools/m3u8-player.html",
+        "keywords": [
+            "m3u8",
+            "hls",
+            "直播",
+            "流媒体",
+            "视频播放",
+            "iptv",
+            "http live streaming",
+            "在线播放"
+        ]
+    },
+    {
+        "name": "JSON 格式化",
+        "aliases": [
+            "json",
+            "格式化json",
+            "美化json",
+            "json校验",
+            "json压缩"
+        ],
+        "description": "免费在线JSON格式化工具，支持格式化美化、压缩、校验、树形视图和错误定位",
+        "category": "编码/解码",
+        "path": "tools/json-formatter.html",
+        "keywords": [
+            "json",
+            "格式化",
+            "校验",
+            "压缩",
+            "美化",
+            "json beautifier",
+            "json validator",
+            "树形视图"
+        ]
+    },
+    {
+        "name": "Cron 表达式生成",
+        "aliases": [
+            "cron",
+            "cron表达式",
+            "定时任务",
+            "crontab"
+        ],
+        "description": "可视化生成 Cron 表达式，支持常见调度场景",
+        "category": "开发者工具",
+        "path": "tools/cron.html",
+        "keywords": [
+            "cron",
+            "表达式",
+            "定时",
+            "crontab",
+            "调度"
+        ]
+    },
+    {
+        "name": "随机密码生成",
+        "aliases": [
+            "密码生成",
+            "随机密码",
+            "password generator",
+            "强密码"
+        ],
+        "description": "生成高强度随机密码，可自定义长度和字符集",
+        "category": "生成器",
+        "path": "tools/password.html",
+        "keywords": [
+            "密码",
+            "生成",
+            "随机",
+            "强密码"
+        ]
+    },
+    {
+        "name": "条形码生成",
+        "aliases": [
+            "条形码",
+            "barcode",
+            "ean13",
+            "code128"
+        ],
+        "description": "在线生成条形码，支持 EAN-13、Code 128 等格式",
+        "category": "生成器",
+        "path": "tools/barcode.html",
+        "keywords": [
+            "条形码",
+            "barcode",
+            "ean13",
+            "code128"
+        ]
+    },
+    {
+        "name": "颜色转换",
+        "aliases": [
+            "颜色",
+            "颜色转换",
+            "hex",
+            "rgb",
+            "hsl",
+            "颜色选择器"
+        ],
+        "description": "HEX / RGB / HSL 颜色值互转，附带调色板",
+        "category": "设计工具",
+        "path": "tools/color-convert.html",
+        "keywords": [
+            "颜色",
+            "hex",
+            "rgb",
+            "hsl",
+            "转换"
+        ]
+    },
+    {
+        "name": "渐变生成器",
+        "aliases": [
+            "渐变",
+            "gradient",
+            "css渐变",
+            "线性渐变",
+            "径向渐变"
+        ],
+        "description": "可视化生成 CSS 渐变色，支持线性和径向渐变",
+        "category": "设计工具",
+        "path": "tools/gradient.html",
+        "keywords": [
+            "渐变",
+            "gradient",
+            "css",
+            "线性",
+            "径向"
+        ]
+    },
+    {
+        "name": "图片压缩",
+        "aliases": [
+            "图片压缩",
+            "image compress",
+            "图片优化",
+            "压缩图片"
+        ],
+        "description": "浏览器端图片压缩，支持 JPEG/PNG/WebP 格式",
+        "category": "设计工具",
+        "path": "tools/image-compress.html",
+        "keywords": [
+            "图片",
+            "压缩",
+            "优化",
+            "jpeg",
+            "png"
+        ]
+    },
+    {
+        "name": "SVG 转 PNG",
+        "aliases": [
+            "svg转png",
+            "svg转换",
+            "svg导出",
+            "svg to png"
+        ],
+        "description": "将 SVG 矢量图转换为 PNG 位图，支持自定义尺寸",
+        "category": "设计工具",
+        "path": "tools/svg-to-png.html",
+        "keywords": [
+            "svg",
+            "png",
+            "转换",
+            "导出"
+        ]
+    },
+    {
+        "name": "MD5 加密",
+        "aliases": [
+            "md5",
+            "md5加密",
+            "md5计算",
+            "md5哈希"
+        ],
+        "description": "MD5 哈希值在线计算，支持字符串和文件",
+        "category": "加密/哈希",
+        "path": "tools/md5.html",
+        "keywords": [
+            "md5",
+            "加密",
+            "哈希",
+            "计算"
+        ]
+    },
+    {
+        "name": "SHA 加密",
+        "aliases": [
+            "sha",
+            "sha1",
+            "sha256",
+            "sha512",
+            "sha加密",
+            "sha哈希"
+        ],
+        "description": "SHA-1 / SHA-256 / SHA-512 哈希在线计算",
+        "category": "加密/哈希",
+        "path": "tools/sha.html",
+        "keywords": [
+            "sha",
+            "sha1",
+            "sha256",
+            "sha512",
+            "哈希"
+        ]
+    },
+    {
+        "name": "AES 加密解密",
+        "aliases": [
+            "aes",
+            "aes加密",
+            "aes解密",
+            "对称加密"
+        ],
+        "description": "AES 对称加密与解密，支持 AES-128/192/256",
+        "category": "加密/哈希",
+        "path": "tools/aes.html",
+        "keywords": [
+            "aes",
+            "加密",
+            "解密",
+            "对称加密"
+        ]
+    },
+    {
+        "name": "RSA 密钥生成",
+        "aliases": [
+            "rsa",
+            "rsa密钥",
+            "rsa生成",
+            "非对称加密",
+            "公私钥"
+        ],
+        "description": "RSA 公私钥对生成器，支持不同密钥长度",
+        "category": "加密/哈希",
+        "path": "tools/rsa.html",
+        "keywords": [
+            "rsa",
+            "密钥",
+            "公私钥",
+            "非对称加密"
+        ]
+    },
+    {
+        "name": "IP 查询",
+        "aliases": [
+            "ip查询",
+            "ip地址",
+            "ip归属地",
+            "ip定位",
+            "公网ip"
+        ],
+        "description": "查询本机公网 IP 地址及归属地信息",
+        "category": "网络工具",
+        "path": "tools/ip-lookup.html",
+        "keywords": [
+            "ip",
+            "查询",
+            "归属地",
+            "定位"
+        ]
+    },
+    {
+        "name": "User-Agent 解析",
+        "aliases": [
+            "ua解析",
+            "user-agent",
+            "浏览器信息",
+            "ua查询"
+        ],
+        "description": "解析浏览器 User-Agent 字符串，显示设备/浏览器/OS信息",
+        "category": "网络工具",
+        "path": "tools/ua-parser.html",
+        "keywords": [
+            "ua",
+            "user-agent",
+            "解析",
+            "浏览器"
+        ]
+    },
+    {
+        "name": "WebSocket 测试",
+        "aliases": [
+            "websocket",
+            "ws测试",
+            "wss测试",
+            "websocket测试"
+        ],
+        "description": "WebSocket 在线连接测试工具，支持 ws:// 和 wss://",
+        "category": "网络工具",
+        "path": "tools/websocket.html",
+        "keywords": [
+            "websocket",
+            "ws",
+            "wss",
+            "测试"
+        ]
+    },
+    {
+        "name": "端口扫描",
+        "aliases": [
+            "端口扫描",
+            "port scan",
+            "端口检测",
+            "开放端口"
+        ],
+        "description": "在线检测指定 IP 的常用端口是否开放",
+        "category": "网络工具",
+        "path": "tools/port-scan.html",
+        "keywords": [
+            "端口",
+            "扫描",
+            "port",
+            "检测"
+        ]
+    },
+    {
+        "name": "文本字数统计",
+        "aliases": [
+            "字数统计",
+            "字符统计",
+            "word count",
+            "文本统计"
+        ],
+        "description": "统计文本的字符数、单词数、行数、中文字数等",
+        "category": "文本工具",
+        "path": "tools/word-count.html",
+        "keywords": [
+            "字数",
+            "统计",
+            "字符",
+            "单词"
+        ]
+    },
+    {
+        "name": "文本对比",
+        "aliases": [
+            "文本对比",
+            "文字对比",
+            "文章对比",
+            "文本diff"
+        ],
+        "description": "对比两段文本的差异，高亮新增和删除的内容",
+        "category": "文本工具",
+        "path": "tools/text-diff.html",
+        "keywords": [
+            "文本",
+            "对比",
+            "diff",
+            "差异"
+        ]
+    },
+    {
+        "name": "繁简转换",
+        "aliases": [
+            "繁简转换",
+            "繁体转简体",
+            "简体转繁体",
+            "繁转简",
+            "简转繁"
+        ],
+        "description": "中文繁体与简体互相转换工具",
+        "category": "文本工具",
+        "path": "tools/traditional-simplified.html",
+        "keywords": [
+            "繁体",
+            "简体",
+            "转换",
+            "中文"
+        ]
+    },
+    {
+        "name": "拼音转换",
+        "aliases": [
+            "拼音",
+            "汉字转拼音",
+            "拼音转换",
+            "pinyin"
+        ],
+        "description": "将汉字转换为拼音，支持带声调和不带声调",
+        "category": "文本工具",
+        "path": "tools/pinyin.html",
+        "keywords": [
+            "拼音",
+            "汉字",
+            "转换",
+            "pinyin"
+        ]
+    },
+    {
+        "name": "词频统计",
+        "aliases": [
+            "词频",
+            "词频统计",
+            "关键词提取",
+            "词频分析"
+        ],
+        "description": "统计文本中各词汇的出现频率，支持中文分词",
+        "category": "文本工具",
+        "path": "tools/word-frequency.html",
+        "keywords": [
+            "词频",
+            "统计",
+            "关键词",
+            "分析"
+        ]
+    },
+    {
+        "name": "进制转换",
+        "aliases": [
+            "进制转换",
+            "二进制",
+            "八进制",
+            "十六进制",
+            "十进制"
+        ],
+        "description": "二进制、八进制、十进制、十六进制互相转换",
+        "category": "数学/计算",
+        "path": "tools/base-converter.html",
+        "keywords": [
+            "进制",
+            "转换",
+            "二进制",
+            "十六进制"
+        ]
+    },
+    {
+        "name": "单位换算",
+        "aliases": [
+            "单位换算",
+            "长度换算",
+            "重量换算",
+            "温度换算"
+        ],
+        "description": "长度、重量、温度、面积等常用单位在线换算",
+        "category": "数学/计算",
+        "path": "tools/unit-converter.html",
+        "keywords": [
+            "单位",
+            "换算",
+            "长度",
+            "重量",
+            "温度"
+        ]
+    },
+    {
+        "name": "科学计算器",
+        "aliases": [
+            "计算器",
+            "科学计算器",
+            "calc",
+            "在线计算器"
+        ],
+        "description": "在线科学计算器，支持三角函数、对数等运算",
+        "category": "数学/计算",
+        "path": "tools/calculator.html",
+        "keywords": [
+            "计算器",
+            "科学",
+            "计算",
+            "数学"
+        ]
+    },
+    {
+        "name": "百分比计算",
+        "aliases": [
+            "百分比",
+            "百分比计算",
+            "折扣计算",
+            "增长率"
+        ],
+        "description": "百分比计算、折扣计算、增长率计算",
+        "category": "数学/计算",
+        "path": "tools/percentage.html",
+        "keywords": [
+            "百分比",
+            "折扣",
+            "增长率",
+            "计算"
+        ]
+    },
+    {
+        "name": "随机数生成",
+        "aliases": [
+            "随机数",
+            "random",
+            "随机数生成",
+            "随机数器"
+        ],
+        "description": "指定范围内生成随机数，支持整数和浮点数",
+        "category": "数学/计算",
+        "path": "tools/random.html",
+        "keywords": [
+            "随机数",
+            "random",
+            "生成"
+        ]
+    },
+    {
+        "name": "URL 编解码",
+        "aliases": [
+            "url编码",
+            "url解码",
+            "urlencode",
+            "urldecode",
+            "百分号编码"
+        ],
+        "description": "URL 编码与解码，支持 encodeURIComponent 和 encodeURI 两种模式",
+        "category": "编码/解码",
+        "path": "tools/url-encode.html",
+        "keywords": [
+            "url",
+            "编码",
+            "解码",
+            "urlencode",
+            "urldecode",
+            "百分号编码"
+        ]
+    },
+    {
+        "name": "Base64 编解码",
+        "aliases": [
+            "base64",
+            "base64编码",
+            "base64解码",
+            "base64转图片"
+        ],
+        "description": "Base64 编码与解码，支持文本和文件的 Base64 互转",
+        "category": "编码/解码",
+        "path": "tools/base64.html",
+        "keywords": [
+            "base64",
+            "编码",
+            "解码",
+            "转码"
+        ]
+    },
+    {
+        "name": "HTML 实体编解码",
+        "aliases": [
+            "html实体",
+            "html编码",
+            "html解码",
+            "html转义",
+            "html entity"
+        ],
+        "description": "HTML 实体编码与解码，将特殊字符转换为 HTML 实体或还原",
+        "category": "编码/解码",
+        "path": "tools/html-entity.html",
+        "keywords": [
+            "html",
+            "实体",
+            "编码",
+            "解码",
+            "转义"
+        ]
+    },
+    {
+        "name": "Unicode 转换",
+        "aliases": [
+            "unicode",
+            "unicode编码",
+            "unicode解码",
+            "转义序列",
+            "中文转unicode"
+        ],
+        "description": "Unicode 编码与解码，支持 \\u 转义序列和中文互转",
+        "category": "编码/解码",
+        "path": "tools/unicode-convert.html",
+        "keywords": [
+            "unicode",
+            "编码",
+            "解码",
+            "转义",
+            "中文"
+        ]
+    },
+    {
+        "name": "时间戳转换",
+        "aliases": [
+            "时间戳",
+            "timestamp",
+            "unix时间戳",
+            "时间戳转日期",
+            "日期转时间戳"
+        ],
+        "description": "Unix 时间戳与日期时间互转，支持秒级和毫秒级",
+        "category": "时间/日期",
+        "path": "tools/timestamp.html",
+        "keywords": [
+            "时间戳",
+            "timestamp",
+            "unix",
+            "日期",
+            "转换"
+        ]
+    },
+    {
+        "name": "正则测试",
+        "aliases": [
+            "正则表达式",
+            "regex",
+            "regexp",
+            "正则测试",
+            "正则匹配"
+        ],
+        "description": "在线正则表达式测试工具，实时匹配高亮，支持常用正则预设",
+        "category": "开发者工具",
+        "path": "tools/regex-tester.html",
+        "keywords": [
+            "正则",
+            "表达式",
+            "regex",
+            "匹配",
+            "测试"
+        ]
+    },
+    {
+        "name": "JWT 解析",
+        "aliases": [
+            "jwt",
+            "jwt解码",
+            "jwt解析",
+            "token",
+            "json web token"
+        ],
+        "description": "JWT Token 在线解析，可视化展示 Header、Payload 和签名",
+        "category": "开发者工具",
+        "path": "tools/jwt-decoder.html",
+        "keywords": [
+            "jwt",
+            "token",
+            "解析",
+            "解码",
+            "认证"
+        ]
+    },
+    {
+        "name": "二维码生成",
+        "aliases": [
+            "二维码",
+            "qrcode",
+            "二维码生成",
+            "扫码"
+        ],
+        "description": "在线生成二维码，支持自定义颜色、大小和容错级别",
+        "category": "生成器",
+        "path": "tools/qrcode.html",
+        "keywords": [
+            "二维码",
+            "qrcode",
+            "生成",
+            "扫码"
+        ]
+    },
+    {
+        "name": "文本去重",
+        "aliases": [
+            "去重",
+            "文本去重",
+            "行去重",
+            "重复行删除",
+            "去重复"
+        ],
+        "description": "删除文本中的重复行，支持按行去重和连续去重",
+        "category": "文本工具",
+        "path": "tools/text-deduplicate.html",
+        "keywords": [
+            "去重",
+            "重复",
+            "删除",
+            "唯一",
+            "行"
+        ]
+    },
+    {
+        "name": "文本大小写转换",
+        "aliases": [
+            "大小写",
+            "大写",
+            "小写",
+            "首字母大写",
+            "驼峰转换"
+        ],
+        "description": "文本大小写转换，支持全大写、全小写、首字母大写、驼峰等模式",
+        "category": "文本工具",
+        "path": "tools/text-case.html",
+        "keywords": [
+            "大小写",
+            "转换",
+            "大写",
+            "小写",
+            "驼峰"
+        ]
+    },
+    {
+        "name": "文本替换",
+        "aliases": [
+            "文本替换",
+            "批量替换",
+            "查找替换",
+            "replace"
+        ],
+        "description": "批量查找替换文本内容，支持正则表达式和大小写敏感选项",
+        "category": "文本工具",
+        "path": "tools/text-replace.html",
+        "keywords": [
+            "替换",
+            "查找",
+            "批量",
+            "正则",
+            "replace"
+        ]
+    },
+    {
+        "name": "数字转中文",
+        "aliases": [
+            "数字转中文",
+            "大写金额",
+            "中文数字",
+            "金额大写",
+            "人民币大写"
+        ],
+        "description": "阿拉伯数字转中文数字，支持金额大写转换",
+        "category": "数学/计算",
+        "path": "tools/number-to-chinese.html",
+        "keywords": [
+            "数字",
+            "中文",
+            "大写",
+            "金额",
+            "转换"
+        ]
+    },
+    {
+        "name": "IP 子网计算",
+        "aliases": [
+            "子网计算",
+            "子网掩码",
+            "ip计算",
+            "cidr",
+            "网段计算"
+        ],
+        "description": "IP 子网掩码计算器，计算网段范围、可用主机数和广播地址",
+        "category": "网络工具",
+        "path": "tools/ip-subnet.html",
+        "keywords": [
+            "ip",
+            "子网",
+            "掩码",
+            "cidr",
+            "网段"
+        ]
+    },
+    {
+        "name": "HTTP 状态码查询",
+        "aliases": [
+            "http状态码",
+            "状态码",
+            "http code",
+            "http状态",
+            "响应码"
+        ],
+        "description": "HTTP 状态码速查表，涵盖 1xx-5xx 所有常用状态码",
+        "category": "开发者工具",
+        "path": "tools/http-status.html",
+        "keywords": [
+            "http",
+            "状态码",
+            "status code",
+            "响应",
+            "请求"
+        ]
+    },
+    {
+        "name": "图片转 Base64",
+        "aliases": [
+            "图片转base64",
+            "base64转图片",
+            "image to base64",
+            "图片编码"
+        ],
+        "description": "图片与 Base64 互转，支持拖拽上传和预览",
+        "category": "编码/解码",
+        "path": "tools/image-base64.html",
+        "keywords": [
+            "图片",
+            "base64",
+            "转换",
+            "编码",
+            "dataurl"
+        ]
+    },
+    {
+        "name": "CSS 代码格式化",
+        "aliases": [
+            "css格式化",
+            "css美化",
+            "css压缩",
+            "css format"
+        ],
+        "description": "CSS 代码格式化美化与压缩，支持自定义缩进",
+        "category": "开发者工具",
+        "path": "tools/css-formatter.html",
+        "keywords": [
+            "css",
+            "格式化",
+            "美化",
+            "压缩",
+            "代码"
+        ]
+    },
+    {
+        "name": "UUID 生成器",
+        "aliases": [
+            "uuid",
+            "uuid生成",
+            "uuid4",
+            "唯一标识符",
+            "guid"
+        ],
+        "description": "在线生成 UUID v4 唯一标识符，支持批量生成",
+        "category": "生成器",
+        "path": "tools/uuid-generator.html",
+        "keywords": [
+            "uuid",
+            "guid",
+            "唯一标识",
+            "id",
+            "生成"
+        ]
+    },
+    {
+        "name": "YAML JSON 互转",
+        "aliases": [
+            "yaml转json",
+            "json转yaml",
+            "yaml",
+            "yaml解析",
+            "yaml格式化"
+        ],
+        "description": "YAML 与 JSON 双向转换，支持格式化和校验",
+        "category": "编码/解码",
+        "path": "tools/yaml-json.html",
+        "keywords": [
+            "yaml",
+            "json",
+            "转换",
+            "配置",
+            "格式化"
+        ]
+    },
+    {
+        "name": "XML JSON 互转",
+        "aliases": [
+            "xml转json",
+            "json转xml",
+            "xml解析",
+            "xml格式化"
+        ],
+        "description": "XML 与 JSON 双向转换，支持格式化和校验",
+        "category": "编码/解码",
+        "path": "tools/xml-json.html",
+        "keywords": [
+            "xml",
+            "json",
+            "转换",
+            "解析",
+            "格式化"
+        ]
+    },
+    {
+        "name": "Markdown 转 HTML",
+        "aliases": [
+            "markdown",
+            "md转html",
+            "markdown预览",
+            "md渲染",
+            "markdown编辑器"
+        ],
+        "description": "Markdown 文本转 HTML，支持实时预览和代码高亮",
+        "category": "开发者工具",
+        "path": "tools/markdown-html.html",
+        "keywords": [
+            "markdown",
+            "html",
+            "预览",
+            "渲染",
+            "md"
+        ]
+    },
+    {
+        "name": "Token 生成器",
+        "aliases": [
+            "token生成",
+            "随机字符串",
+            "密钥生成",
+            "secret",
+            "apikey"
+        ],
+        "description": "生成随机 Token / API Key / Secret，支持自定义长度和字符集",
+        "category": "生成器",
+        "path": "tools/token-generator.html",
+        "keywords": [
+            "token",
+            "密钥",
+            "随机",
+            "api",
+            "secret"
+        ]
+    },
+    {
+        "name": "HMAC 生成器",
+        "aliases": [
+            "hmac",
+            "hmac-sha256",
+            "签名",
+            "消息认证码",
+            "hmac计算"
+        ],
+        "description": "HMAC 签名在线生成，支持 SHA-1/SHA-256/SHA-512 算法",
+        "category": "加密/哈希",
+        "path": "tools/hmac-generator.html",
+        "keywords": [
+            "hmac",
+            "签名",
+            "sha256",
+            "认证",
+            "消息"
+        ]
+    },
+    {
+        "name": "Bcrypt 哈希",
+        "aliases": [
+            "bcrypt",
+            "bcrypt加密",
+            "密码哈希",
+            "bcrypt验证",
+            "salt"
+        ],
+        "description": "Bcrypt 密码哈希生成与验证，支持自定义轮数",
+        "category": "加密/哈希",
+        "path": "tools/bcrypt.html",
+        "keywords": [
+            "bcrypt",
+            "密码",
+            "哈希",
+            "salt",
+            "验证"
+        ]
+    },
+    {
+        "name": "SQL 格式化",
+        "aliases": [
+            "sql格式化",
+            "sql美化",
+            "sql压缩",
+            "sql格式",
+            "sql prettify"
+        ],
+        "description": "SQL 语句格式化美化与压缩，支持多种 SQL 方言",
+        "category": "开发者工具",
+        "path": "tools/sql-formatter.html",
+        "keywords": [
+            "sql",
+            "格式化",
+            "美化",
+            "压缩",
+            "数据库"
+        ]
+    },
+    {
+        "name": "URL 解析器",
+        "aliases": [
+            "url解析",
+            "url拆分",
+            "url参数",
+            "querystring",
+            "url组成"
+        ],
+        "description": "解析 URL 各组成部分：协议、域名、端口、路径、参数、哈希",
+        "category": "网络工具",
+        "path": "tools/url-parser.html",
+        "keywords": [
+            "url",
+            "解析",
+            "参数",
+            "域名",
+            "query"
+        ]
+    },
+    {
+        "name": "MIME 类型查询",
+        "aliases": [
+            "mime",
+            "mime类型",
+            "content-type",
+            "文件类型",
+            "媒体类型"
+        ],
+        "description": "文件扩展名与 MIME 类型双向查询，涵盖 600+ 常见类型",
+        "category": "开发者工具",
+        "path": "tools/mime-types.html",
+        "keywords": [
+            "mime",
+            "content-type",
+            "文件类型",
+            "扩展名",
+            "媒体"
+        ]
+    },
+    {
+        "name": "Lorem Ipsum 生成",
+        "aliases": [
+            "lorem",
+            "占位文本",
+            "随机文本",
+            "假文",
+            "测试文本"
+        ],
+        "description": "生成 Lorem Ipsum 占位文本，支持段落、单词、句子模式",
+        "category": "生成器",
+        "path": "tools/lorem-ipsum.html",
+        "keywords": [
+            "lorem",
+            "占位",
+            "文本",
+            "测试",
+            "生成"
+        ]
+    },
+    {
+        "name": "chmod 计算器",
+        "aliases": [
+            "chmod",
+            "权限计算",
+            "linux权限",
+            "文件权限",
+            "777"
+        ],
+        "description": "Linux chmod 权限数字与符号表示互转，可视化勾选",
+        "category": "开发者工具",
+        "path": "tools/chmod-calculator.html",
+        "keywords": [
+            "chmod",
+            "权限",
+            "linux",
+            "777",
+            "文件"
+        ]
+    },
+    {
+        "name": "Git 速查表",
+        "aliases": [
+            "git命令",
+            "git速查",
+            "git cheat sheet",
+            "git常用命令",
+            "版本控制"
+        ],
+        "description": "Git 常用命令速查，按场景分类，含命令说明和示例",
+        "category": "开发者工具",
+        "path": "tools/git-cheatsheet.html",
+        "keywords": [
+            "git",
+            "命令",
+            "速查",
+            "版本控制",
+            "分支"
+        ]
+    },
+    {
+        "name": "Emoji 选择器",
+        "aliases": [
+            "emoji",
+            "表情",
+            "表情符号",
+            "emoji搜索",
+            "emoji复制"
+        ],
+        "description": "Emoji 表情符号搜索复制，按分类浏览，支持关键词搜索",
+        "category": "文本工具",
+        "path": "tools/emoji-picker.html",
+        "keywords": [
+            "emoji",
+            "表情",
+            "符号",
+            "搜索",
+            "复制"
+        ]
+    },
+    {
+        "name": "WiFi 二维码",
+        "aliases": [
+            "wifi二维码",
+            "wifi扫码",
+            "wifi连接",
+            "wifi分享",
+            "wifi qrcode"
+        ],
+        "description": "生成 WiFi 连接二维码，扫码即可连接，支持 WPA/WEP/开放网络",
+        "category": "生成器",
+        "path": "tools/wifi-qrcode.html",
+        "keywords": [
+            "wifi",
+            "二维码",
+            "连接",
+            "分享",
+            "qrcode"
+        ]
+    },
+    {
+        "name": "温度转换",
+        "aliases": [
+            "温度转换",
+            "摄氏度",
+            "华氏度",
+            "开尔文",
+            "温度换算"
+        ],
+        "description": "摄氏度、华氏度、开尔文温度互转",
+        "category": "数学/计算",
+        "path": "tools/temperature-converter.html",
+        "keywords": [
+            "温度",
+            "摄氏",
+            "华氏",
+            "开尔文",
+            "转换"
+        ]
+    },
+    {
+        "name": "JSON CSV 互转",
+        "aliases": [
+            "json转csv",
+            "csv转json",
+            "csv",
+            "表格数据",
+            "数据导出"
+        ],
+        "description": "JSON 与 CSV 双向转换，支持嵌套对象展开和数据导出",
+        "category": "编码/解码",
+        "path": "tools/json-csv.html",
+        "keywords": [
+            "json",
+            "csv",
+            "转换",
+            "表格",
+            "导出"
+        ]
+    },
+    {
+        "name": "Slug 生成",
+        "aliases": [
+            "slug",
+            "url友好",
+            "slugify",
+            "url slug",
+            "链接生成"
+        ],
+        "description": "将文本转换为 URL 友好的 Slug，支持中英文和自定义分隔符",
+        "category": "开发者工具",
+        "path": "tools/slug-generator.html",
+        "keywords": [
+            "slug",
+            "url",
+            "链接",
+            "友好",
+            "seo"
+        ]
+    },
+    {
+        "name": "Docker Compose 转换",
+        "aliases": [
+            "docker run转compose",
+            "docker compose",
+            "docker-compose",
+            "容器配置",
+            "docker转换"
+        ],
+        "description": "将 docker run 命令转换为 docker-compose.yml 配置",
+        "category": "开发者工具",
+        "path": "tools/docker-compose.html",
+        "keywords": [
+            "docker",
+            "compose",
+            "容器",
+            "转换",
+            "配置"
+        ]
+    },
+    {
+        "name": "OTP 验证码",
+        "aliases": [
+            "otp",
+            "totp",
+            "hotp",
+            "两步验证",
+            "2fa",
+            "验证码"
+        ],
+        "description": "TOTP/HOTP 验证码生成，支持自定义密钥和步长",
+        "category": "加密/哈希",
+        "path": "tools/otp-generator.html",
+        "keywords": [
+            "otp",
+            "totp",
+            "2fa",
+            "验证",
+            "双因素"
+        ]
+    },
+    {
+        "name": "HTML 格式化",
+        "aliases": [
+            "html格式化",
+            "html美化",
+            "html压缩",
+            "html format",
+            "html beautifier"
+        ],
+        "description": "HTML 代码格式化美化与压缩，支持自定义缩进",
+        "category": "开发者工具",
+        "path": "tools/html-formatter.html",
+        "keywords": [
+            "html",
+            "格式化",
+            "美化",
+            "压缩",
+            "beautifier"
+        ]
+    },
+    {
+        "name": "JavaScript 格式化",
+        "aliases": [
+            "js格式化",
+            "js美化",
+            "js压缩",
+            "javascript format",
+            "js beautifier"
+        ],
+        "description": "JavaScript 代码格式化美化与压缩，支持自定义缩进",
+        "category": "开发者工具",
+        "path": "tools/js-formatter.html",
+        "keywords": [
+            "javascript",
+            "js",
+            "格式化",
+            "美化",
+            "压缩",
+            "beautifier"
+        ]
+    },
+    {
+        "name": "URL 参数转 JSON",
+        "aliases": [
+            "url参数",
+            "querystring转json",
+            "url参数解析",
+            "query参数"
+        ],
+        "description": "URL 查询参数与 JSON 对象互相转换",
+        "category": "编码/解码",
+        "path": "tools/url-params-json.html",
+        "keywords": [
+            "url",
+            "参数",
+            "json",
+            "querystring",
+            "query"
+        ]
+    },
+    {
+        "name": "ASCII 编码表",
+        "aliases": [
+            "ascii",
+            "ascii表",
+            "ascii码",
+            "ascii编码",
+            "ascii对照表"
+        ],
+        "description": "ASCII 编码对照表，包含 0-127 所有字符",
+        "category": "编码/解码",
+        "path": "tools/ascii-table.html",
+        "keywords": [
+            "ascii",
+            "编码",
+            "对照表",
+            "字符",
+            "码表"
+        ]
+    },
+    {
+        "name": "键盘 KeyCode 查询",
+        "aliases": [
+            "keycode",
+            "键盘码",
+            "按键码",
+            "键盘事件",
+            "keycode查询"
+        ],
+        "description": "实时检测键盘按键，显示 keyCode、key、code 值",
+        "category": "开发者工具",
+        "path": "tools/keycode-info.html",
+        "keywords": [
+            "keycode",
+            "键盘",
+            "按键",
+            "事件",
+            "code"
+        ]
+    },
+    {
+        "name": "键盘按键测试",
+        "aliases": [
+            "键盘测试",
+            "按键测试",
+            "keyboard test",
+            "键盘检测"
+        ],
+        "description": "可视化测试键盘每个按键是否正常工作",
+        "category": "开发者工具",
+        "path": "tools/keyboard-test.html",
+        "keywords": [
+            "键盘",
+            "测试",
+            "按键",
+            "检测",
+            "keyboard"
+        ]
+    },
+    {
+        "name": "剪切板查看器",
+        "aliases": [
+            "剪切板",
+            "剪贴板",
+            "clipboard",
+            "剪贴板查看",
+            "粘贴板"
+        ],
+        "description": "查看剪贴板内容，支持复制和清空",
+        "category": "开发者工具",
+        "path": "tools/clipboard-viewer.html",
+        "keywords": [
+            "剪切板",
+            "剪贴板",
+            "clipboard",
+            "查看",
+            "复制"
+        ]
+    },
+    {
+        "name": "在线秒表",
+        "aliases": [
+            "秒表",
+            "计时器",
+            "stopwatch",
+            "倒计时",
+            "计次"
+        ],
+        "description": "在线秒表工具，支持计次和倒计时",
+        "category": "时间/日期",
+        "path": "tools/stopwatch.html",
+        "keywords": [
+            "秒表",
+            "计时",
+            "stopwatch",
+            "倒计时"
+        ]
+    },
+    {
+        "name": "日期计算器",
+        "aliases": [
+            "日期计算",
+            "日期差值",
+            "天数计算",
+            "日期间隔"
+        ],
+        "description": "计算两个日期之间的天数差值",
+        "category": "时间/日期",
+        "path": "tools/date-calculator.html",
+        "keywords": [
+            "日期",
+            "计算",
+            "差值",
+            "天数"
+        ]
+    },
+    {
+        "name": "年龄计算器",
+        "aliases": [
+            "年龄计算",
+            "生日计算",
+            "周岁",
+            "虚岁"
+        ],
+        "description": "输入生日计算精确年龄，支持周岁和虚岁",
+        "category": "时间/日期",
+        "path": "tools/age-calculator.html",
+        "keywords": [
+            "年龄",
+            "生日",
+            "周岁",
+            "计算"
+        ]
+    },
+    {
+        "name": "公历农历转换",
+        "aliases": [
+            "农历",
+            "阴历",
+            "阳历",
+            "公历转农历",
+            "万年历"
+        ],
+        "description": "公历日期与农历日期互相转换",
+        "category": "时间/日期",
+        "path": "tools/lunar-calendar.html",
+        "keywords": [
+            "农历",
+            "公历",
+            "转换",
+            "阴历",
+            "万年历"
+        ]
+    },
+    {
+        "name": "世界时间",
+        "aliases": [
+            "世界时钟",
+            "时区",
+            "timezone",
+            "多时区",
+            "世界时间"
+        ],
+        "description": "查看全球主要城市当前时间，多时区对照",
+        "category": "时间/日期",
+        "path": "tools/world-clock.html",
+        "keywords": [
+            "世界",
+            "时间",
+            "时区",
+            "时钟",
+            "timezone"
+        ]
+    },
+    {
+        "name": "Base32 Base58 Base62 编码",
+        "aliases": [
+            "base32",
+            "base58",
+            "base62",
+            "base编码",
+            "base转换"
+        ],
+        "description": "Base32、Base58、Base62 编码与解码",
+        "category": "编码/解码",
+        "path": "tools/base-encode.html",
+        "keywords": [
+            "base32",
+            "base58",
+            "base62",
+            "编码",
+            "解码"
+        ]
+    },
+    {
+        "name": "Punycode 编解码",
+        "aliases": [
+            "punycode",
+            "域名编码",
+            "国际化域名",
+            "xn--",
+            "idn"
+        ],
+        "description": "Punycode 编码解码，用于国际化域名转换",
+        "category": "编码/解码",
+        "path": "tools/punycode.html",
+        "keywords": [
+            "punycode",
+            "域名",
+            "idn",
+            "编码",
+            "xn"
+        ]
+    },
+    {
+        "name": "Quoted-Printable 编解码",
+        "aliases": [
+            "quoted-printable",
+            "qp编码",
+            "邮件编码",
+            "qp解码"
+        ],
+        "description": "Quoted-Printable 编码与解码，常用于邮件",
+        "category": "编码/解码",
+        "path": "tools/quoted-printable.html",
+        "keywords": [
+            "quoted-printable",
+            "qp",
+            "邮件",
+            "编码"
+        ]
+    },
+    {
+        "name": "文件转 Hex",
+        "aliases": [
+            "hex",
+            "十六进制",
+            "文件转hex",
+            "hex转文件",
+            "二进制"
+        ],
+        "description": "文件内容与十六进制字符串互相转换",
+        "category": "编码/解码",
+        "path": "tools/file-hex.html",
+        "keywords": [
+            "hex",
+            "十六进制",
+            "文件",
+            "转换",
+            "二进制"
+        ]
+    },
+    {
+        "name": "Gzip 压缩解压",
+        "aliases": [
+            "gzip",
+            "压缩",
+            "解压",
+            "deflate",
+            "pako"
+        ],
+        "description": "浏览器端 Gzip 压缩与解压",
+        "category": "编码/解码",
+        "path": "tools/gzip.html",
+        "keywords": [
+            "gzip",
+            "压缩",
+            "解压",
+            "deflate",
+            "pako"
+        ]
+    },
+    {
+        "name": "摩斯密码",
+        "aliases": [
+            "摩斯电码",
+            "morse",
+            "morse code",
+            "摩斯密码加密",
+            "电报码"
+        ],
+        "description": "摩斯电码编码与解码，支持中英文",
+        "category": "加密/哈希",
+        "path": "tools/morse-code.html",
+        "keywords": [
+            "摩斯",
+            "电码",
+            "morse",
+            "加密",
+            "解密"
+        ]
+    },
+    {
+        "name": "凯撒密码",
+        "aliases": [
+            "凯撒",
+            "caesar",
+            "移位密码",
+            "凯撒加密",
+            "凯撒解密"
+        ],
+        "description": "凯撒密码加密与解密，支持自定义偏移量",
+        "category": "加密/哈希",
+        "path": "tools/caesar-cipher.html",
+        "keywords": [
+            "凯撒",
+            "caesar",
+            "移位",
+            "加密",
+            "解密"
+        ]
+    },
+    {
+        "name": "XOR 异或加密",
+        "aliases": [
+            "xor",
+            "异或",
+            "异或加密",
+            "xor加密",
+            "xor解密"
+        ],
+        "description": "XOR 异或加密与解密，支持自定义密钥",
+        "category": "加密/哈希",
+        "path": "tools/xor-cipher.html",
+        "keywords": [
+            "xor",
+            "异或",
+            "加密",
+            "解密",
+            "密钥"
+        ]
+    },
+    {
+        "name": "DES 加密解密",
+        "aliases": [
+            "des",
+            "des加密",
+            "des解密",
+            "3des",
+            "tripledes"
+        ],
+        "description": "DES/TripleDES 对称加密与解密",
+        "category": "加密/哈希",
+        "path": "tools/des-cipher.html",
+        "keywords": [
+            "des",
+            "3des",
+            "tripledes",
+            "加密",
+            "解密"
+        ]
+    },
+    {
+        "name": "RC4 加密解密",
+        "aliases": [
+            "rc4",
+            "rc4加密",
+            "rc4解密",
+            "流加密"
+        ],
+        "description": "RC4 流加密算法加密与解密",
+        "category": "加密/哈希",
+        "path": "tools/rc4-cipher.html",
+        "keywords": [
+            "rc4",
+            "流加密",
+            "加密",
+            "解密"
+        ]
+    },
+    {
+        "name": "Rabbit 加密",
+        "aliases": [
+            "rabbit",
+            "rabbit加密",
+            "rabbit解密",
+            "对称加密"
+        ],
+        "description": "Rabbit 对称加密与解密",
+        "category": "加密/哈希",
+        "path": "tools/rabbit-cipher.html",
+        "keywords": [
+            "rabbit",
+            "加密",
+            "解密",
+            "对称"
+        ]
+    },
+    {
+        "name": "CRC 校验",
+        "aliases": [
+            "crc",
+            "crc8",
+            "crc16",
+            "crc32",
+            "循环校验",
+            "校验码"
+        ],
+        "description": "CRC8/16/32 循环冗余校验码计算",
+        "category": "加密/哈希",
+        "path": "tools/crc-calc.html",
+        "keywords": [
+            "crc",
+            "校验",
+            "crc8",
+            "crc16",
+            "crc32"
+        ]
+    },
+    {
+        "name": "文本逆序",
+        "aliases": [
+            "文本反转",
+            "反转",
+            "reverse",
+            "文字倒序",
+            "倒序"
+        ],
+        "description": "将文本、单词或行逆序排列",
+        "category": "文本工具",
+        "path": "tools/text-reverse.html",
+        "keywords": [
+            "逆序",
+            "反转",
+            "reverse",
+            "倒序"
+        ]
+    },
+    {
+        "name": "文本分割合并",
+        "aliases": [
+            "文本分割",
+            "文本合并",
+            "split",
+            "join",
+            "分割"
+        ],
+        "description": "按行、字符或分隔符分割和合并文本",
+        "category": "文本工具",
+        "path": "tools/text-split-join.html",
+        "keywords": [
+            "分割",
+            "合并",
+            "split",
+            "join"
+        ]
+    },
+    {
+        "name": "标点符号转换",
+        "aliases": [
+            "全角半角",
+            "标点转换",
+            "全角转半角",
+            "标点",
+            "punctuation"
+        ],
+        "description": "中文全角标点与英文半角标点互相转换",
+        "category": "文本工具",
+        "path": "tools/punctuation-convert.html",
+        "keywords": [
+            "全角",
+            "半角",
+            "标点",
+            "转换"
+        ]
+    },
+    {
+        "name": "目录树生成",
+        "aliases": [
+            "目录树",
+            "tree",
+            "文件树",
+            "目录结构",
+            "树形"
+        ],
+        "description": "将文本路径生成为目录树结构",
+        "category": "文本工具",
+        "path": "tools/dir-tree.html",
+        "keywords": [
+            "目录树",
+            "tree",
+            "文件树",
+            "结构"
+        ]
+    },
+    {
+        "name": "键值对转代码",
+        "aliases": [
+            "键值对",
+            "kv转json",
+            "keyvalue",
+            "键值转换",
+            "kv转换"
+        ],
+        "description": "键值对文本与 JSON/代码对象互相转换",
+        "category": "文本工具",
+        "path": "tools/kv-convert.html",
+        "keywords": [
+            "键值对",
+            "kv",
+            "json",
+            "转换"
+        ]
+    },
+    {
+        "name": "HTML 标签过滤",
+        "aliases": [
+            "html过滤",
+            "标签过滤",
+            "html提取",
+            "strip html",
+            "去除标签"
+        ],
+        "description": "过滤或提取 HTML 标签中的纯文本",
+        "category": "文本工具",
+        "path": "tools/html-filter.html",
+        "keywords": [
+            "html",
+            "过滤",
+            "标签",
+            "纯文本"
+        ]
+    },
+    {
+        "name": "特殊符号大全",
+        "aliases": [
+            "特殊符号",
+            "符号",
+            "特殊字符",
+            "symbol",
+            "特殊"
+        ],
+        "description": "常用特殊符号集合，点击即可复制",
+        "category": "文本工具",
+        "path": "tools/special-chars.html",
+        "keywords": [
+            "符号",
+            "特殊",
+            "symbol",
+            "字符"
+        ]
+    },
+    {
+        "name": "原码反码补码",
+        "aliases": [
+            "原码",
+            "反码",
+            "补码",
+            "二进制补码",
+            "补码计算器"
+        ],
+        "description": "原码、反码、补码计算器，支持8/16/32位",
+        "category": "数学/计算",
+        "path": "tools/binary-complement.html",
+        "keywords": [
+            "原码",
+            "反码",
+            "补码",
+            "二进制"
+        ]
+    },
+    {
+        "name": "IEEE 754 浮点数",
+        "aliases": [
+            "ieee754",
+            "浮点数",
+            "浮点转换",
+            "ieee浮点",
+            "float"
+        ],
+        "description": "IEEE 754 浮点数二进制表示转换",
+        "category": "数学/计算",
+        "path": "tools/ieee754.html",
+        "keywords": [
+            "ieee754",
+            "浮点数",
+            "二进制",
+            "float"
+        ]
+    },
+    {
+        "name": "十六进制计算器",
+        "aliases": [
+            "十六进制",
+            "hex计算器",
+            "hex计算",
+            "16进制",
+            "hex calculator"
+        ],
+        "description": "十六进制四则运算计算器",
+        "category": "数学/计算",
+        "path": "tools/hex-calculator.html",
+        "keywords": [
+            "十六进制",
+            "hex",
+            "计算器",
+            "16进制"
+        ]
+    },
+    {
+        "name": "模幂计算器",
+        "aliases": [
+            "模幂",
+            "模幂运算",
+            "modpow",
+            "a^b mod n",
+            "模运算"
+        ],
+        "description": "模幂运算 a^b mod n 计算器",
+        "category": "数学/计算",
+        "path": "tools/modpow.html",
+        "keywords": [
+            "模幂",
+            "modpow",
+            "模运算",
+            "计算"
+        ]
+    },
+    {
+        "name": "大小端转换",
+        "aliases": [
+            "大小端",
+            "字节序",
+            "endianness",
+            "little endian",
+            "big endian"
+        ],
+        "description": "大端序与小端序字节序转换工具",
+        "category": "数学/计算",
+        "path": "tools/endianness.html",
+        "keywords": [
+            "大小端",
+            "字节序",
+            "endianness",
+            "转换"
+        ]
+    },
+    {
+        "name": "屏幕 PPI 计算器",
+        "aliases": [
+            "ppi",
+            "像素密度",
+            "屏幕密度",
+            "dpi",
+            "分辨率"
+        ],
+        "description": "根据屏幕尺寸和分辨率计算像素密度 PPI",
+        "category": "数学/计算",
+        "path": "tools/ppi-calc.html",
+        "keywords": [
+            "ppi",
+            "像素密度",
+            "屏幕",
+            "dpi"
+        ]
+    },
+    {
+        "name": "屏幕颜色拾取",
+        "aliases": [
+            "拾色器",
+            "取色器",
+            "color picker",
+            "屏幕取色",
+            "拾色"
+        ],
+        "description": "从屏幕拾取颜色值，显示 HEX/RGB/HSL",
+        "category": "设计工具",
+        "path": "tools/color-picker.html",
+        "keywords": [
+            "拾色器",
+            "取色",
+            "color",
+            "picker"
+        ]
+    },
+    {
+        "name": "调色板工具",
+        "aliases": [
+            "调色板",
+            "palette",
+            "色彩搭配",
+            "配色",
+            "调色"
+        ],
+        "description": "生成和编辑色彩调色板",
+        "category": "设计工具",
+        "path": "tools/color-palette.html",
+        "keywords": [
+            "调色板",
+            "palette",
+            "配色",
+            "色彩"
+        ]
+    },
+    {
+        "name": "图片格式转换",
+        "aliases": [
+            "图片转换",
+            "png转jpg",
+            "图片格式",
+            "image convert",
+            "格式互转"
+        ],
+        "description": "PNG/JPG/WebP/GIF 图片格式互相转换",
+        "category": "设计工具",
+        "path": "tools/image-convert.html",
+        "keywords": [
+            "图片",
+            "格式",
+            "转换",
+            "png",
+            "jpg"
+        ]
+    },
+    {
+        "name": "图片转 ICO",
+        "aliases": [
+            "ico",
+            "favicon",
+            "图标转换",
+            "图片转图标",
+            "ico转换"
+        ],
+        "description": "将图片转换为 ICO 图标格式",
+        "category": "设计工具",
+        "path": "tools/image-to-ico.html",
+        "keywords": [
+            "ico",
+            "favicon",
+            "图标",
+            "转换"
+        ]
+    },
+    {
+        "name": "图片自定义大小",
+        "aliases": [
+            "图片缩放",
+            "resize",
+            "图片尺寸",
+            "图片裁剪",
+            "缩放"
+        ],
+        "description": "自定义调整图片尺寸，支持等比缩放",
+        "category": "设计工具",
+        "path": "tools/image-resize.html",
+        "keywords": [
+            "缩放",
+            "尺寸",
+            "resize",
+            "图片"
+        ]
+    },
+    {
+        "name": "文字生成图片",
+        "aliases": [
+            "文字转图片",
+            "文字图片",
+            "text to image",
+            "生成图片"
+        ],
+        "description": "将文字渲染为图片，支持自定义字体和样式",
+        "category": "设计工具",
+        "path": "tools/text-to-image.html",
+        "keywords": [
+            "文字",
+            "图片",
+            "生成",
+            "text"
+        ]
+    },
+    {
+        "name": "文本转 HTML 表格",
+        "aliases": [
+            "表格生成",
+            "text to table",
+            "csv转表格",
+            "表格"
+        ],
+        "description": "将文本/CSV 数据转换为 HTML 表格",
+        "category": "开发者工具",
+        "path": "tools/text-to-table.html",
+        "keywords": [
+            "表格",
+            "table",
+            "csv",
+            "html"
+        ]
+    },
+    {
+        "name": "闰年查询",
+        "aliases": [
+            "闰年",
+            "leap year",
+            "闰月",
+            "闰年查询"
+        ],
+        "description": "查询指定年份是否为闰年",
+        "category": "时间/日期",
+        "path": "tools/leap-year.html",
+        "keywords": [
+            "闰年",
+            "leap year",
+            "查询"
+        ]
+    },
+    {
+        "name": "日历",
+        "aliases": [
+            "日历",
+            "万年历",
+            "calendar",
+            "月历"
+        ],
+        "description": "在线日历查看工具，支持月份切换",
+        "category": "时间/日期",
+        "path": "tools/calendar.html",
+        "keywords": [
+            "日历",
+            "万年历",
+            "calendar"
+        ]
+    },
+    {
+        "name": "IPv4 转 IPv6",
+        "aliases": [
+            "ipv6",
+            "ip转换",
+            "ipv4转ipv6",
+            "ip地址转换"
+        ],
+        "description": "IPv4 地址转换为 IPv6 格式",
+        "category": "网络工具",
+        "path": "tools/ipv4-to-ipv6.html",
+        "keywords": [
+            "ipv4",
+            "ipv6",
+            "转换",
+            "ip"
+        ]
+    },
+    {
+        "name": "数组排序工具",
+        "aliases": [
+            "数组排序",
+            "排序",
+            "sort",
+            "数组逆序",
+            "逆序"
+        ],
+        "description": "数组数字排序和逆序操作",
+        "category": "数学/计算",
+        "path": "tools/array-sort.html",
+        "keywords": [
+            "数组",
+            "排序",
+            "sort",
+            "逆序"
+        ]
+    },
+    {
+        "name": "Nginx 格式化",
+        "aliases": [
+            "nginx格式化",
+            "nginx美化",
+            "nginx配置",
+            "nginx format"
+        ],
+        "description": "Nginx 配置文件格式化美化",
+        "category": "开发者工具",
+        "path": "tools/nginx-formatter.html",
+        "keywords": [
+            "nginx",
+            "格式化",
+            "配置",
+            "美化"
+        ]
+    },
+    {
+        "name": "正则备忘录",
+        "aliases": [
+            "正则速查",
+            "regex cheat sheet",
+            "正则语法",
+            "正则参考"
+        ],
+        "description": "正则表达式语法速查表",
+        "category": "开发者工具",
+        "path": "tools/regex-cheatsheet.html",
+        "keywords": [
+            "正则",
+            "regex",
+            "速查",
+            "语法",
+            "参考"
+        ]
+    },
+    {
+        "name": "URL 批量生成器",
+        "aliases": [
+            "url批量",
+            "批量url",
+            "url生成",
+            "批量链接"
+        ],
+        "description": "批量生成 URL 链接",
+        "category": "网络工具",
+        "path": "tools/url-batch.html",
+        "keywords": [
+            "url",
+            "批量",
+            "生成",
+            "链接"
+        ]
+    },
+    {
+        "name": "文本行过滤",
+        "aliases": [
+            "行过滤",
+            "文本过滤",
+            "行长度",
+            "过滤行",
+            "line filter"
+        ],
+        "description": "按行长度过滤文本",
+        "category": "文本工具",
+        "path": "tools/line-filter.html",
+        "keywords": [
+            "行过滤",
+            "长度",
+            "过滤",
+            "文本"
+        ]
+    },
+    {
+        "name": "Meta Tag 提取",
+        "aliases": [
+            "meta提取",
+            "meta标签",
+            "meta tag",
+            "提取meta",
+            "网页meta"
+        ],
+        "description": "从 HTML 代码中提取 Meta 标签信息",
+        "category": "开发者工具",
+        "path": "tools/meta-extractor.html",
+        "keywords": [
+            "meta",
+            "标签",
+            "提取",
+            "html"
+        ]
+    },
+    {
+        "name": "房贷计算器",
+        "aliases": [
+            "房贷",
+            "贷款计算",
+            "月供",
+            "房贷计算",
+            "贷款计算器"
+        ],
+        "description": "房贷月供计算，支持等额本息和等额本金",
+        "category": "数学/计算",
+        "path": "tools/mortgage-calc.html",
+        "keywords": [
+            "房贷",
+            "贷款",
+            "月供",
+            "计算",
+            "利息"
+        ]
+    },
+    {
+        "name": "随机端口生成",
+        "aliases": [
+            "端口生成",
+            "随机端口",
+            "port generator",
+            "可用端口"
+        ],
+        "description": "生成随机可用端口号",
+        "category": "开发者工具",
+        "path": "tools/port-generator.html",
+        "keywords": [
+            "端口",
+            "port",
+            "随机",
+            "生成"
+        ]
+    },
+    {
+        "name": "HTML 在线运行",
+        "aliases": [
+            "html运行",
+            "html预览",
+            "html在线",
+            "html preview",
+            "代码运行"
+        ],
+        "description": "在线预览运行 HTML 代码",
+        "category": "开发者工具",
+        "path": "tools/html-preview.html",
+        "keywords": [
+            "html",
+            "运行",
+            "预览",
+            "在线"
+        ]
+    },
+    {
+        "name": "JSON Diff",
+        "aliases": [
+            "json对比",
+            "json差异",
+            "json diff",
+            "json比较"
+        ],
+        "description": "对比两个 JSON 对象的差异",
+        "category": "开发者工具",
+        "path": "tools/json-diff.html",
+        "keywords": [
+            "json",
+            "对比",
+            "diff",
+            "差异"
+        ]
+    },
+    {
+        "name": "邮箱规范化",
+        "aliases": [
+            "邮箱规范化",
+            "email normalize",
+            "邮箱标准化",
+            "邮箱格式"
+        ],
+        "description": "规范化邮箱地址格式",
+        "category": "文本工具",
+        "path": "tools/email-normalize.html",
+        "keywords": [
+            "邮箱",
+            "email",
+            "规范化",
+            "格式"
+        ]
+    },
+    {
+        "name": "数字排序",
+        "aliases": [
+            "数字排序",
+            "排序",
+            "sort numbers",
+            "数字排列"
+        ],
+        "description": "数字数组排序和去重",
+        "category": "数学/计算",
+        "path": "tools/number-sort.html",
+        "keywords": [
+            "数字",
+            "排序",
+            "sort",
+            "去重"
+        ]
+    },
+    {
+        "name": "随机字符串",
+        "aliases": [
+            "随机字符串",
+            "random string",
+            "随机文本",
+            "字符串生成"
+        ],
+        "description": "生成指定长度的随机字符串",
+        "category": "生成器",
+        "path": "tools/random-string.html",
+        "keywords": [
+            "随机",
+            "字符串",
+            "random",
+            "生成"
+        ]
+    },
+    {
+        "name": "列表去重排序",
+        "aliases": [
+            "列表去重",
+            "列表排序",
+            "list dedup",
+            "列表操作"
+        ],
+        "description": "列表去重、排序、反转等操作",
+        "category": "文本工具",
+        "path": "tools/list-operations.html",
+        "keywords": [
+            "列表",
+            "去重",
+            "排序",
+            "操作"
+        ]
+    },
+    {
+        "name": "罗马数字转换",
+        "aliases": [
+            "罗马数字",
+            "roman numeral",
+            "罗马数字转换",
+            "罗马转数字"
+        ],
+        "description": "阿拉伯数字与罗马数字互相转换",
+        "category": "数学/计算",
+        "path": "tools/roman-numeral.html",
+        "keywords": [
+            "罗马",
+            "数字",
+            "roman",
+            "转换"
+        ]
+    },
+    {
+        "name": "北约字母",
+        "aliases": [
+            "北约字母",
+            "NATO alphabet",
+            "音标字母",
+            "北约音标"
+        ],
+        "description": "文本转北约音标字母",
+        "category": "文本工具",
+        "path": "tools/nato-alphabet.html",
+        "keywords": [
+            "北约",
+            "字母",
+            "NATO",
+            "音标"
+        ]
+    },
+    {
+        "name": "文本统计",
+        "aliases": [
+            "文本统计",
+            "text statistics",
+            "阅读时间",
+            "可读性"
+        ],
+        "description": "文本统计分析，含阅读时间和可读性评分",
+        "category": "文本工具",
+        "path": "tools/text-stats.html",
+        "keywords": [
+            "文本",
+            "统计",
+            "阅读",
+            "分析"
+        ]
+    },
+    {
+        "name": "SLUG 批量生成",
+        "aliases": [
+            "批量slug",
+            "批量url友好",
+            "批量链接生成"
+        ],
+        "description": "批量将文本转换为 URL 友好的 Slug",
+        "category": "开发者工具",
+        "path": "tools/batch-slug.html",
+        "keywords": [
+            "slug",
+            "批量",
+            "url",
+            "友好"
+        ]
+    },
+    {
+        "name": "颜色对比度检查",
+        "aliases": [
+            "对比度",
+            "contrast",
+            "wcag",
+            "颜色对比",
+            "无障碍"
+        ],
+        "description": "检查两个颜色之间的对比度是否符合 WCAG 标准",
+        "category": "设计工具",
+        "path": "tools/contrast-checker.html",
+        "keywords": [
+            "对比度",
+            "contrast",
+            "wcag",
+            "无障碍"
+        ]
+    }
+]

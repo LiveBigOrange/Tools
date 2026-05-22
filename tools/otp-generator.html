@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP 验证码 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="TOTP/HOTP 验证码生成，支持自定义密钥和步长 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="otp, totp, 2fa, 验证, 双因素,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/otp-generator.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/otp-generator.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="OTP 验证码 - 在线工具">
+    <meta property="og:description" content="TOTP/HOTP 验证码生成，支持自定义密钥和步长 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/otp-generator.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="OTP 验证码 - 在线工具">
+    <meta name="twitter:description" content="TOTP/HOTP 验证码生成，支持自定义密钥和步长 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "OTP 验证码",
+                "description": "TOTP/HOTP 验证码生成，支持自定义密钥和步长",
+                "url": "/tools/otp-generator.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "加密/哈希",
+                        "item": "/#category-加密-哈希"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "OTP 验证码",
+                        "item": "/tools/otp-generator.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "加密后的数据可以解密吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "哈希算法（MD5、SHA）是单向的，不可逆。AES 等对称加密可以通过密钥解密。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "哪种加密方式更安全？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "推荐使用 SHA-256 或更高强度的哈希算法，加密推荐 AES-256。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "我的数据会被存储吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "不会。所有加密/哈希计算均在浏览器本地完成，数据不会上传或存储。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .otp-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 1rem; margin-bottom: 1rem; }
+        .option-row { display: flex; flex-direction: column; gap: 0.35rem; }
+        .option-row label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
+        .option-row select, .option-row input {
+            padding: 0.5rem 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm);
+            background: var(--bg); color: var(--text); font-size: 0.85rem; transition: var(--transition);
+        }
+        .option-row select:focus, .option-row input:focus { outline: none; border-color: var(--primary); }
+        .secret-row { display: flex; gap: 0.5rem; align-items: center; }
+        .secret-row input {
+            flex: 1; padding: 0.55rem 0.65rem; border: 1px solid var(--border); border-radius: var(--radius-sm);
+            background: var(--bg); color: var(--text); font-size: 0.85rem;
+            font-family: "SF Mono", "Fira Code", Consolas, monospace;
+            text-transform: uppercase; transition: var(--transition);
+        }
+        .secret-row input:focus { outline: none; border-color: var(--primary); }
+        .secret-row input::placeholder { text-transform: none; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group>label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.35rem; }
+        .otp-result { margin-top: 1.25rem; text-align: center; animation: fadeIn 0.3s ease; }
+        .otp-code {
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 3rem; font-weight: 700; letter-spacing: 0.35em; color: var(--primary);
+            padding: 1rem; user-select: all;
+        }
+        .otp-timer { margin: 0.5rem auto 1rem; max-width: 280px; }
+        .timer-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 0.35rem; }
+        .timer-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width 1s linear; }
+        .timer-fill.warning { background: var(--warning); }
+        .timer-fill.danger { background: var(--danger); }
+        .timer-text { font-size: 0.8rem; color: var(--text-secondary); }
+        .otp-result .btn { margin-top: 0.5rem; }
+        .otp-error { color: var(--danger); font-size: 0.85rem; margin-top: 0.75rem; }
+        @media (max-width: 480px) {
+            .otp-options { grid-template-columns: 1fr; }
+            .otp-code { font-size: 2.2rem; letter-spacing: 0.2em; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-加密-哈希">加密/哈希</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>OTP 验证码</span>
+            </nav>
+            <div class="tool-header">
+                <h1>OTP 验证码</h1>
+                <p>TOTP/HOTP 验证码生成，支持自定义密钥和步长</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">加密/哈希</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="otp-options">
+                    <div class="option-row">
+                        <label>模式</label>
+                        <select id="mode">
+                            <option value="totp">TOTP (基于时间)</option>
+                            <option value="hotp">HOTP (基于计数器)</option>
+                        </select>
+                    </div>
+                    <div class="option-row">
+                        <label>算法</label>
+                        <select id="algorithm">
+                            <option value="SHA-1" selected>SHA-1</option>
+                            <option value="SHA-256">SHA-256</option>
+                            <option value="SHA-512">SHA-512</option>
+                        </select>
+                    </div>
+                    <div class="option-row">
+                        <label>位数</label>
+                        <select id="digits">
+                            <option value="6" selected>6 位</option>
+                            <option value="8">8 位</option>
+                        </select>
+                    </div>
+                    <div class="option-row" id="timeStepRow">
+                        <label>时间步长</label>
+                        <select id="timeStep">
+                            <option value="15">15 秒</option>
+                            <option value="30" selected>30 秒</option>
+                            <option value="60">60 秒</option>
+                        </select>
+                    </div>
+                    <div class="option-row" id="counterRow" style="display:none">
+                        <label>计数器</label>
+                        <input type="number" id="counter" value="0" min="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>密钥 (Base32)</label>
+                    <div class="secret-row">
+                        <input type="text" id="secretKey" placeholder="如: JBSWY3DPEHPK3PXP" style="flex:1">
+                        <button class="btn btn-secondary btn-sm" id="randomSecretBtn">🎲 随机</button>
+                    </div>
+                </div>
+                <div class="tool-actions">
+                    <button class="btn btn-primary" id="generateBtn">🔐 生成 OTP</button>
+                </div>
+                <div class="otp-result" id="result" style="display:none">
+                    <div class="otp-code" id="otpCode"></div>
+                    <div class="otp-timer" id="timerSection" style="display:none">
+                        <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+                        <span class="timer-text" id="timerText"></span>
+                    </div>
+                    <button class="btn btn-secondary" id="copyBtn">📋 复制</button>
+                </div>
+            </div>
+            <section class="features">
+                <h2>OTP 验证码功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">✨</div>
+                        <h3>双模式支持</h3>
+                        <p>支持 TOTP（基于时间）和 HOTP（基于计数器）两种 OTP 模式。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>实时倒计时</h3>
+                        <p>TOTP 模式下自动刷新验证码，显示剩余时间和进度条。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>所有计算在浏览器中完成，密钥不会上传服务器，保障隐私安全。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>OTP 验证码常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>TOTP 和 HOTP 有什么区别？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>TOTP 基于时间生成验证码，每个时间步长（通常30秒）自动更换；HOTP 基于计数器生成，每次使用后计数器加1。TOTP 更常用，大多数双因素认证应用使用 TOTP。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>密钥格式是什么？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>密钥使用 Base32 编码（字符集 A-Z、2-7），这是大多数验证器应用（如 Google Authenticator、Microsoft Authenticator）的标准格式。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>我的数据会被存储吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不会。所有 OTP 计算均在浏览器本地完成，密钥和验证码不会上传或存储。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "OTP \u9a8c\u8bc1\u7801", path: "tools/otp-generator.html" };
+    </script>
+    <script src="../assets/js/libs.js"></script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var modeEl = document.getElementById('mode');
+        var algorithmEl = document.getElementById('algorithm');
+        var digitsEl = document.getElementById('digits');
+        var timeStepEl = document.getElementById('timeStep');
+        var timeStepRow = document.getElementById('timeStepRow');
+        var counterRow = document.getElementById('counterRow');
+        var counterEl = document.getElementById('counter');
+        var secretKeyEl = document.getElementById('secretKey');
+        var randomSecretBtn = document.getElementById('randomSecretBtn');
+        var generateBtn = document.getElementById('generateBtn');
+        var resultEl = document.getElementById('result');
+        var otpCodeEl = document.getElementById('otpCode');
+        var timerSection = document.getElementById('timerSection');
+        var timerFill = document.getElementById('timerFill');
+        var timerText = document.getElementById('timerText');
+        var copyBtn = document.getElementById('copyBtn');
+
+        var totpInterval = null;
+        var currentOtp = '';
+
+        modeEl.addEventListener('change', function() {
+            var isTotp = modeEl.value === 'totp';
+            timeStepRow.style.display = isTotp ? '' : 'none';
+            counterRow.style.display = isTotp ? 'none' : '';
+            if (!isTotp && totpInterval) {
+                clearInterval(totpInterval);
+                totpInterval = null;
+                timerSection.style.display = 'none';
+            }
+            if (isTotp && resultEl.style.display !== 'none') {
+                startTotpTimer();
+            }
+        });
+
+        function base32Decode(str) {
+            var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            str = str.replace(/[\s=-]+/g, '').toUpperCase();
+            var bytes = [];
+            var bits = 0;
+            var value = 0;
+            for (var i = 0; i < str.length; i++) {
+                var idx = alphabet.indexOf(str[i]);
+                if (idx === -1) continue;
+                value = (value << 5) | idx;
+                bits += 5;
+                if (bits >= 8) {
+                    bits -= 8;
+                    bytes.push((value >> bits) & 0xff);
+                }
+            }
+            return new Uint8Array(bytes);
+        }
+
+        function generateRandomSecret() {
+            var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            var len = 16;
+            var arr = new Uint8Array(len);
+            crypto.getRandomValues(arr);
+            var secret = '';
+            for (var i = 0; i < len; i++) {
+                secret += chars[arr[i] % chars.length];
+            }
+            return secret;
+        }
+
+        async function computeHMAC(keyBytes, messageBytes, algorithm) {
+            var cryptoKey = await crypto.subtle.importKey(
+                'raw', keyBytes, { name: 'HMAC', hash: algorithm }, false, ['sign']
+            );
+            var sig = await crypto.subtle.sign('HMAC', cryptoKey, messageBytes);
+            return new Uint8Array(sig);
+        }
+
+        function intToBytes(num) {
+            var bytes = new Uint8Array(8);
+            for (var i = 7; i >= 0; i--) {
+                bytes[i] = num & 0xff;
+                num = num >> 8;
+            }
+            return bytes;
+        }
+
+        function truncateHmac(hmac, digits) {
+            var offset = hmac[hmac.length - 1] & 0x0f;
+            var code = (
+                ((hmac[offset] & 0x7f) << 24) |
+                ((hmac[offset + 1] & 0xff) << 16) |
+                ((hmac[offset + 2] & 0xff) << 8) |
+                (hmac[offset + 3] & 0xff)
+            );
+            var mod = Math.pow(10, digits);
+            return (code % mod).toString().padStart(digits, '0');
+        }
+
+        async function generateTOTP(secret, timeStep, digits, algorithm) {
+            var keyBytes = base32Decode(secret);
+            var epoch = Math.floor(Date.now() / 1000);
+            var counter = Math.floor(epoch / timeStep);
+            var counterBytes = intToBytes(counter);
+            var hmac = await computeHMAC(keyBytes, counterBytes, algorithm);
+            return truncateHmac(hmac, parseInt(digits, 10));
+        }
+
+        async function generateHOTP(secret, counter, digits, algorithm) {
+            var keyBytes = base32Decode(secret);
+            var counterBytes = intToBytes(counter);
+            var hmac = await computeHMAC(keyBytes, counterBytes, algorithm);
+            return truncateHmac(hmac, parseInt(digits, 10));
+        }
+
+        function startTotpTimer() {
+            if (totpInterval) clearInterval(totpInterval);
+            timerSection.style.display = '';
+            function updateTimer() {
+                var timeStep = parseInt(timeStepEl.value, 10);
+                var epoch = Math.floor(Date.now() / 1000);
+                var remaining = timeStep - (epoch % timeStep);
+                var pct = (remaining / timeStep) * 100;
+                timerFill.style.width = pct + '%';
+                timerFill.className = 'timer-fill' + (pct <= 20 ? ' danger' : pct <= 40 ? ' warning' : '');
+                timerText.textContent = remaining + ' \u79d2\u540e\u5237\u65b0';
+            }
+            updateTimer();
+            totpInterval = setInterval(async function() {
+                var timeStep = parseInt(timeStepEl.value, 10);
+                var epoch = Math.floor(Date.now() / 1000);
+                if (epoch % timeStep === 0) {
+                    var code = await generateTOTP(
+                        secretKeyEl.value.trim(), timeStep, digitsEl.value, algorithmEl.value
+                    );
+                    if (code !== currentOtp) {
+                        currentOtp = code;
+                        otpCodeEl.textContent = code;
+                    }
+                }
+                updateTimer();
+            }, 1000);
+        }
+
+        generateBtn.addEventListener('click', async function() {
+            var secret = secretKeyEl.value.trim();
+            if (!secret) {
+                resultEl.style.display = '';
+                otpCodeEl.textContent = '';
+                otpCodeEl.innerHTML = '<span class="otp-error">\u8bf7\u8f93\u5165\u5bc6\u94a5</span>';
+                timerSection.style.display = 'none';
+                if (totpInterval) { clearInterval(totpInterval); totpInterval = null; }
+                return;
+            }
+            try {
+                base32Decode(secret);
+            } catch(e) {
+                resultEl.style.display = '';
+                otpCodeEl.innerHTML = '<span class="otp-error">\u5bc6\u94a5\u683c\u5f0f\u65e0\u6548\uff0c\u8bf7\u8f93\u5165 Base32 \u7f16\u7801\u7684\u5bc6\u94a5</span>';
+                timerSection.style.display = 'none';
+                if (totpInterval) { clearInterval(totpInterval); totpInterval = null; }
+                return;
+            }
+
+            try {
+                var code;
+                if (modeEl.value === 'totp') {
+                    code = await generateTOTP(secret, parseInt(timeStepEl.value, 10), digitsEl.value, algorithmEl.value);
+                } else {
+                    code = await generateHOTP(secret, parseInt(counterEl.value, 10), digitsEl.value, algorithmEl.value);
+                }
+                currentOtp = code;
+                resultEl.style.display = '';
+                otpCodeEl.textContent = code;
+                copyBtn.textContent = '\U0001f4cb \u590d\u5236';
+
+                if (modeEl.value === 'totp') {
+                    startTotpTimer();
+                } else {
+                    timerSection.style.display = 'none';
+                    if (totpInterval) { clearInterval(totpInterval); totpInterval = null; }
+                }
+            } catch(e) {
+                resultEl.style.display = '';
+                otpCodeEl.innerHTML = '<span class="otp-error">\u751f\u6210\u5931\u8d25: ' + e.message + '</span>';
+                timerSection.style.display = 'none';
+                if (totpInterval) { clearInterval(totpInterval); totpInterval = null; }
+            }
+        });
+
+        randomSecretBtn.addEventListener('click', function() {
+            secretKeyEl.value = generateRandomSecret();
+        });
+
+        copyBtn.addEventListener('click', function() {
+            if (currentOtp) {
+                copyText(currentOtp).then(function() {
+                    copyBtn.textContent = '\u2713 \u5df2\u590d\u5236!';
+                    setTimeout(function() { copyBtn.textContent = '\U0001f4cb \u590d\u5236'; }, 1500);
+                });
+            }
+        });
+
+        window.location.protocol === 'file:' ? Promise.reject('\u672c\u5730\u6a21\u5f0f') : fetch('../search-index.json').then(function(r) { return r.json(); }).then(function(tools) {
+            var current = "tools/otp-generator.html";
+            var currentCat = "\u52a0\u5bc6/\u54c8\u5e0c";
+            var related = tools.filter(function(t) { return t.path !== current && t.category === currentCat; }).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(function(t) { return t.path !== current && related.indexOf(t) === -1; }).slice(0, 5 - related.length);
+                related = related.concat(others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(function(t) {
+                return '<a href="' + t.path.split('/').pop() + '" class="tool-card"><div class="tool-name">' + t.name + '</div><div class="tool-desc">' + t.description + '</div></a>';
+            }).join('');
+        }).catch(function() {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

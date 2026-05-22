@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unicode 转换 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="Unicode 编码与解码，支持 \\u 转义序列和中文互转 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="unicode, 编码, 解码, 转义, 中文,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/unicode-convert.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/unicode-convert.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Unicode 转换 - 在线工具">
+    <meta property="og:description" content="Unicode 编码与解码，支持 \\u 转义序列和中文互转 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/unicode-convert.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Unicode 转换 - 在线工具">
+    <meta name="twitter:description" content="Unicode 编码与解码，支持 \\u 转义序列和中文互转 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "Unicode 转换",
+                "description": "Unicode 编码与解码，支持 \u 转义序列和中文互转",
+                "url": "/tools/unicode-convert.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "编码/解码",
+                        "item": "/#category-编码-解码"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Unicode 转换",
+                        "item": "/tools/unicode-convert.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "数据会被上传到服务器吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "不会。所有编码和解码操作都在您的浏览器本地完成，数据不会经过任何服务器。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "支持哪些编码格式？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持 Base64、URL 编码、Unicode、HTML 实体、XML 等多种常见编码格式。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "可以处理大文件吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "可以处理较大的文本内容，但建议单次处理不超过 10MB，以保证浏览器性能。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .uc-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        .uc-tab {
+            padding: 0.6rem 1.25rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: var(--transition);
+        }
+        .uc-tab:hover { color: var(--primary); }
+        .uc-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            font-weight: 600;
+        }
+        .uc-format-options {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .uc-format-options.hidden { display: none; }
+        .uc-format-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .uc-radio {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--text);
+        }
+        .uc-radio input[type="radio"] {
+            accent-color: var(--primary);
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+        }
+        .uc-panels {
+            display: flex;
+            gap: 0.75rem;
+            align-items: stretch;
+        }
+        .uc-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+        .uc-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.4rem;
+        }
+        .uc-panel-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .uc-char-count {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .uc-textarea {
+            width: 100%;
+            min-height: 160px;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            color: var(--text);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: var(--transition);
+        }
+        .uc-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        .uc-textarea[readonly] { cursor: default; opacity: 0.9; }
+        .uc-examples {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .uc-examples-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+        .uc-example-btn {
+            padding: 0.25rem 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .uc-example-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+        .uc-swap-col {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .uc-swap-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: var(--card-bg);
+            color: var(--primary);
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .uc-swap-btn:hover {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        .uc-copy-btn {
+            padding: 0.2rem 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: none;
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .uc-copy-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .uc-copy-btn.copied {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+        .uc-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        @media (max-width: 640px) {
+            .uc-panels { flex-direction: column; }
+            .uc-swap-col { transform: rotate(90deg); }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-编码-解码">编码/解码</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>Unicode 转换</span>
+            </nav>
+            <div class="tool-header">
+                <h1>Unicode 转换</h1>
+                <p>Unicode 编码与解码，支持 \\u 转义序列和中文互转</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">编码/解码</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="uc-tabs">
+                    <button class="uc-tab active" data-mode="encode">中文转 Unicode</button>
+                    <button class="uc-tab" data-mode="decode">Unicode 转中文</button>
+                </div>
+                <div class="uc-format-options" id="formatOptions">
+                    <span class="uc-format-label">输出格式：</span>
+                    <label class="uc-radio"><input type="radio" name="format" value="unicode" checked><span class="uc-radio-mark"></span>\uXXXX 格式</label>
+                    <label class="uc-radio"><input type="radio" name="format" value="hex"><span class="uc-radio-mark"></span>&#xXXXX; 格式</label>
+                    <label class="uc-radio"><input type="radio" name="format" value="decimal"><span class="uc-radio-mark"></span>&#NNNNN; 格式</label>
+                </div>
+                <div class="uc-panels">
+                    <div class="uc-panel">
+                        <div class="uc-panel-header">
+                            <span class="uc-panel-label">输入</span>
+                            <span class="uc-char-count" id="charCount">0 字符</span>
+                        </div>
+                        <textarea id="ucInput" class="uc-textarea" placeholder="在此输入内容..."></textarea>
+                        <div class="uc-examples">
+                            <span class="uc-examples-label">示例：</span>
+                            <button class="uc-example-btn" data-example="你好世界">你好世界</button>
+                            <button class="uc-example-btn" data-example="\u4f60\u597d\u4e16\u754c">\u4f60\u597d\u4e16\u754c</button>
+                            <button class="uc-example-btn" data-example="Hello 你好">Hello 你好</button>
+                        </div>
+                    </div>
+                    <div class="uc-swap-col">
+                        <button class="uc-swap-btn" id="swapBtn" title="交换输入输出">⇄</button>
+                    </div>
+                    <div class="uc-panel">
+                        <div class="uc-panel-header">
+                            <span class="uc-panel-label">输出</span>
+                            <button class="uc-copy-btn" id="copyBtn">复制</button>
+                        </div>
+                        <textarea id="ucOutput" class="uc-textarea" readonly placeholder="转换结果将显示在这里..."></textarea>
+                    </div>
+                </div>
+                <div class="uc-actions">
+                    <button class="btn btn-secondary" id="clearBtn">清空</button>
+                </div>
+            </div>
+            <section class="features">
+                <h2>Unicode 转换功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">✨</div>
+                        <h3>多种编码格式</h3>
+                        <p>支持 Base64、URL 编码、Unicode、HTML 实体等多种常见编码格式。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>实时预览</h3>
+                        <p>输入内容后即时显示转换结果，无需等待。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>所有操作在浏览器中完成，数据不上传服务器，保障隐私安全。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>Unicode 转换常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>数据会被上传到服务器吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不会。所有编码和解码操作都在您的浏览器本地完成，数据不会经过任何服务器。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持哪些编码格式？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>支持 Base64、URL 编码、Unicode、HTML 实体、XML 等多种常见编码格式。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>可以处理大文件吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>可以处理较大的文本内容，但建议单次处理不超过 10MB，以保证浏览器性能。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "Unicode 转换", path: "tools/unicode-convert.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var currentMode = 'encode';
+        var inputEl = document.getElementById('ucInput');
+        var outputEl = document.getElementById('ucOutput');
+        var charCountEl = document.getElementById('charCount');
+        var formatOptions = document.getElementById('formatOptions');
+        var copyBtn = document.getElementById('copyBtn');
+        var clearBtn = document.getElementById('clearBtn');
+        var swapBtn = document.getElementById('swapBtn');
+        var tabs = document.querySelectorAll('.uc-tab');
+
+        function getFormat() {
+            var checked = document.querySelector('input[name="format"]:checked');
+            return checked ? checked.value : 'unicode';
+        }
+
+        function encodeUnicode(str, format) {
+            var result = '';
+            for (var i = 0; i < str.length; i++) {
+                var code = str.charCodeAt(i);
+                if (code > 127) {
+                    if (code >= 0xD800 && code <= 0xDBFF) {
+                        var hi = code;
+                        var lo = str.charCodeAt(i + 1);
+                        if (lo >= 0xDC00 && lo <= 0xDFFF) {
+                            var cp = (hi - 0xD800) * 0x400 + (lo - 0xDC00) + 0x10000;
+                            var hex = cp.toString(16).toLowerCase();
+                            if (format === 'unicode') result += '\\u' + hex;
+                            else if (format === 'hex') result += '&#x' + hex + ';';
+                            else result += '&#' + cp + ';';
+                            i++;
+                            continue;
+                        }
+                    }
+                    var hex = code.toString(16).toLowerCase();
+                    var pad = '0000'.substring(hex.length);
+                    if (format === 'unicode') result += '\\u' + pad + hex;
+                    else if (format === 'hex') result += '&#x' + pad + hex + ';';
+                    else result += '&#' + code + ';';
+                } else {
+                    result += str[i];
+                }
+            }
+            return result;
+        }
+
+        function decodeUnicode(str) {
+            str = str.replace(/\\u([0-9a-fA-F]{4,6})/g, function(m, hex) {
+                return String.fromCodePoint(parseInt(hex, 16));
+            });
+            str = str.replace(/&#x([0-9a-fA-F]+);/g, function(m, hex) {
+                return String.fromCodePoint(parseInt(hex, 16));
+            });
+            str = str.replace(/&#(\d+);/g, function(m, dec) {
+                return String.fromCodePoint(parseInt(dec, 10));
+            });
+            return str;
+        }
+
+        function convert() {
+            var val = inputEl.value;
+            charCountEl.textContent = val.length + ' 字符';
+            if (!val) { outputEl.value = ''; return; }
+            try {
+                if (currentMode === 'encode') {
+                    outputEl.value = encodeUnicode(val, getFormat());
+                } else {
+                    outputEl.value = decodeUnicode(val);
+                }
+            } catch(e) {
+                outputEl.value = '错误: ' + e.message;
+            }
+        }
+
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                tabs.forEach(function(t) { t.classList.remove('active'); });
+                this.classList.add('active');
+                currentMode = this.dataset.mode;
+                formatOptions.classList.toggle('hidden', currentMode !== 'encode');
+                convert();
+            });
+        });
+
+        inputEl.addEventListener('input', convert);
+
+        document.querySelectorAll('input[name="format"]').forEach(function(radio) {
+            radio.addEventListener('change', convert);
+        });
+
+        clearBtn.addEventListener('click', function() {
+            inputEl.value = '';
+            outputEl.value = '';
+            charCountEl.textContent = '0 字符';
+        });
+
+        copyBtn.addEventListener('click', function() {
+            if (outputEl.value) {
+                copyText(outputEl.value).then(function() {
+                    copyBtn.textContent = '已复制!';
+                    copyBtn.classList.add('copied');
+                    setTimeout(function() {
+                        copyBtn.textContent = '复制';
+                        copyBtn.classList.remove('copied');
+                    }, 1500);
+                });
+            }
+        });
+
+        swapBtn.addEventListener('click', function() {
+            var tmp = inputEl.value;
+            inputEl.value = outputEl.value;
+            outputEl.value = '';
+            if (currentMode === 'encode') {
+                tabs[1].click();
+            } else {
+                tabs[0].click();
+            }
+            convert();
+        });
+
+        document.querySelectorAll('.uc-example-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var ex = this.dataset.example;
+                if (this.dataset.example.charAt(0) === '\\' || ex.indexOf('\\u') === 0) {
+                    if (currentMode !== 'decode') tabs[1].click();
+                } else {
+                    if (currentMode !== 'encode') tabs[0].click();
+                }
+                inputEl.value = this.dataset.example;
+                convert();
+            });
+        });
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            var current = "tools/unicode-convert.html";
+            var currentCat = "编码/解码";
+            var related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+                related.push(...others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+                <a href="${t.path.split('/').pop()}" class="tool-card">
+                    <div class="tool-name">${t.name}</div>
+                    <div class="tool-desc">${t.description}</div>
+                </a>
+            `).join('');
+        }).catch(() => {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

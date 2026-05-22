@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User-Agent 解析 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="解析浏览器 User-Agent 字符串，显示设备/浏览器/OS信息 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="ua,user-agent,解析,浏览器,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/ua-parser.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/ua-parser.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="User-Agent 解析 - 在线工具">
+    <meta property="og:description" content="解析浏览器 User-Agent 字符串，显示设备/浏览器/OS信息 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/ua-parser.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="User-Agent 解析 - 在线工具">
+    <meta name="twitter:description" content="解析浏览器 User-Agent 字符串，显示设备/浏览器/OS信息 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "User-Agent 解析",
+                "description": "解析浏览器 User-Agent 字符串，显示设备/浏览器/OS信息",
+                "url": "/tools/ua-parser.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "网络工具",
+                        "item": "/#category-网络工具"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "User-Agent 解析",
+                        "item": "/tools/ua-parser.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "查询结果准确吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "查询结果基于公开数据库，准确性较高，但可能存在少量延迟。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "为什么我的 IP 显示不准确？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "IP 归属地数据库可能未及时更新，建议参考多个数据源。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "这些工具需要安装插件吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "不需要。所有工具均为纯网页实现，打开浏览器即可使用。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-网络工具">网络工具</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>User-Agent 解析</span>
+            </nav>
+            <div class="tool-header">
+                <h1>User-Agent 解析</h1>
+                <p>解析浏览器 User-Agent 字符串，显示设备/浏览器/OS信息</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">网络工具</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="ua-current-card">
+                    <div class="ua-current-header">
+                        <span class="ua-current-label">当前 User-Agent</span>
+                        <button class="btn-sm" id="copyUA">📋 复制</button>
+                    </div>
+                    <div class="ua-current-string" id="currentUA"></div>
+                </div>
+                <div class="ua-custom-toggle" id="customToggle">
+                    <span>自定义 User-Agent</span>
+                    <span class="toggle-arrow">▼</span>
+                </div>
+                <div class="ua-custom-section hidden" id="customSection">
+                    <textarea id="customUA" rows="3" placeholder="粘贴自定义 UA 字符串进行测试..."></textarea>
+                </div>
+                <div class="ua-presets">
+                    <div class="ua-presets-label">常见 UA 预设:</div>
+                    <div class="ua-preset-chips" id="presetChips">
+                        <button class="ua-preset-chip" data-ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36">Chrome</button>
+                        <button class="ua-preset-chip" data-ua="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36">Chrome Mac</button>
+                        <button class="ua-preset-chip" data-ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0">Firefox</button>
+                        <button class="ua-preset-chip" data-ua="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15">Safari</button>
+                        <button class="ua-preset-chip" data-ua="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0">Edge</button>
+                        <button class="ua-preset-chip" data-ua="Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1">iPhone</button>
+                        <button class="ua-preset-chip" data-ua="Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.43 Mobile Safari/537.36">Android</button>
+                        <button class="ua-preset-chip" data-ua="Mozilla/5.0 (iPad; CPU OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1">iPad</button>
+                    </div>
+                </div>
+                <div class="ua-results-grid" id="resultsGrid">
+                    <div class="ua-result-card">
+                        <div class="ua-result-icon">🌐</div>
+                        <div class="ua-result-label">浏览器</div>
+                        <div class="ua-result-value" id="uaBrowser">—</div>
+                    </div>
+                    <div class="ua-result-card">
+                        <div class="ua-result-icon">💻</div>
+                        <div class="ua-result-label">操作系统</div>
+                        <div class="ua-result-value" id="uaOS">—</div>
+                    </div>
+                    <div class="ua-result-card">
+                        <div class="ua-result-icon">📱</div>
+                        <div class="ua-result-label">设备类型</div>
+                        <div class="ua-result-value" id="uaDevice">—</div>
+                    </div>
+                    <div class="ua-result-card">
+                        <div class="ua-result-icon">🎨</div>
+                        <div class="ua-result-label">渲染引擎</div>
+                        <div class="ua-result-value" id="uaEngine">—</div>
+                    </div>
+                </div>
+                <div class="ua-breakdown" id="uaBreakdown" style="display:none;">
+                    <div class="ua-breakdown-header">UA 字符串分解</div>
+                    <div id="breakdownContent"></div>
+                </div>
+                <div class="tool-actions">
+                    <button class="btn btn-primary" id="parseBtn">🔍 解析</button>
+                    <button class="btn btn-secondary" id="copyBtn">📋 复制结果</button>
+                </div>
+            </div>
+            <section class="features">
+                <h2>User-Agent 解析功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3>UA 解析</h3>
+                        <p>解析浏览器 User-Agent 字符串，提取详细信息。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💻</div>
+                        <h3>设备信息</h3>
+                        <p>显示设备类型、操作系统、浏览器名称和版本。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>一键复制</h3>
+                        <p>解析结果和原始 UA 字符串可直接复制。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>解析在浏览器中完成，UA 信息不上传服务器。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>User-Agent 解析常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>什么是 User-Agent？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>User-Agent（UA）是浏览器在访问网站时发送的标识字符串，包含浏览器类型、版本、操作系统等信息。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>解析结果准确吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>解析基于常见的 UA 特征匹配，能准确识别主流浏览器和操作系统。某些小众浏览器可能识别为通用名称。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>数据会被上传吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不会。UA 解析在浏览器本地完成，不会上传。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "User-Agent 解析", path: "tools/ua-parser.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <style>
+        .ua-current-card { background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; margin-bottom: 1rem; }
+        .ua-current-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .ua-current-label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
+        .ua-current-string { font-family: monospace; font-size: 0.8rem; word-break: break-all; color: var(--text); line-height: 1.5; }
+        .ua-custom-toggle { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); transition: var(--transition); margin-bottom: 0.5rem; }
+        .ua-custom-toggle:hover { border-color: var(--primary); color: var(--primary); }
+        .toggle-arrow { transition: transform 0.2s ease; }
+        .toggle-arrow.open { transform: rotate(180deg); }
+        .ua-custom-section { margin-bottom: 1rem; }
+        .ua-custom-section textarea { width: 100%; padding: 0.75rem; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 0.8rem; font-family: monospace; background: var(--bg); color: var(--text); resize: vertical; }
+        .ua-presets { margin-bottom: 1.25rem; }
+        .ua-presets-label { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .ua-preset-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .ua-preset-chip { padding: 0.4rem 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: 20px; font-size: 0.75rem; cursor: pointer; transition: var(--transition); color: var(--text-secondary); }
+        .ua-preset-chip:hover { border-color: var(--primary); color: var(--primary); background: rgba(var(--primary-rgb), 0.05); }
+        .ua-results-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1rem; }
+        .ua-result-card { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 1.25rem 1rem; background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius-sm); text-align: center; transition: var(--transition); }
+        .ua-result-card:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .ua-result-icon { font-size: 1.75rem; }
+        .ua-result-label { font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+        .ua-result-value { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+        .ua-breakdown { margin-top: 1rem; padding: 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+        .ua-breakdown-header { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.75rem; }
+        .ua-breakdown-item { display: flex; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.8rem; }
+        .ua-breakdown-item:last-child { border-bottom: none; }
+        .ua-breakdown-key { font-weight: 600; color: var(--primary); min-width: 80px; }
+        .ua-breakdown-val { color: var(--text); font-family: monospace; word-break: break-all; }
+        .hidden { display: none !important; }
+        @media (max-width: 768px) { .ua-results-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .ua-results-grid { grid-template-columns: 1fr; } }
+    </style>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+        var currentUAEl = document.getElementById('currentUA');
+        var customToggle = document.getElementById('customToggle');
+        var customSection = document.getElementById('customSection');
+        var customUA = document.getElementById('customUA');
+        var presetChips = document.getElementById('presetChips');
+        var parseBtn = document.getElementById('parseBtn');
+        var copyBtn = document.getElementById('copyBtn');
+        var copyUA = document.getElementById('copyUA');
+        var toggleArrow = customToggle.querySelector('.toggle-arrow');
+        currentUAEl.textContent = navigator.userAgent;
+        customToggle.addEventListener('click', function() {
+            customSection.classList.toggle('hidden');
+            toggleArrow.classList.toggle('open');
+        });
+        presetChips.addEventListener('click', function(e) {
+            var chip = e.target.closest('.ua-preset-chip');
+            if (!chip) return;
+            customSection.classList.remove('hidden');
+            toggleArrow.classList.add('open');
+            customUA.value = chip.getAttribute('data-ua');
+            parseUA(customUA.value);
+        });
+        function parseUA(ua) {
+            var browser = '未知', browserVersion = '', os = '未知', osVersion = '', device = '桌面设备', engine = '未知';
+            if (/Edg[e]?\/([\d.]+)/.test(ua)) { browser = 'Microsoft Edge'; browserVersion = ua.match(/Edg[e]?\/([\d.]+)/)[1]; }
+            else if (/Chrome\/([\d.]+)/.test(ua) && !/Chromium/.test(ua)) { browser = 'Google Chrome'; browserVersion = ua.match(/Chrome\/([\d.]+)/)[1]; }
+            else if (/Chromium\/([\d.]+)/.test(ua)) { browser = 'Chromium'; browserVersion = ua.match(/Chromium\/([\d.]+)/)[1]; }
+            else if (/Firefox\/([\d.]+)/.test(ua)) { browser = 'Mozilla Firefox'; browserVersion = ua.match(/Firefox\/([\d.]+)/)[1]; }
+            else if (/Version\/([\d.]+).*Safari/.test(ua)) { browser = 'Safari'; browserVersion = ua.match(/Version\/([\d.]+)/)[1]; }
+            else if (/MSIE ([\d.]+)/.test(ua)) { browser = 'Internet Explorer'; browserVersion = ua.match(/MSIE ([\d.]+)/)[1]; }
+            else if (/Trident.*rv:([\d.]+)/.test(ua)) { browser = 'Internet Explorer'; browserVersion = ua.match(/rv:([\d.]+)/)[1]; }
+            if (/Windows NT ([\d.]+)/.test(ua)) { var winVer = ua.match(/Windows NT ([\d.]+)/)[1]; var winMap = {'10.0': 'Windows 10/11', '6.3': 'Windows 8.1', '6.2': 'Windows 8', '6.1': 'Windows 7', '6.0': 'Windows Vista', '5.1': 'Windows XP'}; os = winMap[winVer] || 'Windows'; osVersion = winVer; }
+            else if (/Mac OS X ([\d_]+)/.test(ua)) { os = 'macOS'; osVersion = ua.match(/Mac OS X ([\d_]+)/)[1].replace(/_/g, '.'); }
+            else if (/Android ([\d.]+)/.test(ua)) { os = 'Android'; osVersion = ua.match(/Android ([\d.]+)/)[1]; }
+            else if (/iPhone OS ([\d_]+)/.test(ua) || /iPad.*OS ([\d_]+)/.test(ua)) { os = 'iOS'; osVersion = (ua.match(/OS ([\d_]+)/) || [])[1].replace(/_/g, '.'); }
+            else if (/Linux/.test(ua)) { os = 'Linux'; }
+            else if (/CrOS/.test(ua)) { os = 'Chrome OS'; }
+            if (/Mobi|Android.*Mobile/i.test(ua)) { device = '手机'; }
+            else if (/Tablet|iPad|Silk/.test(ua)) { device = '平板'; }
+            else if (/Android/.test(ua)) { device = '移动设备'; }
+            if (/AppleWebKit\/([\d.]+)/.test(ua)) { engine = 'WebKit'; }
+            else if (/Gecko\/[\d.]+/.test(ua) && /Firefox/.test(ua)) { engine = 'Gecko'; }
+            else if (/Trident\/([\d.]+)/.test(ua)) { engine = 'Trident'; }
+            else if (/Edge\/[\d.]+/.test(ua) || /Edg\//.test(ua)) { engine = 'EdgeHTML / Blink'; }
+            var browserDisplay = browser + (browserVersion ? ' ' + browserVersion.split('.').slice(0, 2).join('.') : '');
+            var osDisplay = os + (osVersion ? ' ' + osVersion : '');
+            return { browser: browserDisplay, os: osDisplay, device: device, engine: engine };
+        }
+        function displayResults(result) {
+            document.getElementById('uaBrowser').textContent = result.browser;
+            document.getElementById('uaOS').textContent = result.os;
+            document.getElementById('uaDevice').textContent = result.device;
+            document.getElementById('uaEngine').textContent = result.engine;
+        }
+        function showBreakdown(ua) {
+            var breakdown = document.getElementById('uaBreakdown');
+            var content = document.getElementById('breakdownContent');
+            var components = [];
+            var match = ua.match(/(Mozilla\/[\d.]+.*?)\s*\(/);
+            if (match) components.push({ key: '兼容标识', val: match[1] });
+            match = ua.match(/\(([^)]+)\)/);
+            if (match) components.push({ key: '平台信息', val: match[1] });
+            match = ua.match(/(AppleWebKit\/[\d.]+)/);
+            if (match) components.push({ key: '引擎', val: match[1] });
+            match = ua.match(/(KHTML, like Gecko)/);
+            if (match) components.push({ key: '兼容内核', val: match[1] });
+            match = ua.match(/(Chrome\/[\d.]+)/);
+            if (match) components.push({ key: 'Chrome', val: match[1] });
+            match = ua.match(/(Safari\/[\d.]+)/);
+            if (match) components.push({ key: 'Safari', val: match[1] });
+            match = ua.match(/(Firefox\/[\d.]+)/);
+            if (match) components.push({ key: 'Firefox', val: match[1] });
+            match = ua.match(/(Edg[e]?\/[\d.]+)/);
+            if (match) components.push({ key: 'Edge', val: match[1] });
+            content.innerHTML = components.map(function(c) { return '<div class="ua-breakdown-item"><span class="ua-breakdown-key">' + c.key.replace(/</g,'&lt;') + '</span><span class="ua-breakdown-val">' + c.val.replace(/</g,'&lt;') + '</span></div>'; }).join('');
+            breakdown.style.display = 'block';
+        }
+        parseBtn.addEventListener('click', function() {
+            var ua = customUA.value.trim() || navigator.userAgent;
+            var result = parseUA(ua);
+            displayResults(result);
+            showBreakdown(ua);
+        });
+        copyBtn.addEventListener('click', function() {
+            var ua = customUA.value.trim() || navigator.userAgent;
+            var result = parseUA(ua);
+            var text = '浏览器: ' + result.browser + '\n操作系统: ' + result.os + '\n设备类型: ' + result.device + '\n渲染引擎: ' + result.engine + '\nUA: ' + ua;
+            copyText(text).then(function() {
+                copyBtn.textContent = '✓ 已复制!';
+                setTimeout(function() { copyBtn.textContent = '📋 复制结果'; }, 1500);
+            });
+        });
+        copyUA.addEventListener('click', function() {
+            copyText(navigator.userAgent).then(function() {
+                copyUA.textContent = '✓ 已复制';
+                setTimeout(function() { copyUA.textContent = '📋 复制'; }, 1500);
+            });
+        });
+        var defaultResult = parseUA(navigator.userAgent);
+        displayResults(defaultResult);
+        showBreakdown(navigator.userAgent);
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            const current = "tools/ua-parser.html";
+            const currentCat = "网络工具";
+            const related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                const others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+                related.push(...others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+                <a href="${t.path.split('/').pop()}" class="tool-card">
+                    <div class="tool-name">${t.name}</div>
+                    <div class="tool-desc">${t.description}</div>
+                </a>
+            `).join('');
+        }).catch(() => {});
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

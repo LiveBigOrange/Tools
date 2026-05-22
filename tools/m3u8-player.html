@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M3U8 在线播放器 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="在线播放 M3U8/HLS 直播和视频流，支持 AES-128 加密流、字幕加载、倍速播放、画中画 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="m3u8, hls, 直播, 流媒体, 视频播放, iptv, http live streaming, 在线播放,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" id="canonical" href="">
+    <link rel="alternate" hreflang="zh-CN" id="hreflang" href="">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="M3U8 在线播放器 - 在线工具">
+    <meta property="og:description" content="在线播放 M3U8/HLS 直播和视频流，支持 AES-128 加密流、字幕加载、倍速播放、画中画 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" id="ogUrl" content="">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="M3U8 在线播放器 - 在线工具">
+    <meta name="twitter:description" content="在线播放 M3U8/HLS 直播和视频流，支持 AES-128 加密流、字幕加载、倍速播放、画中画 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "M3U8 在线播放器",
+                "description": "在线播放 M3U8/HLS 直播和视频流，支持 AES-128 加密流、字幕加载、倍速播放、画中画",
+                "url": "/tools/m3u8-player.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "视频/流媒体",
+                        "item": "/#category-视频-流媒体"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "M3U8 在线播放器",
+                        "item": "/tools/m3u8-player.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "支持哪些视频格式？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "主要支持 M3U8/HLS 流媒体格式，也支持常见的 MP4 等格式。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "可以播放本地视频吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "可以输入本地视频文件的 URL 或路径进行播放。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "播放卡顿怎么办？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "请检查网络连接，或尝试降低视频源的质量设置。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <script>if(location.protocol!=='file:'){var u=location.href;document.getElementById('canonical').href=u;document.getElementById('hreflang').href=u;document.getElementById('ogUrl').content=u;}</script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    .tool-page .tool-workspace textarea {
+            width: 100%;
+            padding: 0.625rem 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            color: var(--text);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            transition: var(--transition);
+            resize: vertical;
+            box-sizing: border-box;
+        }
+        .tool-page .tool-workspace textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+        .tool-page .tool-workspace textarea::placeholder {
+            color: var(--text-muted);
+        }
+        .player-input-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .player-input-row input {
+            flex: 1;
+            padding: 0.625rem 0.875rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 0.875rem;
+            transition: var(--transition);
+        }
+        .player-input-row input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+        .player-input-row input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .player-container {
+            position: relative;
+            background: #000;
+            border-radius: var(--radius-sm);
+            margin-bottom: 0.75rem;
+            width: 100%;
+            min-height: 360px;
+        }
+        .player-container video {
+            width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            display: block;
+            background: #000;
+            border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+        }
+        .player-container video::-webkit-media-controls { display: none !important; }
+        .player-container video::-webkit-media-controls-enclosure { display: none !important; }
+        .player-container video::-webkit-media-controls-panel { display: none !important; }
+        .player-container video::-webkit-media-controls-overlay-enclosure { display: none !important; }
+        .player-container video::-internal-media-controls-overlay-enclosure { display: none !important; }
+        .player-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            background: #111;
+            gap: 0.75rem;
+            transition: opacity 0.3s;
+        }
+        .player-placeholder.hidden { opacity: 0; pointer-events: none; }
+        .player-placeholder .play-icon {
+            font-size: 3rem;
+            opacity: 0.6;
+        }
+        .player-placeholder p {
+            font-size: 0.875rem;
+            color: #888;
+            margin: 0;
+        }
+        .player-placeholder .drop-hint {
+            font-size: 0.75rem;
+            color: #555;
+            border: 2px dashed #444;
+            border-radius: var(--radius-sm);
+            padding: 0.75rem 1.5rem;
+            margin-top: 0.25rem;
+        }
+        .player-container:fullscreen,
+        .player-container:-webkit-full-screen {
+            width: 100vw;
+            height: 100vh;
+            max-height: none;
+            background: #000;
+            border-radius: 0;
+        }
+        .player-container:fullscreen video,
+        .player-container:-webkit-full-screen video {
+            max-height: 100%;
+            border-radius: 0;
+        }
+        .player-container:fullscreen .player-controls,
+        .player-container:-webkit-full-screen .player-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.85));
+            border-radius: 0;
+            padding: 0.6rem 1rem;
+            transition: opacity 0.3s;
+        }
+        .player-container:fullscreen .controls-left,
+        .player-container:-webkit-full-screen .controls-left { gap: 0.75rem; }
+        .player-container:fullscreen .ctrl-btn,
+        .player-container:-webkit-full-screen .ctrl-btn { font-size: 1rem; padding: 0.3rem 0.5rem; }
+        .player-container:fullscreen .time-display,
+        .player-container:-webkit-full-screen .time-display { font-size: 0.85rem; }
+        .player-container:fullscreen .progress-bar,
+        .player-container:-webkit-full-screen .progress-bar { height: 5px; }
+        .player-container:fullscreen .progress-wrap:hover .progress-bar,
+        .player-container:-webkit-full-screen .progress-wrap:hover .progress-bar { height: 9px; }
+        .player-placeholder.dragover .drop-hint {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .player-controls {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding: 0.4rem 0.6rem;
+            background: #1a1a1a;
+            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+        }
+        .player-controls.visible { display: flex; }
+        .controls-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            min-width: 0;
+        }
+        .controls-right {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            flex-shrink: 0;
+        }
+        .ctrl-btn {
+            background: none;
+            border: none;
+            color: #ccc;
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 0.25rem 0.4rem;
+            border-radius: 4px;
+            transition: color 0.15s, background 0.15s;
+            line-height: 1.2;
+            flex-shrink: 0;
+        }
+        .ctrl-btn:hover { color: #fff; background: rgba(255,255,255,0.15); }
+        .ctrl-btn.speed-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            min-width: 2rem;
+            justify-content: center;
+            color: #fff;
+        }
+        .volume-group {
+            display: flex;
+            align-items: center;
+            gap: 0.15rem;
+            flex-shrink: 0;
+        }
+        .volume-slider {
+            width: 0;
+            overflow: hidden;
+            transition: width 0.2s;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 3px;
+            background: #555;
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+        }
+        .volume-group:hover .volume-slider { width: 60px; }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .volume-slider::-moz-range-thumb {
+            width: 10px;
+            height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+        }
+        .time-display {
+            color: #aaa;
+            font-size: 0.72rem;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .progress-wrap {
+            flex: 1;
+            min-width: 60px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #444;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: height 0.15s;
+        }
+        .progress-wrap:hover .progress-bar { height: 7px; }
+        .progress-buffered {
+            position: absolute;
+            top: 0; left: 0;
+            height: 100%;
+            background: #666;
+            border-radius: 2px;
+            width: 0%;
+        }
+        .progress-played {
+            position: absolute;
+            top: 0; left: 0;
+            height: 100%;
+            background: var(--primary, #3b82f6);
+            border-radius: 2px;
+            width: 0%;
+        }
+        .player-toolbar {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+        .player-toolbar button, .player-toolbar .btn-like {
+            padding: 0.4rem 0.7rem;
+            font-size: 0.8rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .player-toolbar button:hover, .player-toolbar .btn-like:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .player-status {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            padding: 0.4rem 0;
+            min-height: 1.4em;
+        }
+        .player-status.error { color: var(--danger, #ef4444); }
+        .player-status.success { color: var(--success, #22c55e); }
+
+        .player-subtitle {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: var(--bg);
+            border-radius: var(--radius-sm);
+        }
+        .player-subtitle input {
+            flex: 1;
+            padding: 0.4rem 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--card-bg);
+            color: var(--text);
+            font-size: 0.8rem;
+        }
+        .player-subtitle input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .player-sidebar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .player-sidebar section {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 0.75rem;
+        }
+        .player-sidebar section h3 {
+            font-size: 0.85rem;
+            margin: 0 0 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .player-sidebar section h3 .badge-sm {
+            font-size: 0.65rem;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 99px;
+            padding: 0.1rem 0.4rem;
+        }
+        .history-list, .playlist-list {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .history-list::-webkit-scrollbar, .playlist-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .history-list::-webkit-scrollbar-thumb, .playlist-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 2px;
+        }
+        .history-item, .playlist-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.35rem 0.4rem;
+            font-size: 0.75rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            word-break: break-all;
+        }
+        .history-item:hover, .playlist-item:hover {
+            background: var(--card-bg);
+            color: var(--text);
+        }
+        .history-item .del-btn, .playlist-item .del-btn {
+            margin-left: auto;
+            flex-shrink: 0;
+            opacity: 0.4;
+            cursor: pointer;
+            font-size: 0.7rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.1rem 0.3rem;
+        }
+        .history-item .del-btn:hover, .playlist-item .del-btn:hover {
+            opacity: 1;
+            color: var(--danger, #ef4444);
+        }
+        .sidebar-empty {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 1rem 0;
+        }
+        .sidebar-actions {
+            display: flex;
+            gap: 0.4rem;
+            margin-top: 0.5rem;
+        }
+        .sidebar-actions button {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .sidebar-actions button:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        .modal-box h3 {
+            font-size: 1rem;
+            margin: 0 0 0.75rem;
+        }
+        .modal-box textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg);
+            color: var(--text);
+            font-family: monospace;
+            font-size: 0.8rem;
+            resize: vertical;
+            box-sizing: border-box;
+            min-height: 80px;
+        }
+        .modal-box .modal-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            justify-content: flex-end;
+        }
+        .modal-box .modal-actions button {
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text);
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .modal-box .modal-actions .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        @media (max-width: 600px) {
+            .player-sidebar { grid-template-columns: 1fr; }
+            .player-input-row { flex-direction: column; }
+            .ctrl-btn { font-size: 0.72rem; padding: 0.2rem 0.3rem; }
+            .time-display { font-size: 0.65rem; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-视频-流媒体">视频/流媒体</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>M3U8 在线播放器</span>
+            </nav>
+            <div class="tool-header">
+                <h1>M3U8 在线播放器</h1>
+                <p>在线播放 M3U8/HLS 直播和视频流，支持 AES-128 加密流、字幕加载、倍速播放、画中画</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">视频/流媒体</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace" id="dropZone">
+                <div class="player-input-row">
+                    <input type="text" id="urlInput" placeholder="粘贴 M3U8/HLS/MP4 视频链接...">
+                    <button class="btn btn-primary" id="playBtn">▶ 播放</button>
+                    <button class="btn btn-secondary" id="stopBtn">⏹ 停止</button>
+                </div>
+
+                <div class="player-container" id="playerContainer">
+                    <video id="videoPlayer" playsinline crossorigin="anonymous"></video>
+                    <div class="player-placeholder" id="playerPlaceholder">
+                        <div class="play-icon">🎬</div>
+                        <p>输入 M3U8 链接或拖拽文件到此处播放</p>
+                        <div class="drop-hint">📂 支持 .m3u8 .mp4 .webm 格式</div>
+                    </div>
+                    <div class="player-controls" id="playerControls">
+                        <div class="controls-left">
+                            <button class="ctrl-btn" id="playPauseBtn" title="播放/暂停">▶</button>
+                            <div class="volume-group">
+                                <button class="ctrl-btn" id="muteBtn" title="静音">🔊</button>
+                                <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="100">
+                            </div>
+                            <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+                            <div class="progress-wrap" id="progressWrap">
+                                <div class="progress-bar" id="progressBar">
+                                    <div class="progress-buffered" id="progressBuffered"></div>
+                                    <div class="progress-played" id="progressPlayed"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="controls-right">
+                            <button class="ctrl-btn speed-label" id="speedBtn" title="倍速">1x</button>
+                            <button class="ctrl-btn" id="screenshotBtn" title="截图">📷</button>
+                            <button class="ctrl-btn" id="pipBtn" title="画中画">🕶</button>
+                            <button class="ctrl-btn" id="fsBtn" title="全屏">⛶</button>
+                            <button class="ctrl-btn" id="subtitleToggle" title="字幕">📄</button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="player-status" id="playerStatus"></div>
+
+                <div class="player-subtitle" id="subtitleRow" style="display:none">
+                    <span style="font-size:0.8rem;white-space:nowrap;color:var(--text-secondary)">字幕 URL：</span>
+                    <input type="text" id="subtitleUrl" placeholder="输入 .vtt / .srt 字幕链接...">
+                    <button class="btn btn-sm" id="subtitleApply" style="padding:0.3rem 0.6rem;font-size:0.75rem">加载</button>
+                </div>
+
+                <div class="player-sidebar">
+                    <section>
+                        <h3>🕐 最近播放 <span class="badge-sm" id="historyCount">0</span></h3>
+                        <div class="history-list" id="historyList"><div class="sidebar-empty">暂无播放记录</div></div>
+                        <div class="sidebar-actions">
+                            <button id="clearHistoryBtn">清空记录</button>
+                        </div>
+                    </section>
+                    <section>
+                        <h3>📋 播放列表 <span class="badge-sm" id="playlistCount">0</span></h3>
+                        <div class="playlist-list" id="playlistList">
+                            <div class="sidebar-empty">暂无列表，点击下方添加当前链接</div>
+                        </div>
+                        <div class="sidebar-actions">
+                            <button id="addToPlaylistBtn">+ 添加当前</button>
+                            <button id="clearPlaylistBtn">清空列表</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <section class="features">
+                <h2>M3U8 在线播放器功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📡</div>
+                        <h3>HLS 协议支持</h3>
+                        <p>完整支持 HLS/M3U8 流媒体协议，包括 AES-128 加密流和自适应码率切换。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>自适应码率</h3>
+                        <p>根据网络状况自动切换清晰度，提供流畅的观看体验。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3>丰富功能</h3>
+                        <p>支持截图、画中画、全屏、快捷键、字幕加载、播放列表等。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>所有操作在浏览器中完成，数据不上传服务器，保障隐私安全。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🖱️</div>
+                        <h3>拖拽播放</h3>
+                        <p>支持拖拽本地 M3U8 文件到播放器区域直接播放，无需手动输入链接。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⏩</div>
+                        <h3>倍速调节</h3>
+                        <p>支持 0.5x、0.75x、1x、1.25x、1.5x、2x 六档倍速切换，适配不同观看需求。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📂</div>
+                        <h3>播放列表管理</h3>
+                        <p>自动记录最近播放历史，支持自定义播放列表批量管理和连续播放。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="faq">
+                <h2>M3U8 在线播放器常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>什么是 M3U8 文件？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>M3U8 是 HLS（HTTP Live Streaming）协议的播放列表文件，包含视频分片地址和元数据。常用于直播、IPTV 和视频点播服务。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>为什么有些 M3U8 链接无法播放？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>可能的原因：链接已过期、需要鉴权/Cookie、跨域限制（CORS）、使用了服务器不支持的加密方式。请确保链接可公开访问且未过期。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持哪些字幕格式？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>支持 WebVTT (.vtt) 和 SRT (.srt) 格式的字幕文件。通过字幕 URL 输入框加载外部字幕文件。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>我的数据会被存储吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不会。所有视频流播放均在浏览器本地完成，数据不会上传到任何服务器。播放历史仅保存在本地浏览器中。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持哪些快捷键？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>空格：播放/暂停；左右方向键：快退/快进 5 秒；上下方向键：音量调节；F：全屏切换；P：画中画切换；S：截图。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>如何播放本地 M3U8 文件？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>将本地 .m3u8 文件直接拖拽到播放器区域即可播放。注意：本地文件中的分片引用需为可访问的网络地址。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>播放卡顿怎么办？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>尝试以下方法：1) 检查网络连接是否稳定；2) 点击倍速按钮降低到 0.75x 或 0.5x；3) 确认视频源服务器响应正常；4) 刷新页面重试。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>提示跨域错误（CORS）怎么办？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>浏览器安全策略限制了跨域请求。如果视频源服务器未设置正确的 CORS 响应头，播放器无法加载分片。请联系视频源提供方开放跨域访问，或通过代理服务器中转。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <h3 id="modalTitle"></h3>
+            <div id="modalBody"></div>
+            <div class="modal-actions">
+                <button id="modalClose">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "M3U8 在线播放器", path: "tools/m3u8-player.html" };
+    </script>
+    <script src="../assets/js/libs.js"></script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        const urlInput = document.getElementById('urlInput');
+        const playBtn = document.getElementById('playBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const video = document.getElementById('videoPlayer');
+        const placeholder = document.getElementById('playerPlaceholder');
+        const statusEl = document.getElementById('playerStatus');
+        const speedBtn = document.getElementById('speedBtn');
+        const screenshotBtn = document.getElementById('screenshotBtn');
+        const pipBtn = document.getElementById('pipBtn');
+        const fsBtn = document.getElementById('fsBtn');
+        const subtitleToggle = document.getElementById('subtitleToggle');
+        const subtitleRow = document.getElementById('subtitleRow');
+        const subtitleUrl = document.getElementById('subtitleUrl');
+        const subtitleApply = document.getElementById('subtitleApply');
+
+        const playerContainer = document.getElementById('playerContainer');
+        const dropZone = document.getElementById('dropZone');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const modalClose = document.getElementById('modalClose');
+
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const muteBtn = document.getElementById('muteBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const progressWrap = document.getElementById('progressWrap');
+        const progressBar = document.getElementById('progressBar');
+        const progressBuffered = document.getElementById('progressBuffered');
+        const progressPlayed = document.getElementById('progressPlayed');
+        const playerControls = document.getElementById('playerControls');
+
+        var hlsInstance = null;
+
+        function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+        function formatTime2(s) {
+            if (isNaN(s) || !isFinite(s) || s < 0) return '0:00';
+            var m = Math.floor(s / 60);
+            var sec = Math.floor(s % 60);
+            return m + ':' + (sec < 10 ? '0' : '') + sec;
+        }
+
+        function updateProgress() {
+            if (!video.duration) return;
+            var pct = (video.currentTime / video.duration) * 100;
+            progressPlayed.style.width = pct + '%';
+            timeDisplay.textContent = formatTime2(video.currentTime) + ' / ' + formatTime2(video.duration);
+            if (video.buffered.length > 0) {
+                var buffPct = (video.buffered.end(video.buffered.length - 1) / video.duration) * 100;
+                progressBuffered.style.width = buffPct + '%';
+            }
+        }
+
+        playPauseBtn.addEventListener('click', function() {
+            if (video.paused || video.ended) {
+                video.play().catch(function() {});
+            } else {
+                video.pause();
+            }
+        });
+
+        video.addEventListener('click', function() {
+            if (video.paused || video.ended) {
+                video.play().catch(function() {});
+            } else {
+                video.pause();
+            }
+        });
+
+        video.addEventListener('play', function() { playPauseBtn.textContent = '⏸'; });
+        video.addEventListener('pause', function() { playPauseBtn.textContent = '▶'; });
+        video.addEventListener('ended', function() { playPauseBtn.textContent = '▶'; });
+        video.addEventListener('timeupdate', updateProgress);
+        video.addEventListener('loadedmetadata', updateProgress);
+        video.addEventListener('progress', updateProgress);
+        video.addEventListener('waiting', function() { setStatus('缓冲中...', ''); });
+        video.addEventListener('playing', function() { placeholder.classList.add('hidden'); setStatus('播放中', 'success'); });
+
+        function updateVolumeIcon() {
+            if (video.muted || video.volume === 0) muteBtn.textContent = '🔇';
+            else if (video.volume < 0.5) muteBtn.textContent = '🔉';
+            else muteBtn.textContent = '🔊';
+        }
+        muteBtn.addEventListener('click', function() {
+            video.muted = !video.muted;
+            if (video.muted) {
+                volumeSlider.value = 0;
+            } else {
+                volumeSlider.value = Math.round(video.volume * 100);
+            }
+            updateVolumeIcon();
+        });
+        volumeSlider.addEventListener('input', function() {
+            video.volume = this.value / 100;
+            video.muted = this.value == 0;
+            updateVolumeIcon();
+        });
+        video.addEventListener('volumechange', function() {
+            volumeSlider.value = video.muted ? 0 : Math.round(video.volume * 100);
+            updateVolumeIcon();
+        });
+
+        var isDragging = false;
+        function seekFromEvent(e) {
+            var rect = progressWrap.getBoundingClientRect();
+            var pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            if (video.duration) video.currentTime = pct * video.duration;
+            progressPlayed.style.width = (pct * 100) + '%';
+        }
+        progressWrap.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            e.preventDefault();
+            seekFromEvent(e);
+        });
+        document.addEventListener('mousemove', function(e) {
+            if (isDragging) { e.preventDefault(); seekFromEvent(e); }
+        });
+        document.addEventListener('mouseup', function() {
+            isDragging = false;
+        });
+        progressWrap.addEventListener('touchstart', function(e) {
+            isDragging = true;
+            seekFromEvent(e.touches[0]);
+        }, { passive: true });
+        progressWrap.addEventListener('touchmove', function(e) {
+            if (isDragging) seekFromEvent(e.touches[0]);
+        }, { passive: true });
+        progressWrap.addEventListener('touchend', function() {
+            isDragging = false;
+        });
+
+        var statusTimer = null;
+        function setStatus(msg, type) {
+            statusEl.textContent = msg;
+            statusEl.className = 'player-status' + (type ? ' ' + type : '');
+            clearTimeout(statusTimer);
+            if (type === 'success') {
+                statusTimer = setTimeout(function() { statusEl.textContent = ''; statusEl.className = 'player-status'; }, 2000);
+            }
+        }
+
+        function formatTime(s) {
+            if (isNaN(s) || s <= 0 || !isFinite(s)) return '00:00';
+            var m = Math.floor(s / 60);
+            var sec = Math.floor(s % 60);
+            return (m < 10 ? '0' : '') + m + ':' + (sec < 10 ? '0' : '') + sec;
+        }
+
+        function stopPlayback() {
+            if (hlsInstance) {
+                hlsInstance.destroy();
+                hlsInstance = null;
+            }
+            video.pause();
+            video.removeAttribute('src');
+            video.load();
+            video.muted = false;
+            placeholder.classList.remove('hidden');
+            playerControls.classList.remove('visible');
+            speedBtn.textContent = '1x';
+            playPauseBtn.textContent = '▶';
+            progressPlayed.style.width = '0%';
+            progressBuffered.style.width = '0%';
+            timeDisplay.textContent = '0:00 / 0:00';
+            setStatus('');
+        }
+
+        function loadVideo(url) {
+            stopPlayback();
+            if (!url) { setStatus('请输入视频链接', 'error'); return; }
+
+            var isHls = url.match(/\.m3u8/i) || url.indexOf('m3u8') > -1;
+
+            if (isHls) {
+                setStatus('正在加载 HLS.js 播放器...', '');
+                loadLibs('hls').then(function() {
+                    if (typeof Hls === 'undefined') {
+                        setStatus('HLS.js 加载失败，请检查网络', 'error');
+                        return;
+                    }
+                    if (!Hls.isSupported()) {
+                        setStatus('当前浏览器不支持 HLS 播放', 'error');
+                        return;
+                    }
+
+                    hlsInstance = new Hls({
+                        enableWorker: true,
+                        lowLatencyMode: false,
+                        maxBufferLength: 60,
+                        maxMaxBufferLength: 120,
+                        maxBufferSize: 60 * 1024 * 1024,
+                        maxBufferHole: 0.5,
+                        backBufferLength: 90,
+                        fragLoadingTimeOut: 20000,
+                        fragLoadingMaxRetry: 6,
+                        fragLoadingMaxRetryTimeout: 64000,
+                        manifestLoadingTimeOut: 15000,
+                        manifestLoadingMaxRetry: 4,
+                        levelLoadingTimeOut: 15000,
+                        levelLoadingMaxRetry: 4,
+                        startFragPrefetch: true,
+                        progressive: true
+                    });
+
+                    hlsInstance.loadSource(url);
+                    hlsInstance.attachMedia(video);
+
+                    hlsInstance.on(Hls.Events.MANIFEST_PARSED, function(event, data) {
+                        setStatus('播放清单加载成功，开始播放...', 'success');
+                        playerControls.classList.add('visible');
+                        video.muted = true;
+                        video.play().then(function() {
+                            setStatus('HLS 流播放中', 'success');
+                        }).catch(function(e) {
+                            console.log('HLS play blocked:', e);
+                            setStatus('点击 ▶ 开始播放', '');
+                        });
+                    });
+
+                    hlsInstance.on(Hls.Events.LEVEL_LOADED, function() {});
+
+                    hlsInstance.on(Hls.Events.FRAG_LOADED, function() {});
+
+                    hlsInstance.on(Hls.Events.ERROR, function(event, data) {
+                        if (data.fatal) {
+                            switch (data.type) {
+                                case Hls.ErrorTypes.NETWORK_ERROR:
+                                    if (data.details === Hls.ErrorDetails.MANIFEST_LOAD_ERROR ||
+                                        data.details === Hls.ErrorDetails.MANIFEST_LOAD_TIMEOUT ||
+                                        data.details === Hls.ErrorDetails.MANIFEST_PARSING_ERROR) {
+                                        setStatus('无法加载播放清单：' + (data.details || '未知错误') + '。请检查链接是否有效且支持跨域访问。', 'error');
+                                        hlsInstance.destroy();
+                                        hlsInstance = null;
+                                    } else {
+                                        setStatus('网络错误，尝试恢复...', 'error');
+                                        hlsInstance.startLoad();
+                                    }
+                                    break;
+                                case Hls.ErrorTypes.MEDIA_ERROR:
+                                    setStatus('媒体错误，尝试恢复...', 'error');
+                                    hlsInstance.recoverMediaError();
+                                    break;
+                                default:
+                                    setStatus('播放错误: ' + data.type + ' - ' + data.details, 'error');
+                                    hlsInstance.destroy();
+                                    hlsInstance = null;
+                                    break;
+                            }
+                        } else {
+                            if (data.details === Hls.ErrorDetails.BUFFER_STALLED_ERROR) {
+                                setStatus('缓冲中...', '');
+                            } else if (data.details === Hls.ErrorDetails.FRAG_LOAD_TIMEOUT) {
+                                hlsInstance.startLoad();
+                            }
+                        }
+                    });
+                }).catch(function(e) {
+                    console.error('HLS.js load failed:', e);
+                    setStatus('HLS.js 加载失败: ' + e.message, 'error');
+                });
+            } else {
+                video.muted = false;
+                video.src = url;
+                video.load();
+                playerControls.classList.add('visible');
+                video.play().then(function() {
+                    setStatus('播放中', 'success');
+                }).catch(function(e) {
+                    console.log('Video play failed:', e);
+                    video.muted = true;
+                    video.play().then(function() {
+                        setStatus('播放中 (静音)', 'success');
+                    }).catch(function(e2) {
+                        setStatus('播放失败: ' + e2.message + ' (可能需要用户点击播放)', 'error');
+                    });
+                });
+            }
+        }
+
+        playBtn.addEventListener('click', function() {
+            var url = urlInput.value.trim();
+            if (url) {
+                loadVideo(url);
+                addHistory(url);
+            } else {
+                setStatus('请输入视频链接', 'error');
+            }
+        });
+
+        urlInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') playBtn.click();
+        });
+
+        stopBtn.addEventListener('click', stopPlayback);
+
+        var speedIdx = 0;
+        var speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+        speedBtn.addEventListener('click', function() {
+            speedIdx = (speedIdx + 1) % speeds.length;
+            video.playbackRate = speeds[speedIdx];
+            speedBtn.textContent = speeds[speedIdx] + 'x';
+        });
+
+        screenshotBtn.addEventListener('click', function() {
+            if (video.videoWidth === 0 || video.videoHeight === 0) {
+                setStatus('当前无视频画面可截图', 'error');
+                return;
+            }
+            var c = document.createElement('canvas');
+            c.width = video.videoWidth;
+            c.height = video.videoHeight;
+            c.getContext('2d').drawImage(video, 0, 0);
+            c.toBlob(function(blob) {
+                var a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'screenshot-' + Date.now() + '.png';
+                a.click();
+                URL.revokeObjectURL(a.href);
+                setStatus('截图已保存', 'success');
+            });
+        });
+
+        pipBtn.addEventListener('click', function() {
+            if (document.pictureInPictureElement) {
+                document.exitPictureInPicture();
+            } else if (document.pictureInPictureEnabled) {
+                video.requestPictureInPicture().catch(function(e) {
+                    setStatus('画中画失败: ' + e.message, 'error');
+                });
+            } else {
+                setStatus('当前浏览器不支持画中画', 'error');
+            }
+        });
+
+        fsBtn.addEventListener('click', function() {
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else {
+                playerContainer.requestFullscreen().catch(function(){});
+            }
+        });
+
+        subtitleToggle.addEventListener('click', function() {
+            subtitleRow.style.display = subtitleRow.style.display === 'none' ? 'flex' : 'none';
+        });
+
+        subtitleApply.addEventListener('click', function() {
+            var url = subtitleUrl.value.trim();
+            if (!url) { setStatus('请输入字幕链接', 'error'); return; }
+            while (video.querySelector('track')) {
+                video.removeChild(video.querySelector('track'));
+            }
+            var track = document.createElement('track');
+            track.kind = 'subtitles';
+            track.src = url;
+            track.label = 'External';
+            track.default = true;
+            video.appendChild(track);
+            track.addEventListener('load', function() {
+                setStatus('字幕加载成功', 'success');
+            });
+            track.addEventListener('error', function() {
+                setStatus('字幕加载失败，请检查链接', 'error');
+            });
+        });
+
+        modalClose.addEventListener('click', function() {
+            modalOverlay.classList.remove('open');
+        });
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) modalOverlay.classList.remove('open');
+        });
+
+        playerContainer.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            placeholder.classList.add('dragover');
+        });
+        playerContainer.addEventListener('dragleave', function() {
+            placeholder.classList.remove('dragover');
+        });
+        playerContainer.addEventListener('drop', function(e) {
+            e.preventDefault();
+            placeholder.classList.remove('dragover');
+            var files = e.dataTransfer.files;
+            if (files.length > 0) {
+                var file = files[0];
+                var url = URL.createObjectURL(file);
+                urlInput.value = file.name;
+                loadVideo(url);
+                addHistory(file.name + ' (本地文件)');
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (modalOverlay.classList.contains('open')) return;
+            switch (e.key) {
+                case 'ArrowLeft':
+                    video.currentTime = Math.max(0, video.currentTime - 5);
+                    break;
+                case 'ArrowRight':
+                    video.currentTime = Math.min(video.duration, video.currentTime + 5);
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    video.volume = Math.min(1, video.volume + 0.1);
+                    video.muted = false;
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    video.volume = Math.max(0, video.volume - 0.1);
+                    break;
+                case 'f':
+                case 'F':
+                    fsBtn.click();
+                    break;
+                case 'm':
+                case 'M':
+                    video.muted = !video.muted;
+                    break;
+            }
+        });
+
+        function getHistory() {
+            try { return JSON.parse(localStorage.getItem('m3u8_history') || '[]'); } catch(e) { return []; }
+        }
+        function saveHistory(h) {
+            try { localStorage.setItem('m3u8_history', JSON.stringify(h.slice(0, 20))); } catch(e) {}
+            renderHistory();
+        }
+        function addHistory(url) {
+            var h = getHistory();
+            h = h.filter(function(item) { return item.url !== url; });
+            h.unshift({ url: url, time: Date.now() });
+            saveHistory(h);
+        }
+        function renderHistory() {
+            var h = getHistory();
+            var el = document.getElementById('historyList');
+            document.getElementById('historyCount').textContent = h.length;
+            if (h.length === 0) {
+                el.innerHTML = '<div class="sidebar-empty">暂无播放记录</div>';
+                return;
+            }
+            el.innerHTML = h.map(function(item) {
+                var label = item.url.length > 40 ? item.url.substring(0, 40) + '...' : item.url;
+                return '<div class="history-item" data-url="' + escHtml(item.url) + '">' +
+                    '<span>' + escHtml(label) + '</span>' +
+                    '<button class="del-btn" data-url="' + escHtml(item.url) + '">✕</button></div>';
+            }).join('');
+            el.querySelectorAll('.history-item').forEach(function(item) {
+                item.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('del-btn')) return;
+                    var url = this.dataset.url;
+                    urlInput.value = url;
+                    loadVideo(url);
+                });
+            });
+            el.querySelectorAll('.del-btn').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var h = getHistory().filter(function(item) { return item.url !== this.dataset.url; }.bind(this));
+                    saveHistory(h);
+                }.bind(btn));
+            });
+        }
+        document.getElementById('clearHistoryBtn').addEventListener('click', function() {
+            saveHistory([]);
+        });
+
+        function getPlaylist() {
+            try { return JSON.parse(localStorage.getItem('m3u8_playlist') || '[]'); } catch(e) { return []; }
+        }
+        function savePlaylist(p) {
+            try { localStorage.setItem('m3u8_playlist', JSON.stringify(p)); } catch(e) {}
+            renderPlaylist();
+        }
+        function renderPlaylist() {
+            var p = getPlaylist();
+            var el = document.getElementById('playlistList');
+            document.getElementById('playlistCount').textContent = p.length;
+            if (p.length === 0) {
+                el.innerHTML = '<div class="sidebar-empty">暂无列表，点击下方添加当前链接</div>';
+                return;
+            }
+            el.innerHTML = p.map(function(item) {
+                var label = item.length > 40 ? item.substring(0, 40) + '...' : item;
+                return '<div class="playlist-item" data-url="' + escHtml(item) + '">' +
+                    '<span>' + escHtml(label) + '</span>' +
+                    '<button class="del-btn" data-url="' + escHtml(item) + '">✕</button></div>';
+            }).join('');
+            el.querySelectorAll('.playlist-item').forEach(function(item) {
+                item.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('del-btn')) return;
+                    var url = this.dataset.url;
+                    urlInput.value = url;
+                    loadVideo(url);
+                });
+            });
+            el.querySelectorAll('.del-btn').forEach(function(btn) {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var p = getPlaylist().filter(function(item) { return item !== this.dataset.url; }.bind(this));
+                    savePlaylist(p);
+                }.bind(btn));
+            });
+        }
+        document.getElementById('addToPlaylistBtn').addEventListener('click', function() {
+            var url = urlInput.value.trim();
+            if (!url) { setStatus('请先输入视频链接', 'error'); return; }
+            var p = getPlaylist();
+            if (p.indexOf(url) === -1) {
+                p.push(url);
+                savePlaylist(p);
+                setStatus('已添加到播放列表', 'success');
+            } else {
+                setStatus('该链接已在列表中', '');
+            }
+        });
+        document.getElementById('clearPlaylistBtn').addEventListener('click', function() {
+            savePlaylist([]);
+        });
+
+        renderHistory();
+        renderPlaylist();
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(function(r) { return r.json(); }).then(function(tools) {
+            var current = "tools/m3u8-player.html";
+            var currentCat = "视频/流媒体";
+            var related = tools.filter(function(t) { return t.path !== current && t.category === currentCat; }).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(function(t) { return t.path !== current && related.indexOf(t) === -1; }).slice(0, 5 - related.length);
+                related = related.concat(others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(function(t) {
+                return '<a href="' + escHtml(t.path.split('/').pop()) + '" class="tool-card">' +
+                    '<div class="tool-name">' + escHtml(t.name) + '</div>' +
+                    '<div class="tool-desc">' + escHtml(t.description) + '</div></a>';
+            }).join('');
+        }).catch(function() {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

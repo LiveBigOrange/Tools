@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token 生成器 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="生成随机 Token / API Key / Secret，支持自定义长度和字符集 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="token, 密钥, 随机, api, secret,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/token-generator.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/token-generator.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Token 生成器 - 在线工具">
+    <meta property="og:description" content="生成随机 Token / API Key / Secret，支持自定义长度和字符集 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/token-generator.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Token 生成器 - 在线工具">
+    <meta name="twitter:description" content="生成随机 Token / API Key / Secret，支持自定义长度和字符集 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "Token 生成器",
+                "description": "生成随机 Token / API Key / Secret，支持自定义长度和字符集",
+                "url": "/tools/token-generator.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "生成器",
+                        "item": "/#category-生成器"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Token 生成器",
+                        "item": "/tools/token-generator.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "生成的内容安全吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "所有生成操作均在浏览器本地完成，生成的内容不会上传到服务器。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "可以批量生成吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持批量生成，您可以设置生成数量，一次性生成多个结果。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "如何复制生成的内容？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "点击复制按钮即可将生成的内容复制到剪贴板。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .token-preset-row { display: flex; gap: 0.35rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+        .token-preset-btn { padding: 0.4rem 0.85rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.8rem; cursor: pointer; transition: var(--transition); color: var(--text-secondary); font-weight: 500; }
+        .token-preset-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .token-preset-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+        .token-section { margin-bottom: 1.25rem; }
+        .token-section-title { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+        .token-length-row { display: flex; align-items: center; gap: 0.75rem; }
+        .token-length-slider { flex: 1; accent-color: var(--primary); }
+        .token-length-input { width: 70px; padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; text-align: center; font-size: 0.85rem; background: var(--bg); color: var(--text); }
+        .token-length-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px var(--primary-light); }
+        .charset-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+        .charset-card { display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 0.75rem; background: var(--bg); border: 2px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; transition: var(--transition); user-select: none; }
+        .charset-card:hover { border-color: var(--primary); }
+        .charset-card.active { border-color: var(--primary); background: var(--primary-light); }
+        .charset-card input[type="checkbox"] { display: none; }
+        .charset-check { width: 1.25rem; height: 1.25rem; border: 2px solid var(--border); border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: var(--transition); flex-shrink: 0; }
+        .charset-card.active .charset-check { background: var(--primary); border-color: var(--primary); color: #fff; }
+        .charset-card.active .charset-check::after { content: '\2713'; font-size: 0.7rem; }
+        .charset-card-icon { font-size: 0.75rem; font-weight: 700; color: var(--text-secondary); min-width: 2rem; text-align: center; }
+        .charset-card.active .charset-card-icon { color: var(--primary); }
+        .charset-label { font-size: 0.85rem; font-weight: 500; }
+        .token-prefix-row { display: flex; align-items: center; gap: 0.5rem; }
+        .token-prefix-input { flex: 1; padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; background: var(--bg); color: var(--text); font-family: "SF Mono", "Fira Code", Consolas, monospace; }
+        .token-prefix-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px var(--primary-light); }
+        .token-prefix-hint { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.25rem; }
+        .token-batch-row { display: flex; align-items: center; gap: 0.75rem; }
+        .token-batch-slider { flex: 1; accent-color: var(--primary); }
+        .token-batch-input { width: 55px; padding: 0.35rem 0.5rem; border: 1px solid var(--border); border-radius: 4px; text-align: center; font-size: 0.85rem; background: var(--bg); color: var(--text); }
+        .token-batch-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px var(--primary-light); }
+        .token-error { color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem; min-height: 1.2em; }
+        .token-results { margin-top: 1.25rem; }
+        .token-results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+        .token-results-title { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+        .token-results-count { font-size: 0.8rem; color: var(--text-muted); }
+        .token-list { display: flex; flex-direction: column; gap: 0.5rem; }
+        .token-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); transition: var(--transition); }
+        .token-item:hover { border-color: var(--border-hover); }
+        .token-item-index { font-size: 0.7rem; color: var(--text-muted); min-width: 1.5rem; text-align: center; font-weight: 600; }
+        .token-item-text { flex: 1; font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace; font-size: 0.82rem; word-break: break-all; line-height: 1.5; }
+        .token-item-prefix { color: var(--primary); font-weight: 600; }
+        .token-item-body { color: var(--text); }
+        .token-copy-btn { background: none; border: none; cursor: pointer; color: var(--text-secondary); padding: 0.2rem 0.4rem; border-radius: 4px; transition: var(--transition); font-size: 0.8rem; white-space: nowrap; }
+        .token-copy-btn:hover { color: var(--primary); background: var(--primary-light); }
+        .token-entropy { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem; }
+        @media (max-width: 600px) { .charset-grid { grid-template-columns: 1fr; } .token-length-row, .token-batch-row { flex-wrap: wrap; } .token-item { flex-wrap: wrap; } }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-生成器">生成器</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>Token 生成器</span>
+            </nav>
+            <div class="tool-header">
+                <h1>Token 生成器</h1>
+                <p>生成随机 Token / API Key / Secret，支持自定义长度和字符集</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">生成器</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="token-section">
+                    <div class="token-section-title">预设模板</div>
+                    <div class="token-preset-row" id="presetRow">
+                        <button class="token-preset-btn active" data-preset="api-key">API Key</button>
+                        <button class="token-preset-btn" data-preset="secret-key">Secret Key</button>
+                        <button class="token-preset-btn" data-preset="bearer-token">Bearer Token</button>
+                        <button class="token-preset-btn" data-preset="custom">自定义</button>
+                    </div>
+                </div>
+                <div class="token-section">
+                    <div class="token-section-title">Token 长度</div>
+                    <div class="token-length-row">
+                        <input type="range" class="token-length-slider" id="tokenLength" min="8" max="512" value="32">
+                        <input type="number" class="token-length-input" id="tokenLengthNum" min="8" max="512" value="32">
+                    </div>
+                </div>
+                <div class="token-section">
+                    <div class="token-section-title">字符集</div>
+                    <div class="charset-grid" id="charsetGrid">
+                        <div class="charset-card active" data-charset="upper">
+                            <input type="checkbox" checked>
+                            <span class="charset-check"></span>
+                            <span class="charset-card-icon">A-Z</span>
+                            <span class="charset-label">大写字母</span>
+                        </div>
+                        <div class="charset-card active" data-charset="lower">
+                            <input type="checkbox" checked>
+                            <span class="charset-check"></span>
+                            <span class="charset-card-icon">a-z</span>
+                            <span class="charset-label">小写字母</span>
+                        </div>
+                        <div class="charset-card active" data-charset="numbers">
+                            <input type="checkbox" checked>
+                            <span class="charset-check"></span>
+                            <span class="charset-card-icon">0-9</span>
+                            <span class="charset-label">数字</span>
+                        </div>
+                        <div class="charset-card" data-charset="symbols">
+                            <input type="checkbox">
+                            <span class="charset-check"></span>
+                            <span class="charset-card-icon">!@#</span>
+                            <span class="charset-label">特殊符号</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="token-section">
+                    <div class="token-section-title">前缀（可选）</div>
+                    <div class="token-prefix-row">
+                        <input type="text" class="token-prefix-input" id="tokenPrefix" placeholder="例如: sk_, api_, tk_">
+                    </div>
+                    <div class="token-prefix-hint">前缀不计入 Token 长度</div>
+                </div>
+                <div class="token-section">
+                    <div class="token-section-title">批量生成数量</div>
+                    <div class="token-batch-row">
+                        <input type="range" class="token-batch-slider" id="tokenBatch" min="1" max="50" value="1">
+                        <input type="number" class="token-batch-input" id="tokenBatchNum" min="1" max="50" value="1">
+                    </div>
+                </div>
+                <div class="tool-actions">
+                    <button class="btn btn-primary btn-lg" id="generateBtn">🔑 生成 Token</button>
+                    <button class="btn btn-secondary" id="copyAllBtn" style="display:none">📋 复制全部</button>
+                </div>
+                <div class="token-error" id="tokenError"></div>
+                <div class="token-results" id="tokenResults" style="display:none">
+                    <div class="token-results-header">
+                        <span class="token-results-title">生成结果</span>
+                        <span class="token-results-count" id="tokenCount"></span>
+                    </div>
+                    <div class="token-list" id="tokenList"></div>
+                    <div class="token-entropy" id="tokenEntropy"></div>
+                </div>
+            </div>
+            <section class="features">
+                <h2>Token 生成器功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔐</div>
+                        <h3>密码学安全</h3>
+                        <p>使用 crypto.getRandomValues() 加密级随机数生成器，确保 Token 不可预测。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>预设模板</h3>
+                        <p>内置 API Key、Secret Key、Bearer Token 等常用预设，一键生成。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>批量生成</h3>
+                        <p>支持一次生成多个 Token，方便批量创建密钥。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>所有操作在浏览器中完成，数据不上传服务器，保障隐私安全。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>Token 生成器常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question"><span>生成的 Token 安全吗？</span><span class="faq-arrow">›</span></button>
+                        <div class="faq-answer"><p>本工具使用浏览器内置的 crypto.getRandomValues() 加密级随机数生成器，比 Math.random() 更安全，生成的 Token 具有密码学安全性。</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question"><span>Token 会被存储或上传吗？</span><span class="faq-arrow">›</span></button>
+                        <div class="faq-answer"><p>不会。Token 仅在您的浏览器中生成和显示，不会发送到任何服务器，也不会被本地存储。</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question"><span>前缀有什么用？</span><span class="faq-arrow">›</span></button>
+                        <div class="faq-answer"><p>前缀可以为 Token 添加标识，如 sk_ 表示 Secret Key、api_ 表示 API Key，方便在代码中识别和管理不同类型的密钥。</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question"><span>多长的 Token 才安全？</span><span class="faq-arrow">›</span></button>
+                        <div class="faq-answer"><p>建议至少使用 32 个字符的 Token。对于高安全场景，推荐 64 位或更长。使用大写+小写+数字字符集时，32 位 Token 的熵值约为 190 bits。</p></div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "Token 生成器", path: "tools/token-generator.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var tokenLengthSlider = document.getElementById('tokenLength');
+        var tokenLengthNum = document.getElementById('tokenLengthNum');
+        var tokenBatchSlider = document.getElementById('tokenBatch');
+        var tokenBatchNum = document.getElementById('tokenBatchNum');
+        var tokenPrefixInput = document.getElementById('tokenPrefix');
+        var generateBtn = document.getElementById('generateBtn');
+        var copyAllBtn = document.getElementById('copyAllBtn');
+        var tokenError = document.getElementById('tokenError');
+        var tokenResults = document.getElementById('tokenResults');
+        var tokenList = document.getElementById('tokenList');
+        var tokenCount = document.getElementById('tokenCount');
+        var tokenEntropy = document.getElementById('tokenEntropy');
+
+        var useUpper = true, useLower = true, useNumbers = true, useSymbols = false;
+
+        var PRESETS = {
+            'api-key': { length: 32, upper: true, lower: true, numbers: true, symbols: false, prefix: 'api_' },
+            'secret-key': { length: 64, upper: true, lower: true, numbers: true, symbols: true, prefix: 'sk_' },
+            'bearer-token': { length: 128, upper: true, lower: true, numbers: true, symbols: false, prefix: '' },
+            'custom': { length: 32, upper: true, lower: true, numbers: true, symbols: false, prefix: '' }
+        };
+
+        tokenLengthSlider.addEventListener('input', function() {
+            tokenLengthNum.value = this.value;
+            setPresetCustom();
+        });
+
+        tokenLengthNum.addEventListener('input', function() {
+            var v = Math.max(8, Math.min(512, parseInt(this.value, 10) || 8));
+            this.value = v;
+            tokenLengthSlider.value = v;
+            setPresetCustom();
+        });
+
+        tokenBatchSlider.addEventListener('input', function() {
+            tokenBatchNum.value = this.value;
+        });
+
+        tokenBatchNum.addEventListener('input', function() {
+            var v = Math.max(1, Math.min(50, parseInt(this.value, 10) || 1));
+            this.value = v;
+            tokenBatchSlider.value = v;
+        });
+
+        function setPresetCustom() {
+            document.querySelectorAll('#presetRow .token-preset-btn').forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+            document.querySelector('[data-preset="custom"]').classList.add('active');
+        }
+
+        function applyPreset(name) {
+            var p = PRESETS[name];
+            if (!p) return;
+            tokenLengthSlider.value = p.length;
+            tokenLengthNum.value = p.length;
+            tokenPrefixInput.value = p.prefix;
+            setCharsetCards(p.upper, p.lower, p.numbers, p.symbols);
+        }
+
+        function setCharsetCards(upper, lower, numbers, symbols) {
+            var cards = document.querySelectorAll('#charsetGrid .charset-card');
+            cards.forEach(function(card) {
+                var cs = card.dataset.charset;
+                var active = (cs === 'upper' && upper) || (cs === 'lower' && lower) || (cs === 'numbers' && numbers) || (cs === 'symbols' && symbols);
+                card.classList.toggle('active', active);
+                card.querySelector('input[type="checkbox"]').checked = active;
+            });
+            useUpper = upper;
+            useLower = lower;
+            useNumbers = numbers;
+            useSymbols = symbols;
+        }
+
+        document.querySelectorAll('#presetRow .token-preset-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#presetRow .token-preset-btn').forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                applyPreset(this.dataset.preset);
+            });
+        });
+
+        document.querySelectorAll('#charsetGrid .charset-card').forEach(function(card) {
+            card.addEventListener('click', function() {
+                this.classList.toggle('active');
+                var checked = this.classList.contains('active');
+                this.querySelector('input[type="checkbox"]').checked = checked;
+                var cs = this.dataset.charset;
+                if (cs === 'upper') useUpper = checked;
+                else if (cs === 'lower') useLower = checked;
+                else if (cs === 'numbers') useNumbers = checked;
+                else if (cs === 'symbols') useSymbols = checked;
+                setPresetCustom();
+            });
+        });
+
+        function getSecureRandom(max) {
+            var array = new Uint32Array(1);
+            crypto.getRandomValues(array);
+            return array[0] % max;
+        }
+
+        function generateToken(length, prefix) {
+            var chars = '';
+            var required = [];
+            if (useUpper) { var s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; chars += s; required.push(s[getSecureRandom(s.length)]); }
+            if (useLower) { var s = 'abcdefghijklmnopqrstuvwxyz'; chars += s; required.push(s[getSecureRandom(s.length)]); }
+            if (useNumbers) { var s = '0123456789'; chars += s; required.push(s[getSecureRandom(s.length)]); }
+            if (useSymbols) { var s = '!@#$%^&*()-_=+[]{}|;:,.<>?'; chars += s; required.push(s[getSecureRandom(s.length)]); }
+            if (!chars) return '';
+            var result = required.slice();
+            for (var i = result.length; i < length; i++) {
+                result.push(chars[getSecureRandom(chars.length)]);
+            }
+            for (var j = result.length - 1; j > 0; j--) {
+                var k = getSecureRandom(j + 1);
+                var tmp = result[j];
+                result[j] = result[k];
+                result[k] = tmp;
+            }
+            return prefix + result.join('');
+        }
+
+        function getCharsetSize() {
+            var size = 0;
+            if (useUpper) size += 26;
+            if (useLower) size += 26;
+            if (useNumbers) size += 10;
+            if (useSymbols) size += 28;
+            return size;
+        }
+
+        generateBtn.addEventListener('click', function() {
+            tokenError.textContent = '';
+            if (!useUpper && !useLower && !useNumbers && !useSymbols) {
+                tokenError.textContent = '请至少选择一种字符集';
+                return;
+            }
+            var length = parseInt(tokenLengthSlider.value, 10);
+            var count = parseInt(tokenBatchSlider.value, 10);
+            var prefix = tokenPrefixInput.value;
+            var tokens = [];
+            for (var i = 0; i < count; i++) {
+                tokens.push(generateToken(length, prefix));
+            }
+            renderTokens(tokens, length);
+        });
+
+        function renderTokens(tokens, length) {
+            tokenList.innerHTML = '';
+            tokenResults.style.display = 'block';
+            tokenCount.textContent = tokens.length + ' 个 Token';
+            var charsetSize = getCharsetSize();
+            var entropy = (charsetSize > 0 && length > 0) ? (length * Math.log2(charsetSize)).toFixed(1) : '0';
+            tokenEntropy.textContent = '单个 Token 熵值: ' + entropy + ' bits (字符集大小: ' + charsetSize + ')';
+            tokens.forEach(function(token, idx) {
+                var prefix = tokenPrefixInput.value;
+                var item = document.createElement('div');
+                item.className = 'token-item';
+                var prefixHtml = prefix ? '<span class="token-item-prefix">' + escapeHtml(prefix) + '</span>' : '';
+                var bodyHtml = '<span class="token-item-body">' + escapeHtml(token.substring(prefix.length)) + '</span>';
+                item.innerHTML = '<span class="token-item-index">' + (idx + 1) + '</span>' +
+                    '<span class="token-item-text">' + prefixHtml + bodyHtml + '</span>' +
+                    '<button class="token-copy-btn" data-idx="' + idx + '">复制</button>';
+                tokenList.appendChild(item);
+            });
+            tokenList.querySelectorAll('.token-copy-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var idx = parseInt(this.dataset.idx, 10);
+                    copyText(tokens[idx]).then(function() {
+                        btn.textContent = '✓';
+                        setTimeout(function() { btn.textContent = '复制'; }, 1200);
+                    });
+                });
+            });
+            copyAllBtn.style.display = 'inline-flex';
+            window._tokens = tokens;
+        }
+
+        function escapeHtml(str) {
+            var div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        copyAllBtn.addEventListener('click', function() {
+            if (window._tokens && window._tokens.length) {
+                copyText(window._tokens.join('\n')).then(function() {
+                    copyAllBtn.textContent = '✓ 已复制!';
+                    setTimeout(function() { copyAllBtn.textContent = '📋 复制全部'; }, 1500);
+                });
+            }
+        });
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(function(r) { return r.json(); }).then(function(tools) {
+            var current = "tools/token-generator.html";
+            var currentCat = "生成器";
+            var related = tools.filter(function(t) { return t.path !== current && t.category === currentCat; }).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(function(t) { return t.path !== current && related.indexOf(t) === -1; }).slice(0, 5 - related.length);
+                related.push.apply(related, others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(function(t) {
+                return '<a href="' + t.path.split('/').pop() + '" class="tool-card">' +
+                    '<div class="tool-name">' + t.name + '</div>' +
+                    '<div class="tool-desc">' + t.description + '</div>' +
+                    '</a>';
+            }).join('');
+        }).catch(function() {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

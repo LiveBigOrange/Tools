@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES 加密解密 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="AES 对称加密与解密，支持 AES-128/192/256 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="aes,加密,解密,对称加密,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/aes.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/aes.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="AES 加密解密 - 在线工具">
+    <meta property="og:description" content="AES 对称加密与解密，支持 AES-128/192/256 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/aes.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="AES 加密解密 - 在线工具">
+    <meta name="twitter:description" content="AES 对称加密与解密，支持 AES-128/192/256 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "AES 加密解密",
+                "description": "AES 对称加密与解密，支持 AES-128/192/256",
+                "url": "/tools/aes.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "加密/哈希",
+                        "item": "/#category-加密-哈希"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "AES 加密解密",
+                        "item": "/tools/aes.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "加密后的数据可以解密吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "哈希算法（MD5、SHA）是单向的，不可逆。AES 等对称加密可以通过密钥解密。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "哪种加密方式更安全？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "推荐使用 SHA-256 或更高强度的哈希算法，加密推荐 AES-256。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "我的数据会被存储吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "不会。所有加密/哈希计算均在浏览器本地完成，数据不会上传或存储。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .mode-tabs { display: flex; gap: 0.25rem; margin-bottom: 1rem; }
+        .mode-tab { flex: 1; padding: 0.5rem; text-align: center; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.85rem; cursor: pointer; transition: var(--transition); color: var(--text-secondary); }
+        .mode-tab:hover { border-color: var(--primary); color: var(--primary); }
+        .mode-tab.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+        .char-count { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; text-align: right; }
+        .password-row { position: relative; margin-bottom: 1rem; }
+        .password-row input { width: 100%; padding: 0.6rem 2.5rem 0.6rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 0.85rem; box-sizing: border-box; }
+        .password-row input:focus { outline: none; border-color: var(--primary); }
+        .password-toggle { position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--text-secondary); }
+        .btn-group { display: flex; gap: 0.25rem; margin-bottom: 1rem; }
+        .btn-option { flex: 1; padding: 0.4rem; text-align: center; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.8rem; cursor: pointer; transition: var(--transition); color: var(--text-secondary); }
+        .btn-option:hover { border-color: var(--primary); }
+        .btn-option.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+        .result-card { margin-top: 1rem; padding: 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); }
+        .result-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+        .result-label { font-size: 0.8rem; color: var(--text-secondary); }
+        .result-value { font-family: "SF Mono", "Fira Code", Consolas, monospace; font-size: 0.85rem; word-break: break-all; color: var(--text); }
+        .form-select { width: 100%; padding: 0.4rem 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 0.85rem; cursor: pointer; transition: var(--transition); }
+        .form-select:focus { outline: none; border-color: var(--primary); }
+        .iv-row { display: flex; gap: 0.5rem; align-items: center; }
+        .iv-row input { flex: 1; padding: 0.4rem 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 0.85rem; font-family: "SF Mono", "Fira Code", Consolas, monospace; }
+        .iv-row input:focus { outline: none; border-color: var(--primary); }
+        .iv-row .btn-iv { padding: 0.4rem 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text-secondary); font-size: 0.75rem; cursor: pointer; transition: var(--transition); white-space: nowrap; }
+        .iv-row .btn-iv:hover { border-color: var(--primary); color: var(--primary); }
+        .result-meta { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+        .result-meta-item { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.35rem; font-size: 0.8rem; }
+        .result-meta-key { color: var(--text-secondary); white-space: nowrap; }
+        .result-meta-val { font-family: "SF Mono", "Fira Code", Consolas, monospace; font-size: 0.8rem; word-break: break-all; color: var(--text); }
+        .input-area { margin-bottom: 1rem; }
+        .input-area textarea { width: 100%; min-height: 120px; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 0.85rem; resize: vertical; box-sizing: border-box; }
+        .input-area textarea:focus { outline: none; border-color: var(--primary); }
+        .form-row { display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .form-group { flex: 1; }
+        .form-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .form-input { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-size: 0.85rem; box-sizing: border-box; }
+        .form-input:focus { outline: none; border-color: var(--primary); }
+        .password-wrap { position: relative; }
+        .result-area { margin-top: 1rem; }
+        .result-info { font-size: 0.8rem; color: var(--text-secondary); }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-加密-哈希">加密/哈希</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>AES 加密解密</span>
+            </nav>
+            <div class="tool-header">
+                <h1>AES 加密解密</h1>
+                <p>AES 对称加密与解密，支持 AES-128/192/256</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">加密/哈希</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="mode-tabs">
+                    <button class="mode-tab active" data-mode="encrypt">🔒 加密</button>
+                    <button class="mode-tab" data-mode="decrypt">🔓 解密</button>
+                </div>
+                <div class="input-area">
+                    <textarea id="input" placeholder="在此输入要加密的文本..." spellcheck="false"></textarea>
+                    <span class="char-count" id="charCount">0 字符</span>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="password">密钥 (Password)</label>
+                        <div class="password-wrap">
+                            <input type="password" id="password" class="form-input" placeholder="输入加密/解密密钥">
+                            <button class="password-toggle" id="togglePassword" type="button">👁</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">密钥长度</label>
+                        <div class="btn-group" id="keySizeGroup">
+                            <button class="btn-option" data-value="128">AES-128</button>
+                            <button class="btn-option" data-value="192">AES-192</button>
+                            <button class="btn-option active" data-value="256">AES-256</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">输出格式</label>
+                        <div class="btn-group" id="outputFormatGroup">
+                            <button class="btn-option active" data-value="base64">Base64</button>
+                            <button class="btn-option" data-value="hex">Hex</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="modeSelect">Mode</label>
+                        <select id="modeSelect" class="form-select">
+                            <option value="CBC" selected>CBC</option>
+                            <option value="ECB">ECB</option>
+                            <option value="CFB">CFB</option>
+                            <option value="OFB">OFB</option>
+                            <option value="CTR">CTR</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="paddingSelect">Padding</label>
+                        <select id="paddingSelect" class="form-select">
+                            <option value="Pkcs7" selected>Pkcs7</option>
+                            <option value="ZeroPadding">ZeroPadding</option>
+                            <option value="NoPadding">NoPadding</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row" id="ivRow">
+                    <div class="form-group">
+                        <label class="form-label">IV (初始向量，Hex 格式)</label>
+                        <div class="iv-row">
+                            <input type="text" id="ivInput" placeholder="留空则随机生成">
+                            <button class="btn-iv" id="randomIvBtn" type="button">随机生成</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tool-actions">
+                    <button class="btn btn-primary" id="executeBtn">▶ 执行</button>
+                    <button class="btn btn-secondary" id="exampleBtn">📝 示例</button>
+                    <button class="btn btn-secondary" id="clearBtn">🗑 清空</button>
+                </div>
+                <div class="result-area" id="resultArea">
+                    <div class="result-header">
+                        <span class="result-info" id="resultInfo">结果</span>
+                        <button class="btn-sm" id="copyResultBtn">📋 复制</button>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-value" id="resultValue"></div>
+                        <div class="result-meta" id="resultMeta" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
+            <section class="features">
+                <h2>AES 加密解密功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔐</div>
+                        <h3>AES 加密</h3>
+                        <p>支持 AES-128/192/256 三种密钥长度的加密。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔓</div>
+                        <h3>AES 解密</h3>
+                        <p>使用密钥对 AES 加密数据进行解密。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>一键复制</h3>
+                        <p>加密/解密结果可直接复制。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>加解密操作在浏览器中完成，密钥和数据不上传服务器。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>AES 加密解密常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question"><span>AES-128、AES-192、AES-256 有什么区别？</span><span class="faq-arrow">›</span></button>
+                        <div class="faq-answer"><p>区别在于密钥长度：128 位、192 位和 256 位。密钥越长安全性越高，但计算开销也略大。AES-256 是最安全的选择。</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question"><span>加密和解密需要什么？</span><span class="faq-arrow">›</span></button>
+                        <div class="faq-answer"><p>加密需要明文和密钥。解密需要密文和相同的密钥。请妥善保管密钥，丢失后无法解密。</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question"><span>数据会被上传吗？</span><span class="faq-arrow">›</span></button>
+                        <div class="faq-answer"><p>不会。加解密操作在浏览器本地完成，密钥和数据也不会上传。</p></div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "AES 加密解密", path: "tools/aes.html" };
+    </script>
+    <script src="../assets/js/libs.js"></script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var input = document.getElementById('input');
+        var charCount = document.getElementById('charCount');
+        var password = document.getElementById('password');
+        var togglePassword = document.getElementById('togglePassword');
+        var executeBtn = document.getElementById('executeBtn');
+        var exampleBtn = document.getElementById('exampleBtn');
+        var clearBtn = document.getElementById('clearBtn');
+        var resultArea = document.getElementById('resultArea');
+        var resultInfo = document.getElementById('resultInfo');
+        var resultValue = document.getElementById('resultValue');
+        var copyResultBtn = document.getElementById('copyResultBtn');
+        var currentMode = 'encrypt';
+        var keySize = '256';
+        var outputFormat = 'base64';
+        var modeSelect = document.getElementById('modeSelect');
+        var paddingSelect = document.getElementById('paddingSelect');
+        var ivInput = document.getElementById('ivInput');
+        var randomIvBtn = document.getElementById('randomIvBtn');
+        var resultMeta = document.getElementById('resultMeta');
+
+        function getMode() {
+            var map = { CBC: CryptoJS.mode.CBC, ECB: CryptoJS.mode.ECB, CFB: CryptoJS.mode.CFB, OFB: CryptoJS.mode.OFB, CTR: CryptoJS.mode.CTR };
+            return map[modeSelect.value] || CryptoJS.mode.CBC;
+        }
+
+        function getPadding() {
+            var map = { Pkcs7: CryptoJS.pad.Pkcs7, ZeroPadding: CryptoJS.pad.ZeroPadding, NoPadding: CryptoJS.pad.NoPadding };
+            return map[paddingSelect.value] || CryptoJS.pad.Pkcs7;
+        }
+
+        function generateRandomIv() {
+            var words = [];
+            for (var i = 0; i < 4; i++) {
+                words.push((Math.random() * 0x100000000) | 0);
+            }
+            return CryptoJS.lib.WordArray.create(words).toString(CryptoJS.enc.Hex);
+        }
+
+        randomIvBtn.addEventListener('click', function() {
+            ivInput.value = generateRandomIv();
+        });
+
+        function showResultMeta(meta) {
+            var html = '';
+            if (meta.mode) html += '<div class="result-meta-item"><span class="result-meta-key">Mode:</span><span class="result-meta-val">' + meta.mode + '</span></div>';
+            if (meta.padding) html += '<div class="result-meta-item"><span class="result-meta-key">Padding:</span><span class="result-meta-val">' + meta.padding + '</span></div>';
+            if (meta.iv) html += '<div class="result-meta-item"><span class="result-meta-key">IV (Hex):</span><span class="result-meta-val">' + meta.iv + '</span></div>';
+            if (meta.keySize) html += '<div class="result-meta-item"><span class="result-meta-key">Key Size:</span><span class="result-meta-val">AES-' + meta.keySize + '</span></div>';
+            if (html) {
+                resultMeta.innerHTML = html;
+                resultMeta.style.display = 'block';
+            } else {
+                resultMeta.style.display = 'none';
+            }
+        }
+
+        document.querySelectorAll('.mode-tab').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.mode-tab').forEach(function(t) { t.classList.remove('active'); });
+                this.classList.add('active');
+                currentMode = this.dataset.mode;
+                var placeholder = currentMode === 'encrypt' ? '在此输入要加密的文本...' : '在此输入要解密的密文 (Base64 或 Hex)...';
+                input.placeholder = placeholder;
+                executeBtn.textContent = currentMode === 'encrypt' ? '▶ 加密' : '▶ 解密';
+            });
+        });
+
+        modeSelect.addEventListener('change', function() {
+            var ivRow = document.getElementById('ivRow');
+            ivRow.style.display = this.value === 'ECB' ? 'none' : '';
+        });
+
+        document.querySelectorAll('#keySizeGroup .btn-option').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#keySizeGroup .btn-option').forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                keySize = this.dataset.value;
+            });
+        });
+
+        document.querySelectorAll('#outputFormatGroup .btn-option').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#outputFormatGroup .btn-option').forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                outputFormat = this.dataset.value;
+            });
+        });
+
+        togglePassword.addEventListener('click', function() {
+            var isPassword = password.type === 'password';
+            password.type = isPassword ? 'text' : 'password';
+            this.textContent = isPassword ? '🙈' : '👁';
+        });
+
+        input.addEventListener('input', function() {
+            charCount.textContent = this.value.length + ' 字符';
+        });
+
+        executeBtn.addEventListener('click', async function() {
+            var val = input.value.trim();
+            var key = password.value.trim();
+            if (!val) { return; }
+            if (!key) { alert('请输入密钥'); return; }
+            try {
+                await loadLibs('crypto');
+                var keyBytes = CryptoJS.enc.Utf8.parse(key);
+                var parsedKey = CryptoJS.lib.WordArray.create(keyBytes.words.slice(), keyBytes.sigBytes);
+                if (parsedKey.sigBytes > 32) parsedKey.sigBytes = 32;
+                var selectedMode = modeSelect.value;
+                var selectedPadding = paddingSelect.value;
+                var mode = getMode();
+                var padding = getPadding();
+                var isEcb = selectedMode === 'ECB';
+                var ivHex = '';
+                var ivWordArray = undefined;
+                if (!isEcb) {
+                    var ivStr = ivInput.value.trim();
+                    if (ivStr) {
+                        if (/^[0-9a-fA-F]+$/.test(ivStr) && ivStr.length % 2 === 0) {
+                            ivWordArray = CryptoJS.enc.Hex.parse(ivStr);
+                        } else {
+                            ivWordArray = CryptoJS.enc.Utf8.parse(ivStr);
+                        }
+                    } else {
+                        ivWordArray = CryptoJS.lib.WordArray.random(16);
+                    }
+                    ivHex = ivWordArray.toString(CryptoJS.enc.Hex);
+                }
+                var encryptOpts = { mode: mode, padding: padding };
+                if (!isEcb) encryptOpts.iv = ivWordArray;
+                if (currentMode === 'encrypt') {
+                    var encrypted = CryptoJS.AES.encrypt(val, parsedKey, encryptOpts);
+                    var result = '';
+                    if (outputFormat === 'base64') {
+                        result = encrypted.toString();
+                    } else {
+                        result = encrypted.ciphertext.toString(CryptoJS.enc.Hex);
+                    }
+                    resultInfo.textContent = '加密结果 (' + (outputFormat === 'base64' ? 'Base64' : 'Hex') + ')';
+                    resultValue.textContent = result;
+                    showResultMeta({ mode: selectedMode, padding: selectedPadding, iv: isEcb ? 'ECB 无需 IV' : ivHex, keySize: keySize });
+                } else {
+                    var cipherText;
+                    if (/^[0-9a-fA-F]+$/.test(val) && val.length % 2 === 0) {
+                        cipherText = CryptoJS.enc.Hex.parse(val);
+                    } else {
+                        try {
+                            cipherText = CryptoJS.enc.Base64.parse(val);
+                        } catch(ex) {
+                            cipherText = CryptoJS.enc.Hex.parse(val);
+                        }
+                    }
+                    var decryptOpts = { mode: mode, padding: padding };
+                    if (!isEcb) decryptOpts.iv = ivWordArray;
+                    var cipherParams = CryptoJS.lib.CipherParams.create({ ciphertext: cipherText });
+                    var decrypted = CryptoJS.AES.decrypt(cipherParams, parsedKey, decryptOpts);
+                    var text = decrypted.toString(CryptoJS.enc.Utf8);
+                    if (!text) {
+                        resultInfo.textContent = '解密失败';
+                        resultValue.textContent = '密钥错误、密文无效或 Mode/Padding/IV 不匹配';
+                        showResultMeta({});
+                    } else {
+                        resultInfo.textContent = '解密结果 (文本)';
+                        resultValue.textContent = text;
+                        showResultMeta({ mode: selectedMode, padding: selectedPadding, iv: isEcb ? 'ECB 无需 IV' : ivHex, keySize: keySize });
+                    }
+                }
+                resultArea.style.display = 'block';
+            } catch(e) {
+                resultInfo.textContent = '错误';
+                resultValue.textContent = e.message;
+                showResultMeta({});
+                resultArea.style.display = 'block';
+            }
+        });
+
+        exampleBtn.addEventListener('click', function() {
+            input.value = 'Hello, 在线工具! This is a test message.';
+            charCount.textContent = input.value.length + ' 字符';
+        });
+
+        clearBtn.addEventListener('click', function() {
+            input.value = '';
+            password.value = '';
+            ivInput.value = '';
+            charCount.textContent = '0 字符';
+            resultArea.style.display = 'none';
+            resultMeta.style.display = 'none';
+        });
+
+        copyResultBtn.addEventListener('click', function() {
+            var text = resultValue.textContent;
+            if (text) {
+                copyText(text).then(function() {
+                    var orig = copyResultBtn.textContent;
+                    copyResultBtn.textContent = '✓ 已复制';
+                    setTimeout(function() { copyResultBtn.textContent = orig; }, 1500);
+                });
+            }
+        });
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            var current = "tools/aes.html";
+            var currentCat = "加密/哈希";
+            var related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(t => t.path !== current && related.indexOf(t) === -1).slice(0, 5 - related.length);
+                related.push.apply(related, others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t =>
+                '<a href="' + t.path.split('/').pop() + '" class="tool-card"><div class="tool-name">' + t.name + '</div><div class="tool-desc">' + t.description + '</div></a>'
+            ).join('');
+        }).catch(function() {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>世界时间 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="查看全球主要城市当前时间，多时区对照 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="世界, 时间, 时区, 时钟, timezone,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/world-clock.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/world-clock.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="世界时间 - 在线工具">
+    <meta property="og:description" content="查看全球主要城市当前时间，多时区对照 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/world-clock.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="世界时间 - 在线工具">
+    <meta name="twitter:description" content="查看全球主要城市当前时间，多时区对照 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "世界时间",
+                "description": "查看全球主要城市当前时间，多时区对照",
+                "url": "/tools/world-clock.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "时间/日期",
+                        "item": "/#category-时间-日期"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "世界时间",
+                        "item": "/tools/world-clock.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "时间戳的精度是多少？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持秒级和毫秒级时间戳，可以精确到毫秒。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "支持哪些时区？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "支持全球所有标准时区，包括 UTC、GMT 以及各主要城市时区。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "如何获取当前时间戳？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "页面打开时会自动显示当前时间的时间戳，您也可以点击按钮一键复制。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .world-search { margin-bottom: 1rem; }
+        .my-time { text-align: center; padding: 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); margin-bottom: 1.5rem; }
+        .my-label { font-size: 0.85rem; color: var(--text-secondary); display: block; margin-bottom: 0.25rem; }
+        .my-value { font-size: 2rem; font-weight: 700; font-family: monospace; color: var(--primary); }
+        .world-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; }
+        .world-card { padding: 1rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); text-align: center; transition: var(--transition); cursor: pointer; position: relative; }
+        .world-card:hover { border-color: var(--primary); }
+        .world-card.night { opacity: 0.7; }
+        .world-city { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .world-time { font-size: 1.5rem; font-weight: 700; font-family: monospace; color: var(--primary); }
+        .world-date { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem; }
+        .world-offset { font-size: 0.7rem; color: var(--text-muted); }
+        .world-icon { font-size: 1.2rem; margin-bottom: 0.25rem; }
+        .world-region { grid-column: 1 / -1; font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); padding: 0.5rem 0 0.25rem; border-bottom: 1px solid var(--border); margin-top: 0.5rem; }
+        .world-region:first-child { margin-top: 0; }
+        .world-card .copy-hint { position: absolute; top: 0.4rem; right: 0.5rem; font-size: 0.65rem; color: var(--text-muted); opacity: 0; transition: var(--transition); }
+        .world-card:hover .copy-hint { opacity: 1; }
+        @media (max-width: 600px) {
+            .world-grid { grid-template-columns: repeat(2, 1fr); }
+            .my-value { font-size: 1.5rem; }
+            .world-time { font-size: 1.25rem; }
+        }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-时间-日期">时间/日期</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>世界时间</span>
+            </nav>
+            <div class="tool-header">
+                <h1>世界时间</h1>
+                <p>查看全球主要城市当前时间，多时区对照</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">时间/日期</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="world-search">
+                    <input type="text" id="worldSearchInput" placeholder="搜索城市..." style="width:100%">
+                </div>
+                <div class="my-time" id="myTime">
+                    <span class="my-label">我的时间</span>
+                    <span class="my-value" id="myTimeValue"></span>
+                </div>
+                <div class="world-grid" id="worldGrid"></div>
+            </div>
+            <section class="features">
+                <h2>世界时间功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🌍</div>
+                        <h3>全球覆盖</h3>
+                        <p>覆盖亚洲、欧洲、美洲、大洋洲等20+主要城市。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>实时更新</h3>
+                        <p>所有城市时间每秒自动更新，精准同步。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>所有操作在浏览器中完成，数据不上传服务器，保障隐私安全。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>世界时间常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>支持哪些城市？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>支持全球20+主要城市，覆盖亚洲、欧洲、美洲、大洋洲等区域。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>时间是否自动更新？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>是的，所有城市时间每秒自动更新一次。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>如何判断白天和夜晚？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>6:00-18:00 显示为白天（☀️），其余时间为夜晚（🌙）。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "世界时间", path: "tools/world-clock.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        var cities = [
+            { name: '北京', region: '中国', timeZone: 'Asia/Shanghai' },
+            { name: '上海', region: '中国', timeZone: 'Asia/Shanghai' },
+            { name: '香港', region: '中国', timeZone: 'Asia/Hong_Kong' },
+            { name: '东京', region: '东亚', timeZone: 'Asia/Tokyo' },
+            { name: '首尔', region: '东亚', timeZone: 'Asia/Seoul' },
+            { name: '新加坡', region: '东南亚', timeZone: 'Asia/Singapore' },
+            { name: '曼谷', region: '东南亚', timeZone: 'Asia/Bangkok' },
+            { name: '雅加达', region: '东南亚', timeZone: 'Asia/Jakarta' },
+            { name: '新德里', region: '南亚/中东', timeZone: 'Asia/Kolkata' },
+            { name: '迪拜', region: '南亚/中东', timeZone: 'Asia/Dubai' },
+            { name: '莫斯科', region: '南亚/中东', timeZone: 'Europe/Moscow' },
+            { name: '伦敦', region: '欧洲', timeZone: 'Europe/London' },
+            { name: '巴黎', region: '欧洲', timeZone: 'Europe/Paris' },
+            { name: '柏林', region: '欧洲', timeZone: 'Europe/Berlin' },
+            { name: '纽约', region: '美洲', timeZone: 'America/New_York' },
+            { name: '洛杉矶', region: '美洲', timeZone: 'America/Los_Angeles' },
+            { name: '芝加哥', region: '美洲', timeZone: 'America/Chicago' },
+            { name: '悉尼', region: '大洋洲', timeZone: 'Australia/Sydney' },
+            { name: '奥克兰', region: '大洋洲', timeZone: 'Pacific/Auckland' }
+        ];
+
+        var regionOrder = ['中国', '东亚', '东南亚', '南亚/中东', '欧洲', '美洲', '大洋洲'];
+
+        var grid = document.getElementById('worldGrid');
+        var searchInput = document.getElementById('worldSearchInput');
+        var myTimeValue = document.getElementById('myTimeValue');
+
+        var timeFormatter = new Intl.DateTimeFormat('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+        var dateFormatter = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' });
+        var offsetFormatter = new Intl.DateTimeFormat('zh-CN', { timeZoneName: 'shortOffset' });
+        var myTimeFormatter = new Intl.DateTimeFormat('zh-CN', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+        var myDateFormatter = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', weekday: 'short' });
+
+        var cardElements = {};
+
+        function buildGrid() {
+            var html = '';
+            var lastRegion = '';
+            cities.forEach(function(city, i) {
+                if (city.region !== lastRegion) {
+                    lastRegion = city.region;
+                    html += '<div class="world-region" data-region="' + city.region + '">' + city.region + '</div>';
+                }
+                html += '<div class="world-card" data-city="' + city.name + '" data-region="' + city.region + '" data-index="' + i + '" title="点击复制时间">';
+                html += '<span class="copy-hint">复制</span>';
+                html += '<div class="world-icon" id="icon-' + i + '"></div>';
+                html += '<div class="world-city">' + city.name + '</div>';
+                html += '<div class="world-time" id="time-' + i + '">--:--:--</div>';
+                html += '<div class="world-date" id="date-' + i + '"></div>';
+                html += '<div class="world-offset" id="offset-' + i + '"></div>';
+                html += '</div>';
+                cardElements[i] = {
+                    card: null,
+                    timeEl: null,
+                    dateEl: null,
+                    offsetEl: null,
+                    iconEl: null
+                };
+            });
+            grid.innerHTML = html;
+            cities.forEach(function(city, i) {
+                cardElements[i].card = grid.querySelector('[data-index="' + i + '"]');
+                cardElements[i].timeEl = document.getElementById('time-' + i);
+                cardElements[i].dateEl = document.getElementById('date-' + i);
+                cardElements[i].offsetEl = document.getElementById('offset-' + i);
+                cardElements[i].iconEl = document.getElementById('icon-' + i);
+            });
+        }
+
+        function getOffsetString(timeZone) {
+            var now = new Date();
+            var formatter = new Intl.DateTimeFormat('en-US', { timeZone: timeZone, timeZoneName: 'shortOffset' });
+            var parts = formatter.formatToParts(now);
+            for (var i = 0; i < parts.length; i++) {
+                if (parts[i].type === 'timeZoneName') {
+                    return parts[i].value.replace('GMT', 'UTC');
+                }
+            }
+            return '';
+        }
+
+        function updateTimes() {
+            var now = new Date();
+            myTimeValue.textContent = myTimeFormatter.format(now) + ' ' + myDateFormatter.format(now);
+
+            cities.forEach(function(city, i) {
+                var els = cardElements[i];
+                if (!els.card) return;
+                if (els.card.style.display === 'none') return;
+
+                var tzTime = new Date(now.toLocaleString('en-US', { timeZone: city.timeZone }));
+                var hours = tzTime.getHours();
+                var isNight = hours < 6 || hours >= 18;
+
+                els.iconEl.textContent = isNight ? '🌙' : '☀️';
+                els.timeEl.textContent = timeFormatter.format(tzTime);
+                els.dateEl.textContent = dateFormatter.format(tzTime);
+                els.offsetEl.textContent = getOffsetString(city.timeZone);
+
+                if (isNight) {
+                    els.card.classList.add('night');
+                } else {
+                    els.card.classList.remove('night');
+                }
+            });
+        }
+
+        function filterCities(query) {
+            var q = query.trim().toLowerCase();
+            var visibleRegions = {};
+            cities.forEach(function(city, i) {
+                var els = cardElements[i];
+                if (!els.card) return;
+                var match = !q || city.name.toLowerCase().indexOf(q) !== -1 || city.region.toLowerCase().indexOf(q) !== -1 || city.timeZone.toLowerCase().indexOf(q) !== -1;
+                els.card.style.display = match ? '' : 'none';
+                if (match) {
+                    visibleRegions[city.region] = true;
+                }
+            });
+            document.querySelectorAll('.world-region').forEach(function(el) {
+                var region = el.getAttribute('data-region');
+                el.style.display = visibleRegions[region] ? '' : 'none';
+            });
+        }
+
+        buildGrid();
+        updateTimes();
+        setInterval(updateTimes, 1000);
+
+        searchInput.addEventListener('input', function() {
+            filterCities(this.value);
+        });
+
+        grid.addEventListener('click', function(e) {
+            var card = e.target.closest('.world-card');
+            if (!card) return;
+            var idx = parseInt(card.getAttribute('data-index', 10), 10);
+            var timeText = cardElements[idx].timeEl.textContent;
+            if (timeText && timeText !== '--:--:--') {
+                copyText(timeText).then(function() {
+                    var hint = card.querySelector('.copy-hint');
+                    var orig = hint.textContent;
+                    hint.textContent = '已复制';
+                    setTimeout(function() { hint.textContent = orig; }, 1000);
+                });
+            }
+        });
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            var current = "tools/world-clock.html";
+            var currentCat = "时间/日期";
+            var related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                var others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+                related.push(...others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+                <a href="${t.path.split('/').pop()}" class="tool-card">
+                    <div class="tool-name">${t.name}</div>
+                    <div class="tool-desc">${t.description}</div>
+                </a>
+            `).join('');
+        }).catch(() => {});
+
+        var headerSearchInput = document.getElementById('searchInput');
+        headerSearchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

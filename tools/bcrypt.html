@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bcrypt 哈希 - 在线工具 | 免费在线工具</title>
+    <meta name="description" content="Bcrypt 密码哈希生成与验证，支持自定义轮数 - 免费在线工具，纯前端实现，数据不上传服务器，打开即用。">
+    <meta name="keywords" content="bcrypt, 密码, 哈希, salt, 验证,在线工具,免费工具,开发者工具">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="/tools/bcrypt.html">
+    <link rel="alternate" hreflang="zh-CN" href="/tools/bcrypt.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Bcrypt 哈希 - 在线工具">
+    <meta property="og:description" content="Bcrypt 密码哈希生成与验证，支持自定义轮数 - 免费在线工具，纯前端实现，数据不上传服务器。">
+    <meta property="og:url" content="/tools/bcrypt.html">
+    <meta property="og:site_name" content="在线工具">
+    <meta property="og:locale" content="zh_CN">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Bcrypt 哈希 - 在线工具">
+    <meta name="twitter:description" content="Bcrypt 密码哈希生成与验证，支持自定义轮数 - 免费在线工具，数据不上传服务器。">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#667eea">
+    <link rel="apple-touch-icon" href="../assets/icons/icon-152.png">
+    <script src="../assets/js/theme.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebApplication",
+                "name": "Bcrypt 哈希",
+                "description": "Bcrypt 密码哈希生成与验证，支持自定义轮数",
+                "url": "/tools/bcrypt.html",
+                "applicationCategory": "DeveloperApplication",
+                "operatingSystem": "Any",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "CNY"
+                },
+                "browserRequirements": "Requires JavaScript"
+            },
+            {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "首页",
+                        "item": "/"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 2,
+                        "name": "加密/哈希",
+                        "item": "/#category-加密-哈希"
+                    },
+                    {
+                        "@type": "ListItem",
+                        "position": 3,
+                        "name": "Bcrypt 哈希",
+                        "item": "/tools/bcrypt.html"
+                    }
+                ]
+            },
+            {
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "加密后的数据可以解密吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "哈希算法（MD5、SHA）是单向的，不可逆。AES 等对称加密可以通过密钥解密。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "哪种加密方式更安全？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "推荐使用 SHA-256 或更高强度的哈希算法，加密推荐 AES-256。"
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "我的数据会被存储吗？",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "不会。所有加密/哈希计算均在浏览器本地完成，数据不会上传或存储。"
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+    </script>
+    <style>
+        .tool-page .main { flex: 1; padding: 2rem 0 3rem; }
+        .tool-page .tool-container { max-width: 1200px; margin: 0 auto; }
+
+        .tool-page .breadcrumb {
+            padding: 0.75rem 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .tool-page .breadcrumb a { color: var(--primary); text-decoration: none; transition: var(--transition); }
+        .tool-page .breadcrumb a:hover { text-decoration: underline; }
+        .tool-page .breadcrumb-sep { color: var(--text-muted); }
+        
+        .tool-page .tool-header { margin-bottom: 1.5rem; animation: fadeIn 0.3s ease; }
+        .tool-page .tool-header h1 { font-size: 1.75rem; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+        .tool-page .tool-header p { color: var(--text-secondary); }
+        .tool-page .tool-header .tool-meta { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        
+        .tool-page .tool-workspace {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            animation: fadeInUp 0.4s ease;
+        }
+        
+        .tool-page .tool-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-page .tool-output {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .tool-page .features { margin-bottom: 2rem; animation: fadeInUp 0.5s ease; }
+        .tool-page .features h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .tool-page .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            transition: var(--transition);
+        }
+        .tool-page .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tool-page .feature-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-page .feature-card h3 {
+            font-size: 1rem;
+            margin: 0 0 0.5rem;
+            color: var(--text);
+        }
+        .tool-page .feature-card p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .tool-page .faq { margin-bottom: 2rem; animation: fadeInUp 0.6s ease; }
+        .tool-page .faq h2 { font-size: 1.35rem; margin-bottom: 1.25rem; }
+        .tool-page .faq-list { align-items: start;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 0.75rem;
+        }
+        .tool-page .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+        .tool-page .faq-item:hover { border-color: var(--primary); }
+        .tool-page .faq-item.open { border-color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tool-page .faq-question {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            transition: var(--transition);
+            line-height: 1.4;
+        }
+        .tool-page .faq-question:hover { color: var(--primary); }
+        .tool-page .faq-arrow {
+            flex-shrink: 0;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        .tool-page .faq-arrow.open { transform: rotate(90deg); }
+        .tool-page .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .tool-page .faq-answer.open {
+            max-height: 400px;
+            padding: 0 1rem 0.85rem;
+        }
+        .tool-page .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .tool-page .related { margin-bottom: 2rem; animation: fadeInUp 0.7s ease; }
+        .tool-page .related h2 { font-size: 1.25rem; margin-bottom: 1rem; }
+        .tool-page .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+        }
+        
+        @media (max-width: 600px) {
+            .tool-page .related-grid { grid-template-columns: 1fr 1fr; }
+            .tool-page .tool-workspace { padding: 1rem; }
+            .tool-page .tool-actions { flex-direction: column; }
+            .tool-page .tool-actions .btn { width: 100%; }
+            .tool-page .features-grid { grid-template-columns: 1fr; }
+            .tool-page .faq-list { align-items: start; grid-template-columns: 1fr; }
+        }
+    </style>
+    <style>
+        .tab-bar { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 1.25rem; }
+        .tab-btn { flex: 1; padding: 0.7rem 1rem; border: none; background: none; font-size: 0.95rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: var(--transition); }
+        .tab-btn:hover { color: var(--primary); }
+        .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.4rem; }
+        .form-group input[type="text"] { width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 0.9rem; background: var(--bg); color: var(--text); transition: var(--transition); box-sizing: border-box; }
+        .form-group input[type="text"]:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 59,130,246), 0.15); }
+        input[type="range"] { width: 100%; height: 6px; appearance: none; background: var(--border); border-radius: 3px; outline: none; cursor: pointer; }
+        input[type="range"]::-webkit-slider-thumb { appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--primary); cursor: pointer; }
+        .hash-result { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: "SF Mono","Fira Code","Cascadia Code","JetBrains Mono",Consolas,monospace; font-size: 0.85rem; word-break: break-all; line-height: 1.5; }
+        .hash-result .copy-btn { flex-shrink: 0; padding: 0.35rem 0.65rem; font-size: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card-bg); color: var(--text-secondary); cursor: pointer; transition: var(--transition); white-space: nowrap; }
+        .hash-result .copy-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .verify-result { padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; text-align: center; }
+        .verify-result.match { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+        .verify-result.mismatch { background: #ffebee; color: #c62828; border: 1px solid #ef9a9a; }
+        .loading { opacity: 0.6; pointer-events: none; }
+        .tab-content { margin-top: 1rem; }
+    </style>
+</head>
+<body class="tool-page">
+    <header class="header">
+        <div class="container header-inner">
+            <a href="../index.html" class="logo">ToolBox</a>
+            <div class="header-spacer"></div>
+            <div class="search-wrapper">
+                <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" id="searchInput" class="search-input" placeholder="搜索工具..." autocomplete="off">
+            </div>
+            <div class="header-spacer"></div>
+            <div class="header-actions">
+                <a href="../about.html" class="header-link">关于我们</a>
+                <button class="theme-toggle" id="themeToggle" title="切换主题">
+                    <svg class="theme-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+    <main class="main">
+        <div class="tool-container container">
+            <nav class="breadcrumb">
+                <a href="../index.html">首页</a>
+                <span class="breadcrumb-sep">›</span>
+                <a href="../index.html#category-加密-哈希">加密/哈希</a>
+                <span class="breadcrumb-sep">›</span>
+                <span>Bcrypt 哈希</span>
+            </nav>
+            <div class="tool-header">
+                <h1>Bcrypt 哈希</h1>
+                <p>Bcrypt 密码哈希生成与验证，支持自定义轮数</p>
+                <div class="tool-meta">
+                    <span class="badge badge-primary">加密/哈希</span>
+                    <span class="badge badge-success">免费</span>
+                    <span class="badge badge-secondary">本地处理</span>
+                </div>
+            </div>
+            <div class="tool-workspace">
+                <div class="tab-bar">
+                    <button class="tab-btn active" data-tab="generate">生成哈希</button>
+                    <button class="tab-btn" data-tab="verify">验证哈希</button>
+                </div>
+                <div class="tab-content" id="generateTab">
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="text" id="passwordInput" placeholder="输入密码...">
+                    </div>
+                    <div class="form-group">
+                        <label>轮数 (Rounds): <span id="roundsValue">10</span></label>
+                        <input type="range" id="roundsSlider" min="4" max="12" value="10">
+                    </div>
+                    <div class="tool-actions">
+                        <button class="btn btn-primary" id="generateBtn">🔐 生成哈希</button>
+                    </div>
+                    <div class="tool-output" id="generateOutput"></div>
+                </div>
+                <div class="tab-content" id="verifyTab" style="display:none">
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="text" id="verifyPassword" placeholder="输入密码...">
+                    </div>
+                    <div class="form-group">
+                        <label>哈希值</label>
+                        <input type="text" id="verifyHash" placeholder="输入 bcrypt 哈希值...">
+                    </div>
+                    <div class="tool-actions">
+                        <button class="btn btn-primary" id="verifyBtn">✅ 验证</button>
+                    </div>
+                    <div class="tool-output" id="verifyOutput"></div>
+                </div>
+            </div>
+            <section class="features">
+                <h2>Bcrypt 哈希功能亮点</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔐</div>
+                        <h3>安全哈希</h3>
+                        <p>基于 Blowfish 算法，自带盐值，有效抵御彩虹表攻击。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚙️</div>
+                        <h3>自定义轮数</h3>
+                        <p>支持 4-12 轮计算，轮数越高越安全但越慢。</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>纯前端本地处理</h3>
+                        <p>所有操作在浏览器中完成，数据不上传服务器，保障隐私安全。</p>
+                    </div>
+                </div>
+            </section>
+            <section class="faq">
+                <h2>Bcrypt 哈希常见问题</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Bcrypt 哈希可以逆向解密吗？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>不可以。Bcrypt 是单向哈希算法，只能通过对比验证，无法从哈希值还原原始密码。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>轮数设置多少合适？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>一般推荐 10-12 轮。轮数越高计算越慢，安全性越高，但性能开销也越大。</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Bcrypt 和 SHA-256 有什么区别？</span>
+                            <span class="faq-arrow">›</span>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Bcrypt 自带盐值且可调节计算成本，专为密码存储设计；SHA-256 速度更快，适合数据完整性校验。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="related">
+                <h2>相关工具</h2>
+                <div class="related-grid" id="relatedGrid"></div>
+            </section>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">ToolBox</div>
+                <div class="footer-desc">纯前端实现，数据不上传服务器，隐私安全有保障</div>
+                <div class="footer-links">
+                    <a href="../index.html">首页</a>
+                    <a href="../about.html">关于我们</a>
+                    <a href="../privacy.html">隐私政策</a>
+                    <a href="https://github.com/LiveBigOrange/Tools" target="_blank" rel="noopener">GitHub</a>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> ToolBox ·
+                    <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">豫ICP备17031913号-1</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        window.TOOL_INFO = { name: "Bcrypt 哈希", path: "tools/bcrypt.html" };
+    </script>
+    <script src="../assets/js/record-tool.js"></script>
+    <script src="../assets/js/libs.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        document.querySelectorAll('.tab-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+                document.querySelectorAll('.tab-content').forEach(function(c) { c.style.display = 'none'; });
+                document.getElementById(this.dataset.tab + 'Tab').style.display = 'block';
+            });
+        });
+
+        var roundsSlider = document.getElementById('roundsSlider');
+        var roundsValue = document.getElementById('roundsValue');
+        roundsSlider.addEventListener('input', function() { roundsValue.textContent = this.value; });
+
+        function getBcrypt() {
+            return window.bcrypt || window.dcodeIO && window.dcodeIO.bcrypt;
+        }
+
+        document.getElementById('generateBtn').addEventListener('click', function() {
+            var password = document.getElementById('passwordInput').value;
+            if (!password) { alert('请输入密码'); return; }
+            var rounds = parseInt(roundsSlider.value, 10);
+            var btn = this;
+            var output = document.getElementById('generateOutput');
+            btn.classList.add('loading');
+            btn.textContent = '生成中...';
+            loadLibs('bcryptjs').then(function() {
+                var bcrypt = getBcrypt();
+                var hash = bcrypt.hashSync(password, rounds);
+                output.innerHTML = '<div class="hash-result"><span>' + hash + '</span><button class="copy-btn" onclick="copyHash(this)">复制</button></div>';
+                output.style.display = 'block';
+                btn.classList.remove('loading');
+                btn.textContent = '🔐 生成哈希';
+            }).catch(function(e) {
+                output.textContent = '加载库失败: ' + e;
+                output.style.display = 'block';
+                btn.classList.remove('loading');
+                btn.textContent = '🔐 生成哈希';
+            });
+        });
+
+        document.getElementById('verifyBtn').addEventListener('click', function() {
+            var password = document.getElementById('verifyPassword').value;
+            var hash = document.getElementById('verifyHash').value.trim();
+            if (!password) { alert('请输入密码'); return; }
+            if (!hash) { alert('请输入哈希值'); return; }
+            var btn = this;
+            var output = document.getElementById('verifyOutput');
+            btn.classList.add('loading');
+            btn.textContent = '验证中...';
+            loadLibs('bcryptjs').then(function() {
+                var bcrypt = getBcrypt();
+                var match = bcrypt.compareSync(password, hash);
+                output.innerHTML = '<div class="verify-result ' + (match ? 'match' : 'mismatch') + '">' + (match ? '✅ 匹配' : '❌ 不匹配') + '</div>';
+                output.style.display = 'block';
+                btn.classList.remove('loading');
+                btn.textContent = '✅ 验证';
+            }).catch(function(e) {
+                output.textContent = '加载库失败: ' + e;
+                output.style.display = 'block';
+                btn.classList.remove('loading');
+                btn.textContent = '✅ 验证';
+            });
+        });
+
+        function copyHash(el) {
+            var text = el.previousElementSibling.textContent;
+            copyText(text).then(function() {
+                el.textContent = '已复制';
+                setTimeout(function() { el.textContent = '复制'; }, 1500);
+            });
+        }
+
+        window.location.protocol === 'file:' ? Promise.reject('本地模式') : fetch('../search-index.json').then(r => r.json()).then(tools => {
+            const current = "tools/bcrypt.html";
+            const currentCat = "加密/哈希";
+            const related = tools.filter(t => t.path !== current && t.category === currentCat).slice(0, 5);
+            if (related.length < 4) {
+                const others = tools.filter(t => t.path !== current && !related.includes(t)).slice(0, 5 - related.length);
+                related.push(...others);
+            }
+            document.getElementById('relatedGrid').innerHTML = related.slice(0, 5).map(t => `
+                <a href="${t.path.split('/').pop()}" class="tool-card">
+                    <div class="tool-name">${t.name}</div>
+                    <div class="tool-desc">${t.description}</div>
+                </a>
+            `).join('');
+        }).catch(() => {});
+
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                var q = this.value.trim();
+                if (q) window.location.href = '../index.html?q=' + encodeURIComponent(q);
+            }
+        });
+
+        document.querySelectorAll('.faq-question').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var item = this.closest('.faq-item');
+                var answer = item.querySelector('.faq-answer');
+                var arrow = this.querySelector('.faq-arrow');
+                var isOpen = answer.classList.contains('open');
+                document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
+                    openItem.classList.remove('open');
+                    openItem.querySelector('.faq-answer').classList.remove('open');
+                    openItem.querySelector('.faq-arrow').classList.remove('open');
+                });
+                if (!isOpen) {
+                    item.classList.add('open');
+                    answer.classList.add('open');
+                    arrow.classList.add('open');
+                }
+            });
+        });
+    </script>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>
+<script>ToolBoxTheme.setupToggle();</script>
+<script>
+if ('serviceWorker' in navigator && window.location.protocol !== 'file:') {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>
