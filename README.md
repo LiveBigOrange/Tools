@@ -318,6 +318,36 @@ node generate-tools.js
 node generate-sitemap.js
 ```
 
+### 修改站点配置
+编辑 `site-config.json`，可自定义以下信息：
+```json
+{
+    "brand": "ToolBox",
+    "brandShort": "ToolBox",
+    "siteName": "ToolBox在线工具",
+    "siteDomain": "tools.yzn123.cc",
+    "siteDescription": "纯前端实现，数据不上传服务器，隐私安全有保障",
+    "icp": "豫ICP备17031913号-1",
+    "github": "https://github.com/LiveBigOrange/Tools",
+    "githubLabel": "GitHub",
+    "blog": "https://www.yzn123.cc",
+    "blogLabel": "www.yzn123.cc",
+    "email": "yzn5555@163.com",
+    "author": "yzn123"
+}
+```
+
+**配置说明：**
+| 字段 | 说明 | 影响范围 |
+|------|------|---------|
+| `brand` | 品牌名 | 页头、页脚、SEO |
+| `siteName` | 站点全称 | SEO、结构化数据 |
+| `siteDomain` | 站点域名 | canonical URL、sitemap |
+| `icp` | ICP备案号 | 页脚备案链接 |
+| `github` | GitHub仓库地址 | 页脚GitHub链接 |
+| `blog` | 博客地址 | 关于页面博客链接 |
+| `email` | 联系邮箱 | 隐私政策页面 |
+
 ### 自定义样式
 编辑 `assets/css/global.css`，修改CSS变量：
 ```css
@@ -349,7 +379,7 @@ MIT License - 可自由使用、修改、分发
 
 - **问题反馈：** 在GitHub提Issue
 - **功能建议：** 欢迎提交PR
-- **联系方式：** admin@yzn123.cc
+- **联系方式：** yzn5555@163.com
 
 ---
 
